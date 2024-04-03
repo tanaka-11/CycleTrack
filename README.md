@@ -1,1 +1,1 @@
-# Aplicativo de quilometragem feito com React Native
+# Aplicativo de computador de bicicleta feito com React Native
