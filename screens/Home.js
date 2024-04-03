@@ -44,7 +44,9 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1,
+  },
 
   progresso: {
     backgroundColor: "#dbdbdb",
