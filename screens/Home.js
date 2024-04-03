@@ -4,6 +4,7 @@ export default function Home() {
   return (
     <ScrollView>
       <View style={styles.container}>
+        {/* Progresso */}
         <View style={styles.progresso}>
           <Text style={styles.titulo}>Seu progresso semanal</Text>
 
@@ -47,9 +48,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  progresso: {},
+  progresso: {
+    backgroundColor: "#dbdbdb",
+    flex,
+  },
 
-  titulo: {},
+  titulo: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 
   viewTitulo: {},
 
