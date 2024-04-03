@@ -7,6 +7,7 @@ export default function Play() {
   const intervalRef = useRef(null);
   const startTimeRef = useRef(0);
 
+  // play
   const startStopwatch = () => {
     startTimeRef.current = Date.now() - (time.hours * 3600 + time.minutes * 60 + time.seconds) * 1000;
     intervalRef.current = setInterval(() => {
