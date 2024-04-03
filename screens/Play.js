@@ -1,7 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useState, useRef } from "react";
-import * as Location from "expo-location";
-import MapView from "react-native-maps";
 
 export default function Play() {
   // States
@@ -9,6 +7,9 @@ export default function Play() {
   const [running, setRunning] = useState(false);
   const intervalRef = useRef(null);
   const startTimeRef = useRef(0);
+
+  // Localizacao
+  const [minhaLocalizacao, setMinhaLocalizacao] = useState(null);
 
   // play
   const startStopwatch = () => {
@@ -56,6 +57,21 @@ export default function Play() {
     }, 1000);
     setRunning(true);
   };
+
+  // Localizacao
+  // useEffect monitorando permissões
+  useEffect(() => {
+    async function obterLocalizacao() {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permissão negada");
+        return;
+      }
+      let localizacaoAtual = await Location.getCurrentPositionAsync({});
+      setMinhaLocalizacao(localizacaoAtual);
+    }
+    obterLocalizacao();
+  }, []);
   return (
     <View style={styles.container}>
       <Text style={styles.header}></Text>
