@@ -1,26 +1,34 @@
 import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 
 export default function Play() {
-  // States do Play
+  // States
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const [running, setRunning] = useState(null);
   const [pause, setPause] = useState();
+  const [initialLocation, setInitialLocation] = useState(null);
+  const [distance, setDistance] = useState(0);
   const intervalRef = useRef(null);
   const startTimeRef = useRef(0);
 
-  // Guardando a referencia no mapRef (MapView)
-  const mapRef = React.createRef();
-
   // Localizacao
-  const [minhaLocalizacao, setMinhaLocalizacao] = useState(null); // State para monitorar dados da atualização atual do usuário
-  const [localizacao, setLocalizacao] = useState(null); // State com finalidade de determinar a localização no MapView junto com o Marker
-  const [coordinates, setCoordinates] = useState([]); // Cordenadas
+  const [minhaLocalizacao, setMinhaLocalizacao] = useState(null);
+  const [localizacao, setLocalizacao] = useState(null);
+  const mapViewRef = useRef(null);
 
   // Play
-  const startStopwatch = () => {
+  const startStopwatch = async () => {
+    // Capturar a localização inicial
+    const location = await Location.getCurrentPositionAsync({});
+    setInitialLocation(location.coords);
+    setMinhaLocalizacao(location);
+    setLocalizacao({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    });
+
     startTimeRef.current =
       Date.now() -
       (time.hours * 3600 + time.minutes * 60 + time.seconds) * 1000;
@@ -38,10 +46,22 @@ export default function Play() {
   };
 
   /* Pause stopwatch */
-  const pauseStopwatch = () => {
+  const pauseStopwatch = async () => {
     clearInterval(intervalRef.current);
     setPause(true);
     setRunning(false);
+
+    // Calcular a distância percorrida
+    const currentLocation = await Location.getCurrentPositionAsync({});
+    const currentCoords = currentLocation.coords;
+    const distanceInMeters = Location.distanceBetween(
+      initialLocation.latitude,
+      initialLocation.longitude,
+      currentCoords.latitude,
+      currentCoords.longitude
+    );
+    const distanceInKm = distanceInMeters / 1000;
+    setDistance(distanceInKm);
   };
 
   /* Reset stopwatch */
@@ -49,6 +69,7 @@ export default function Play() {
     clearInterval(intervalRef.current);
     setTime({ hours: 0, minutes: 0, seconds: 0 });
     setPause(false);
+    setDistance(0);
   };
 
   /* Resume stopwatch */
@@ -71,7 +92,6 @@ export default function Play() {
     }
   };
 
-  // Localizacao
   // useEffect monitorando permissões
   useEffect(() => {
     async function obterLocalizacao() {
@@ -82,58 +102,21 @@ export default function Play() {
       }
       let localizacaoAtual = await Location.getCurrentPositionAsync({});
       setMinhaLocalizacao(localizacaoAtual);
+      setLocalizacao({
+        latitude: localizacaoAtual.coords.latitude,
+        longitude: localizacaoAtual.coords.longitude,
+      });
+      mapViewRef.current.animateToRegion({
+        latitude: localizacaoAtual.coords.latitude,
+        longitude: localizacaoAtual.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      });
     }
     obterLocalizacao();
   }, []);
 
-  // Função localizacao atual
-  useEffect(() => {
-    // Condicional
-    if (minhaLocalizacao) {
-      const { latitude, longitude } = minhaLocalizacao.coords; // Objeto com mais informações da latitude e longitude
-
-      // Animação do mapa
-      mapRef.current.animateToRegion({
-        latitude,
-        longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.05,
-      });
-    }
-  }, [minhaLocalizacao]); // Parametro (minhaLocalizacao)
-
-  // Função para começar a gravar
-  const startRecording = async () => {
-    // Variavel guardando a função de localização atual
-    let initialLocation = await Location.getCurrentPositionAsync({});
-
-    // States
-    setLocalizacao(initialLocation);
-    setCurrentLocation(initialLocation);
-    startRecording(new Date().getTime());
-    setRunning(true);
-    setCoordinates([initialLocation.coords]);
-
-    // Variavel guardando função que monitora o movimento do usuario com o primeiro parametro de objeto vazio que recebe a option "default" e uma callback
-    let subscriber = await Location.watchPositionAsync({}, (newLocation) => {
-      // Atualização do state recebendo a nova localização
-      setMinhaLocalizacao(newLocation);
-
-      // States
-      setPause((new Date().getTime() - startTimeRef) / 1000);
-      setCoordinates([...coordinates, newLocation.coords]);
-    });
-
-    // Die
-    return () => {
-      if (subscriber) {
-        subscriber.remove();
-      }
-    };
-  };
-
-  console.log(minhaLocalizacao);
-
+  console.log(distance);
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -147,14 +130,20 @@ export default function Play() {
 
         <View style={styles.viewMapa}>
           <MapView
+            ref={mapViewRef}
             mapType="standard"
             style={styles.mapa}
             region={localizacao}
-            ref={mapRef}
+            followsUserLocation={true}
+            showsUserLocation={true}
           >
             {localizacao && <Marker coordinate={localizacao} />}
           </MapView>
         </View>
+
+        <Text style={styles.distanceText}>
+          Distância percorrida: {distance.toFixed(2)} km
+        </Text>
 
         <View style={styles.buttonContainer}>
           {!pause && running && (
@@ -187,7 +176,7 @@ export default function Play() {
           {!running && !pause && (
             <Pressable
               style={[styles.button, styles.startButton]}
-              onPress={(startStopwatch, startRecording)}
+              onPress={startStopwatch}
             >
               <Text style={styles.buttonText}>Começar</Text>
             </Pressable>
@@ -201,7 +190,6 @@ export default function Play() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -262,5 +250,10 @@ const styles = StyleSheet.create({
   mapa: {
     width: 280,
     height: 280,
+  },
+
+  distanceText: {
+    fontSize: 18,
+    marginTop: 10,
   },
 });
