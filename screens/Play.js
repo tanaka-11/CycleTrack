@@ -141,12 +141,13 @@ export default function Play() {
             followsUserLocation={true}
             showsUserLocation={true}
           >
-            {location && <Marker coordinate={location} />}
+            {initialLocation && <Marker coordinate={location} />}
           </MapView>
         </View>
 
         <Text style={styles.distanceText}>
-          Distância percorrida: {(distance / 1000).toFixed(2)} km
+          {/* Distância percorrida: {(distance / 1000).toFixed(2)} km */}
+          Distância percorrida: {distance} m
         </Text>
 
         <View style={styles.buttonContainer}>
