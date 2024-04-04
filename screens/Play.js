@@ -4,27 +4,27 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 
 export default function Play() {
-  // States
+  // States utizados para as funções de "Play"
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const [running, setRunning] = useState(null);
   const [pause, setPause] = useState();
-  const [initialLocation, setInitialLocation] = useState(null);
-  const [distance, setDistance] = useState(0);
   const intervalRef = useRef(null);
   const startTimeRef = useRef(0);
 
-  // Localizacao
-  const [minhaLocalizacao, setMinhaLocalizacao] = useState(null);
-  const [localizacao, setLocalizacao] = useState(null);
+  // States utizados para as funções de "Location"
+  const [myLocation, setMyLocation] = useState(null);
+  const [location, setLocation] = useState(null);
+  const [initialLocation, setInitialLocation] = useState(null);
+  const [distance, setDistance] = useState(0);
   const mapViewRef = useRef(null);
 
   // Play
   const startStopwatch = async () => {
-    // Capturar a localização inicial
+    // Obtendo localização ainicial
     const location = await Location.getCurrentPositionAsync({});
     setInitialLocation(location.coords);
-    setMinhaLocalizacao(location);
-    setLocalizacao({
+    setMyLocation(location);
+    setLocation({
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
     });
@@ -45,13 +45,13 @@ export default function Play() {
     setPause(false);
   };
 
-  /* Pause stopwatch */
+  // Pause stopwatch  (Função Pausar)
   const pauseStopwatch = async () => {
     clearInterval(intervalRef.current);
     setPause(true);
     setRunning(false);
 
-    // Calcular a distância percorrida
+    // Calcular Distancia
     const currentLocation = await Location.getCurrentPositionAsync({});
     const currentCoords = currentLocation.coords;
     const distanceInMeters = Location.distanceBetween(
@@ -64,7 +64,7 @@ export default function Play() {
     setDistance(distanceInKm);
   };
 
-  /* Reset stopwatch */
+  // Reset stopwatch (Função Reset)
   const resetStopwatch = () => {
     clearInterval(intervalRef.current);
     setTime({ hours: 0, minutes: 0, seconds: 0 });
@@ -72,7 +72,7 @@ export default function Play() {
     setDistance(0);
   };
 
-  /* Resume stopwatch */
+  // Resume stopwatch (Função Retomar)
   const resumeStopwatch = () => {
     if (time.hours > 0 || time.minutes > 0 || time.seconds > 0) {
       startTimeRef.current =
@@ -92,28 +92,32 @@ export default function Play() {
     }
   };
 
-  // useEffect monitorando permissões
+  // useEffect monitorando permissão do Location
   useEffect(() => {
-    async function obterLocalizacao() {
+    async function getLocation() {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         console.log("Permissão negada");
         return;
       }
-      let localizacaoAtual = await Location.getCurrentPositionAsync({});
-      setMinhaLocalizacao(localizacaoAtual);
-      setLocalizacao({
-        latitude: localizacaoAtual.coords.latitude,
-        longitude: localizacaoAtual.coords.longitude,
+
+      // Funçãr para obter localização atual
+      let currentLocation = await Location.getCurrentPositionAsync({});
+      setMyLocation(currentLocation);
+      setLocation({
+        latitude: currentLocation.coords.latitude,
+        longitude: currentLocation.coords.longitude,
       });
+
+      // Animação do mapa para localização atual
       mapViewRef.current.animateToRegion({
-        latitude: localizacaoAtual.coords.latitude,
-        longitude: localizacaoAtual.coords.longitude,
+        latitude: currentLocation.coords.latitude,
+        longitude: currentLocation.coords.longitude,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       });
     }
-    obterLocalizacao();
+    getLocation();
   }, []);
 
   console.log(distance);
@@ -133,11 +137,11 @@ export default function Play() {
             ref={mapViewRef}
             mapType="standard"
             style={styles.mapa}
-            region={localizacao}
+            region={location}
             followsUserLocation={true}
             showsUserLocation={true}
           >
-            {localizacao && <Marker coordinate={localizacao} />}
+            {location && <Marker coordinate={location} />}
           </MapView>
         </View>
 
@@ -246,7 +250,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 
-  // Mapa
+  // Map
   mapa: {
     width: 280,
     height: 280,
