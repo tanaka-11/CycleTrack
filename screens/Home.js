@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
 
   progresso: {
     backgroundColor: "#dbdbdb",
-    flex,
   },
 
   titulo: {

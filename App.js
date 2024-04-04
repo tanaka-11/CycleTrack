@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-
 // Importação do bottom navigator
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
@@ -22,7 +21,7 @@ export default function App() {
         <Tab.Screen name="Atividades" component={Atividades} />
         <Tab.Screen name="Play" component={Play} />
         <Tab.Screen name="Perfil" component={Perfil} />
-        <Tab.Screen name="Configuracao" component={Configuracao}/>
+        <Tab.Screen name="Configuracao" component={Configuracao} />
       </Tab.Navigator>
     </NavigationContainer>
   );
