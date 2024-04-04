@@ -1,17 +1,21 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { useState, useRef } from "react";
+import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import { useState, useRef, useEffect } from "react";
+import MapView, { Marker } from "react-native-maps";
+import * as Location from "expo-location";
 
 export default function Play() {
   // States
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
-  const [running, setRunning] = useState(false);
+  const [running, setRunning] = useState(null);
+  const [pause, setPause] = useState();
   const intervalRef = useRef(null);
   const startTimeRef = useRef(0);
 
   // Localizacao
-  const [minhaLocalizacao, setMinhaLocalizacao] = useState(null);
+  const [minhaLocalizacao, setMinhaLocalizacao] = useState(null); // State para monitorar dados da atualização atual do usuário
+  const [localizacao, setLocalizacao] = useState(null); // State com finalidade de determinar a localização no MapView junto com o Marker
 
-  // play
+  // Play
   const startStopwatch = () => {
     startTimeRef.current =
       Date.now() -
@@ -26,11 +30,13 @@ export default function Play() {
       setTime({ hours, minutes, seconds });
     }, 1000);
     setRunning(true);
+    setPause(false);
   };
 
   /* Pause stopwatch */
   const pauseStopwatch = () => {
     clearInterval(intervalRef.current);
+    setPause(true);
     setRunning(false);
   };
 
@@ -38,24 +44,27 @@ export default function Play() {
   const resetStopwatch = () => {
     clearInterval(intervalRef.current);
     setTime({ hours: 0, minutes: 0, seconds: 0 });
-    setRunning(false);
+    setPause(false);
   };
 
   /* Resume stopwatch */
   const resumeStopwatch = () => {
-    startTimeRef.current =
-      Date.now() -
-      (time.hours * 3600 + time.minutes * 60 + time.seconds) * 1000;
-    intervalRef.current = setInterval(() => {
-      const elapsedTime = Math.floor(
-        (Date.now() - startTimeRef.current) / 1000
-      );
-      const hours = Math.floor(elapsedTime / 3600);
-      const minutes = Math.floor((elapsedTime % 3600) / 60);
-      const seconds = elapsedTime % 60;
-      setTime({ hours, minutes, seconds });
-    }, 1000);
-    setRunning(true);
+    if (time.hours > 0 || time.minutes > 0 || time.seconds > 0) {
+      startTimeRef.current =
+        Date.now() -
+        (time.hours * 3600 + time.minutes * 60 + time.seconds) * 1000;
+      intervalRef.current = setInterval(() => {
+        const elapsedTime = Math.floor(
+          (Date.now() - startTimeRef.current) / 1000
+        );
+        const hours = Math.floor(elapsedTime / 3600);
+        const minutes = Math.floor((elapsedTime % 3600) / 60);
+        const seconds = elapsedTime % 60;
+        setTime({ hours, minutes, seconds });
+      }, 1000);
+      setPause(false);
+      setRunning(true);
+    }
   };
 
   // Localizacao
@@ -72,50 +81,63 @@ export default function Play() {
     }
     obterLocalizacao();
   }, []);
-  return (
-    <View style={styles.container}>
-      <Text style={styles.header}></Text>
-      <Text style={styles.subHeader}>Tempo</Text>
-      <Text style={styles.timeText}>
-        {`${time.hours.toString().padStart(2, "0")}:${time.minutes
-          .toString()
-          .padStart(2, "0")}:${time.seconds.toString().padStart(2, "0")}`}
-      </Text>
 
-      <View style={styles.buttonContainer}>
-        {running ? (
-          <TouchableOpacity
-            style={[styles.button, styles.pauseButton]}
-            onPress={pauseStopwatch}
-          >
-            <Text style={styles.buttonText}>Pausar</Text>
-          </TouchableOpacity>
-        ) : (
-          <>
-            <TouchableOpacity
+  return (
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.header}></Text>
+        <Text style={styles.subHeader}>Tempo</Text>
+        <Text style={styles.timeText}>
+          {`${time.hours.toString().padStart(2, "0")}:${time.minutes
+            .toString()
+            .padStart(2, "0")}:${time.seconds.toString().padStart(2, "0")}`}
+        </Text>
+
+        <View style={styles.viewMapa}>
+          <MapView mapType="standard" style={styles.mapa} region={localizacao}>
+            {localizacao && <Marker coordinate={localizacao} />}
+          </MapView>
+        </View>
+
+        <View style={styles.buttonContainer}>
+          {!pause && running && (
+            <Pressable
+              style={[styles.button, styles.pauseButton]}
+              onPress={pauseStopwatch}
+            >
+              <Text style={styles.buttonText}>Pausar</Text>
+            </Pressable>
+          )}
+
+          {pause && (
+            <>
+              <Pressable
+                style={[styles.button, styles.resetButton]}
+                onPress={resetStopwatch}
+              >
+                <Text style={styles.buttonText}>Reset</Text>
+              </Pressable>
+
+              <Pressable
+                style={[styles.button, styles.resumeButton]}
+                onPress={resumeStopwatch}
+              >
+                <Text style={styles.buttonText}>Retomar</Text>
+              </Pressable>
+            </>
+          )}
+
+          {!running && !pause && (
+            <Pressable
               style={[styles.button, styles.startButton]}
               onPress={startStopwatch}
             >
               <Text style={styles.buttonText}>Começar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, styles.resetButton]}
-              onPress={resetStopwatch}
-            >
-              <Text style={styles.buttonText}>Reset</Text>
-            </TouchableOpacity>
-          </>
-        )}
-        {!running && (
-          <TouchableOpacity
-            style={[styles.button, styles.resumeButton]}
-            onPress={resumeStopwatch}
-          >
-            <Text style={styles.buttonText}>Retomar</Text>
-          </TouchableOpacity>
-        )}
+            </Pressable>
+          )}
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -147,6 +169,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     marginTop: 20,
+    marginBottom: 20,
   },
 
   button: {
