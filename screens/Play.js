@@ -1,19 +1,23 @@
 import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 
 export default function Play() {
-  // States
+  // States do Play
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const [running, setRunning] = useState(null);
   const [pause, setPause] = useState();
   const intervalRef = useRef(null);
   const startTimeRef = useRef(0);
 
+  // Guardando a referencia no mapRef (MapView)
+  const mapRef = React.createRef();
+
   // Localizacao
   const [minhaLocalizacao, setMinhaLocalizacao] = useState(null); // State para monitorar dados da atualização atual do usuário
   const [localizacao, setLocalizacao] = useState(null); // State com finalidade de determinar a localização no MapView junto com o Marker
+  const [coordinates, setCoordinates] = useState([]); // Cordenadas
 
   // Play
   const startStopwatch = () => {
@@ -82,6 +86,54 @@ export default function Play() {
     obterLocalizacao();
   }, []);
 
+  // Função localizacao atual
+  useEffect(() => {
+    // Condicional
+    if (minhaLocalizacao) {
+      const { latitude, longitude } = minhaLocalizacao.coords; // Objeto com mais informações da latitude e longitude
+
+      // Animação do mapa
+      mapRef.current.animateToRegion({
+        latitude,
+        longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.05,
+      });
+    }
+  }, [minhaLocalizacao]); // Parametro (minhaLocalizacao)
+
+  // Função para começar a gravar
+  const startRecording = async () => {
+    // Variavel guardando a função de localização atual
+    let initialLocation = await Location.getCurrentPositionAsync({});
+
+    // States
+    setLocalizacao(initialLocation);
+    setCurrentLocation(initialLocation);
+    startRecording(new Date().getTime());
+    setRunning(true);
+    setCoordinates([initialLocation.coords]);
+
+    // Variavel guardando função que monitora o movimento do usuario com o primeiro parametro de objeto vazio que recebe a option "default" e uma callback
+    let subscriber = await Location.watchPositionAsync({}, (newLocation) => {
+      // Atualização do state recebendo a nova localização
+      setMinhaLocalizacao(newLocation);
+
+      // States
+      setPause((new Date().getTime() - startTimeRef) / 1000);
+      setCoordinates([...coordinates, newLocation.coords]);
+    });
+
+    // Die
+    return () => {
+      if (subscriber) {
+        subscriber.remove();
+      }
+    };
+  };
+
+  console.log(minhaLocalizacao);
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -94,7 +146,12 @@ export default function Play() {
         </Text>
 
         <View style={styles.viewMapa}>
-          <MapView mapType="standard" style={styles.mapa} region={localizacao}>
+          <MapView
+            mapType="standard"
+            style={styles.mapa}
+            region={localizacao}
+            ref={mapRef}
+          >
             {localizacao && <Marker coordinate={localizacao} />}
           </MapView>
         </View>
@@ -130,7 +187,7 @@ export default function Play() {
           {!running && !pause && (
             <Pressable
               style={[styles.button, styles.startButton]}
-              onPress={startStopwatch}
+              onPress={(startStopwatch, startRecording)}
             >
               <Text style={styles.buttonText}>Começar</Text>
             </Pressable>
