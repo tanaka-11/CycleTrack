@@ -60,8 +60,8 @@ export default function Play() {
       currentCoords.latitude,
       currentCoords.longitude
     );
-    const distanceInKm = distanceInMeters / 1000;
-    setDistance(distanceInKm);
+    // Defina a distância em metros
+    setDistance(distanceInMeters);
   };
 
   // Reset stopwatch (Função Reset)
@@ -146,7 +146,7 @@ export default function Play() {
         </View>
 
         <Text style={styles.distanceText}>
-          Distância percorrida: {distance.toFixed(2)} km
+          Distância percorrida: {(distance / 1000).toFixed(2)} km
         </Text>
 
         <View style={styles.buttonContainer}>
