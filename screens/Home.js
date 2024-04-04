@@ -5,9 +5,8 @@ export default function Home() {
     <ScrollView>
       <View style={styles.container}>
         {/* Progresso */}
+        <Text style={styles.titulo}>Seu progresso semanal</Text>
         <View style={styles.progresso}>
-          <Text style={styles.titulo}>Seu progresso semanal</Text>
-
           <View style={styles.viewAtividade}>
             <Text style={styles.viewTitulo}>Atividade</Text>
             <Text style={styles.textoDados}>4</Text>
@@ -25,8 +24,8 @@ export default function Home() {
         </View>
 
         {/* Atividade */}
+        <Text style={styles.titulo}>Sua ultima atividade</Text>
         <View style={styles.atividadeRecente}>
-          <Text style={styles.titulo}>Sua ultima atividade</Text>
           <Text style={styles.textoDados}>14/03/2024 às 14:00</Text>
 
           <View style={styles.viewDistancia}>
@@ -50,12 +49,23 @@ const styles = StyleSheet.create({
   },
 
   progresso: {
-    backgroundColor: "#dbdbdb",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 20,
+  },
+
+  atividadeRecente: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    margin: 10,
+    gap: 20,
+    // alignItems: "flex-start",
   },
 
   titulo: {
     fontSize: 16,
     fontWeight: "bold",
+    margin: 20,
   },
 
   viewTitulo: {},
