@@ -24,6 +24,7 @@ export default function Home() {
           </View>
         </View>
 
+        {/* Atividade */}
         <View style={styles.atividadeRecente}>
           <Text style={styles.titulo}>Sua ultima atividade</Text>
           <Text style={styles.textoDados}>14/03/2024 às 14:00</Text>
