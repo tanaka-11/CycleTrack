@@ -28,6 +28,7 @@ export default function Play() {
 
   // States utilizados para a contagem de passos
   const [steps, setSteps] = useState(0);
+  const [speed, setSpeed] = useState(0);
 
   // useEffect do acelerometro
   useEffect(() => {
@@ -40,7 +41,7 @@ export default function Play() {
       // Esta é uma lógica de exemplo simples. Você pode precisar ajustá-la.
       const { x, y, z } = accelerometerData;
       const magnitude = Math.sqrt(x * x + y * y + z * z);
-      const THRESHOLD = 1.1;
+      const THRESHOLD = 1.2;
       if (magnitude > THRESHOLD) {
         setSteps((prevSteps) => prevSteps + 1);
       }
@@ -96,16 +97,33 @@ export default function Play() {
     setSteps(0);
   };
 
+  // Formula de Harvesine para calcular a distancia em metros
+  const haversineDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371e3; // Raio da Terra em metros
+    const φ1 = lat1 * (Math.PI / 180); // Latitude em radianos
+    const φ2 = lat2 * (Math.PI / 180); // Latitude em radianos
+    const Δφ = (lat2 - lat1) * (Math.PI / 180); // Diferença de latitude em radianos
+    const Δλ = (lon2 - lon1) * (Math.PI / 180); // Diferença de longitude em radianos
+
+    const a =
+      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c; // Distância em metros
+  };
+
   // Pause stopwatch  (Função Pausar)
   const pauseStopwatch = async () => {
     clearInterval(intervalRef.current);
     setPause(true);
     setRunning(false);
+    setSteps(false);
 
     // Calcular Distancia
     const currentLocation = await Location.getCurrentPositionAsync({});
     const currentCoords = currentLocation.coords;
-    const distanceInMeters = Location.distanceBetween(
+    const distanceInMeters = haversineDistance(
       initialLocation.latitude,
       initialLocation.longitude,
       currentCoords.latitude,
@@ -141,6 +159,7 @@ export default function Play() {
       }, 1000);
       setPause(false);
       setRunning(true);
+      setSteps(true);
     }
   };
 
@@ -199,7 +218,7 @@ export default function Play() {
 
         <Text style={styles.distanceText}>
           {/* Distância percorrida: {(distance / 1000).toFixed(2)} km */}
-          Distância percorrida: {steps} m
+          Distância percorrida: {steps}
         </Text>
 
         <View style={styles.buttonContainer}>
