@@ -40,7 +40,7 @@ export default function Play() {
       // Esta é uma lógica de exemplo simples. Você pode precisar ajustá-la.
       const { x, y, z } = accelerometerData;
       const magnitude = Math.sqrt(x * x + y * y + z * z);
-      const THRESHOLD = 1.2;
+      const THRESHOLD = 1.1;
       if (magnitude > THRESHOLD) {
         setSteps((prevSteps) => prevSteps + 1);
       }
