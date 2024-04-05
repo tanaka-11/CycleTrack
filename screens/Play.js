@@ -1,7 +1,15 @@
-import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  ScrollView,
+  Platform,
+} from "react-native";
 import { useState, useRef, useEffect } from "react";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
+import { Accelerometer } from "expo-sensors";
 
 export default function Play() {
   // States utizados para as funções de "Play"
@@ -15,8 +23,50 @@ export default function Play() {
   const [myLocation, setMyLocation] = useState(null);
   const [location, setLocation] = useState(null);
   const [initialLocation, setInitialLocation] = useState(null);
-  const [distance, setDistance] = useState(0);
+  const [distance, setDistance] = useState(null);
   const mapViewRef = useRef(null);
+
+  // States utilizados para a contagem de passos
+  const [steps, setSteps] = useState(0);
+
+  // useEffect do acelerometro
+  useEffect(() => {
+    // Solicitar permissão de acesso ao acelerômetro
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      Accelerometer.setUpdateInterval(1000);
+    }
+    const subscription = Accelerometer.addListener((accelerometerData) => {
+      // Sua lógica para contar passos aqui
+      // Esta é uma lógica de exemplo simples. Você pode precisar ajustá-la.
+      const { x, y, z } = accelerometerData;
+      const magnitude = Math.sqrt(x * x + y * y + z * z);
+      const THRESHOLD = 1.2;
+      if (magnitude > THRESHOLD) {
+        setSteps((prevSteps) => prevSteps + 1);
+      }
+    });
+
+    return () => subscription.remove();
+  }, []);
+
+  // Atualizar o tempo decorrido
+  useEffect(() => {
+    if (running) {
+      intervalRef.current = setInterval(() => {
+        const elapsedTime = Math.floor(
+          (Date.now() - startTimeRef.current) / 1000
+        );
+        const hours = Math.floor(elapsedTime / 3600);
+        const minutes = Math.floor((elapsedTime % 3600) / 60);
+        const seconds = elapsedTime % 60;
+        setTime({ hours, minutes, seconds });
+      }, 1000);
+    } else {
+      clearInterval(intervalRef.current);
+    }
+
+    return () => clearInterval(intervalRef.current);
+  }, [running]);
 
   // Play
   const startStopwatch = async () => {
@@ -43,6 +93,7 @@ export default function Play() {
     }, 1000);
     setRunning(true);
     setPause(false);
+    setSteps(0);
   };
 
   // Pause stopwatch  (Função Pausar)
@@ -70,6 +121,7 @@ export default function Play() {
     setTime({ hours: 0, minutes: 0, seconds: 0 });
     setPause(false);
     setDistance(0);
+    setSteps(0);
   };
 
   // Resume stopwatch (Função Retomar)
@@ -120,7 +172,7 @@ export default function Play() {
     getLocation();
   }, []);
 
-  console.log(distance);
+  console.log(steps);
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -147,7 +199,7 @@ export default function Play() {
 
         <Text style={styles.distanceText}>
           {/* Distância percorrida: {(distance / 1000).toFixed(2)} km */}
-          Distância percorrida: {distance} m
+          Distância percorrida: {steps} m
         </Text>
 
         <View style={styles.buttonContainer}>
