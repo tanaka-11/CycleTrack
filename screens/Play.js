@@ -71,7 +71,7 @@ export default function Play() {
 
   // Play
   const startStopwatch = async () => {
-    // Obtendo localização ainicial
+    // Obtendo localização inicial
     const location = await Location.getCurrentPositionAsync({});
     setInitialLocation(location.coords);
     setMyLocation(location);
@@ -80,9 +80,14 @@ export default function Play() {
       longitude: location.coords.longitude,
     });
 
+    // Iniciando o monitoramento de velocidade
+    startMonitoringSpeed();
+
+    // Cronometro
     startTimeRef.current =
       Date.now() -
       (time.hours * 3600 + time.minutes * 60 + time.seconds) * 1000;
+
     intervalRef.current = setInterval(() => {
       const elapsedTime = Math.floor(
         (Date.now() - startTimeRef.current) / 1000
@@ -92,6 +97,8 @@ export default function Play() {
       const seconds = elapsedTime % 60;
       setTime({ hours, minutes, seconds });
     }, 1000);
+
+    // Atualizando states
     setRunning(true);
     setPause(false);
     setSteps(0);
@@ -115,10 +122,10 @@ export default function Play() {
 
   // Pause stopwatch  (Função Pausar)
   const pauseStopwatch = async () => {
+    // States
     clearInterval(intervalRef.current);
     setPause(true);
     setRunning(false);
-    setSteps(steps);
 
     // Calcular Distancia
     const currentLocation = await Location.getCurrentPositionAsync({});
@@ -129,6 +136,7 @@ export default function Play() {
       currentCoords.latitude,
       currentCoords.longitude
     );
+
     // Defina a distância em metros
     setDistance(distanceInMeters);
   };
@@ -172,7 +180,7 @@ export default function Play() {
         return;
       }
 
-      // Funçãr para obter localização atual
+      // Função para obter localização atual
       let currentLocation = await Location.getCurrentPositionAsync({});
       setMyLocation(currentLocation);
       setLocation({
@@ -191,7 +199,36 @@ export default function Play() {
     getLocation();
   }, []);
 
-  console.log(steps);
+  // Função de velocidade
+  async function startMonitoringSpeed() {
+    try {
+      const locationSubscription = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.Highest,
+          timeInterval: 1000,
+          distanceInterval: 0,
+          activityType: Location.ActivityType.Fitness,
+        },
+
+        (position) => {
+          setSpeed(position.coords.speed || 0);
+        }
+      );
+
+      return locationSubscription;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  // Para o monitoramento da velocidade e remove a assinatura.
+  async function stopMonitoringSpeed(subscription) {
+    if (subscription) {
+      subscription.remove();
+    }
+  }
+
+  console.log(speed);
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -216,16 +253,22 @@ export default function Play() {
           </MapView>
         </View>
 
-        <Text style={styles.distanceText}>
-          {/* Distância percorrida: {(distance / 1000).toFixed(2)} km */}
-          Distância percorrida: {steps}
-        </Text>
+        <View style={styles.viewDados}>
+          <Text style={styles.distanceText}>
+            {/* Distância percorrida: {(distance / 1000).toFixed(2)} km */}
+            Distância percorrida: {steps.toFixed(2)}
+          </Text>
+
+          <Text style={styles.distanceText}>
+            Velocidade: {speed.toFixed(2)}
+          </Text>
+        </View>
 
         <View style={styles.buttonContainer}>
           {!pause && running && (
             <Pressable
               style={[styles.button, styles.pauseButton]}
-              onPress={pauseStopwatch}
+              onPress={() => pauseStopwatch(stopMonitoringSpeed)}
             >
               <Text style={styles.buttonText}>Pausar</Text>
             </Pressable>
@@ -320,6 +363,13 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 16,
+  },
+
+  // Dados
+  viewDados: {
+    flexDirection: "row",
+    gap: 30,
+    marginTop: 10,
   },
 
   // Map
