@@ -167,7 +167,6 @@ export default function Play() {
       }, 1000);
       setPause(false);
       setRunning(true);
-      setSteps(true);
     }
   };
 
@@ -266,12 +265,23 @@ export default function Play() {
 
         <View style={styles.buttonContainer}>
           {!pause && running && (
-            <Pressable
-              style={[styles.button, styles.pauseButton]}
-              onPress={() => pauseStopwatch(stopMonitoringSpeed)}
-            >
-              <Text style={styles.buttonText}>Pausar</Text>
-            </Pressable>
+            <>
+              <View style={styles.stopButtons}>
+                <Pressable
+                  style={[styles.button, styles.pauseButton]}
+                  onPress={() => pauseStopwatch(stopMonitoringSpeed)}
+                >
+                  <Text style={styles.buttonText}>Pausar</Text>
+                </Pressable>
+
+                <Pressable
+                  style={[styles.button, styles.stopButton]}
+                  // onPress={}
+                >
+                  <Text style={styles.buttonText}>Parar</Text>
+                </Pressable>
+              </View>
+            </>
           )}
 
           {pause && (
@@ -348,7 +358,7 @@ const styles = StyleSheet.create({
   },
 
   resetButton: {
-    backgroundColor: "#e74c3c",
+    backgroundColor: "#4b371c",
     marginRight: 10,
   },
 
@@ -356,8 +366,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#f39c12",
   },
 
+  stopButton: {
+    backgroundColor: "#e74c3c",
+  },
+
   resumeButton: {
     backgroundColor: "#3498db",
+  },
+
+  stopButtons: {
+    gap: 20,
+    flexDirection: "row",
   },
 
   buttonText: {
