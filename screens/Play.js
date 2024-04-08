@@ -118,7 +118,7 @@ export default function Play() {
     clearInterval(intervalRef.current);
     setPause(true);
     setRunning(false);
-    setSteps(false);
+    setSteps(steps);
 
     // Calcular Distancia
     const currentLocation = await Location.getCurrentPositionAsync({});
