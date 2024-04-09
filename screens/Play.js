@@ -11,8 +11,12 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { Accelerometer } from "expo-sensors";
 
+// Componentes
+import Stopwatch from "../components/Stopwatch";
+import ControlButtons from "../components/ControlButtons";
+
 export default function Play() {
-  // States utizados para as funções de "Play"
+  // States utilizados para as funções de "Play"
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const [running, setRunning] = useState(null);
   const [pause, setPause] = useState();
@@ -69,41 +73,6 @@ export default function Play() {
     return () => clearInterval(intervalRef.current);
   }, [running]);
 
-  // Play
-  const startStopwatch = async () => {
-    // Obtendo localização inicial
-    const location = await Location.getCurrentPositionAsync({});
-    setInitialLocation(location.coords);
-    setMyLocation(location);
-    setLocation({
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-    });
-
-    // Iniciando o monitoramento de velocidade
-    startMonitoringSpeed();
-
-    // Cronometro
-    startTimeRef.current =
-      Date.now() -
-      (time.hours * 3600 + time.minutes * 60 + time.seconds) * 1000;
-
-    intervalRef.current = setInterval(() => {
-      const elapsedTime = Math.floor(
-        (Date.now() - startTimeRef.current) / 1000
-      );
-      const hours = Math.floor(elapsedTime / 3600);
-      const minutes = Math.floor((elapsedTime % 3600) / 60);
-      const seconds = elapsedTime % 60;
-      setTime({ hours, minutes, seconds });
-    }, 1000);
-
-    // Atualizando states
-    setRunning(true);
-    setPause(false);
-    setSteps(0);
-  };
-
   // Formula de Harvesine para calcular a distancia em metros
   const haversineDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371e3; // Raio da Terra em metros
@@ -118,56 +87,6 @@ export default function Play() {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     return R * c; // Distância em metros
-  };
-
-  // Pause stopwatch  (Função Pausar)
-  const pauseStopwatch = async () => {
-    // States
-    clearInterval(intervalRef.current);
-    setPause(true);
-    setRunning(false);
-
-    // Calcular Distancia
-    const currentLocation = await Location.getCurrentPositionAsync({});
-    const currentCoords = currentLocation.coords;
-    const distanceInMeters = haversineDistance(
-      initialLocation.latitude,
-      initialLocation.longitude,
-      currentCoords.latitude,
-      currentCoords.longitude
-    );
-
-    // Defina a distância em metros
-    setDistance(distanceInMeters);
-  };
-
-  // Reset stopwatch (Função Reset)
-  const resetStopwatch = () => {
-    clearInterval(intervalRef.current);
-    setTime({ hours: 0, minutes: 0, seconds: 0 });
-    setPause(false);
-    setDistance(0);
-    setSteps(0);
-  };
-
-  // Resume stopwatch (Função Retomar)
-  const resumeStopwatch = () => {
-    if (time.hours > 0 || time.minutes > 0 || time.seconds > 0) {
-      startTimeRef.current =
-        Date.now() -
-        (time.hours * 3600 + time.minutes * 60 + time.seconds) * 1000;
-      intervalRef.current = setInterval(() => {
-        const elapsedTime = Math.floor(
-          (Date.now() - startTimeRef.current) / 1000
-        );
-        const hours = Math.floor(elapsedTime / 3600);
-        const minutes = Math.floor((elapsedTime % 3600) / 60);
-        const seconds = elapsedTime % 60;
-        setTime({ hours, minutes, seconds });
-      }, 1000);
-      setPause(false);
-      setRunning(true);
-    }
   };
 
   // useEffect monitorando permissão do Location
@@ -231,13 +150,17 @@ export default function Play() {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.header}></Text>
-        <Text style={styles.subHeader}>Tempo</Text>
-        <Text style={styles.timeText}>
-          {`${time.hours.toString().padStart(2, "0")}:${time.minutes
-            .toString()
-            .padStart(2, "0")}:${time.seconds.toString().padStart(2, "0")}`}
-        </Text>
+        <Stopwatch
+          time={time}
+          running={running}
+          pause={pause}
+          setTime={setTime}
+          setRunning={setRunning}
+          setPause={setPause}
+          intervalRef={intervalRef}
+          startTimeRef={startTimeRef}
+          setSteps={setSteps}
+        />
 
         <View style={styles.viewMapa}>
           <MapView
@@ -262,55 +185,6 @@ export default function Play() {
             Velocidade: {speed.toFixed(2)}
           </Text>
         </View>
-
-        <View style={styles.buttonContainer}>
-          {!pause && running && (
-            <>
-              <View style={styles.stopButtons}>
-                <Pressable
-                  style={[styles.button, styles.pauseButton]}
-                  onPress={() => pauseStopwatch(stopMonitoringSpeed)}
-                >
-                  <Text style={styles.buttonText}>Pausar</Text>
-                </Pressable>
-
-                <Pressable
-                  style={[styles.button, styles.stopButton]}
-                  // onPress={}
-                >
-                  <Text style={styles.buttonText}>Parar</Text>
-                </Pressable>
-              </View>
-            </>
-          )}
-
-          {pause && (
-            <>
-              <Pressable
-                style={[styles.button, styles.resetButton]}
-                onPress={resetStopwatch}
-              >
-                <Text style={styles.buttonText}>Reset</Text>
-              </Pressable>
-
-              <Pressable
-                style={[styles.button, styles.resumeButton]}
-                onPress={resumeStopwatch}
-              >
-                <Text style={styles.buttonText}>Retomar</Text>
-              </Pressable>
-            </>
-          )}
-
-          {!running && !pause && (
-            <Pressable
-              style={[styles.button, styles.startButton]}
-              onPress={startStopwatch}
-            >
-              <Text style={styles.buttonText}>Começar</Text>
-            </Pressable>
-          )}
-        </View>
       </View>
     </ScrollView>
   );
@@ -321,67 +195,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-
-  // Play, Pause
-  header: {
-    fontSize: 30,
-    color: "green",
-    marginBottom: 10,
-  },
-
-  subHeader: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: "blue",
-  },
-
-  timeText: {
-    fontSize: 48,
-  },
-
-  buttonContainer: {
-    flexDirection: "row",
-    marginTop: 20,
-    marginBottom: 20,
-  },
-
-  button: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
-
-  startButton: {
-    backgroundColor: "#2ecc71",
-    marginRight: 10,
-  },
-
-  resetButton: {
-    backgroundColor: "#4b371c",
-    marginRight: 10,
-  },
-
-  pauseButton: {
-    backgroundColor: "#f39c12",
-  },
-
-  stopButton: {
-    backgroundColor: "#e74c3c",
-  },
-
-  resumeButton: {
-    backgroundColor: "#3498db",
-  },
-
-  stopButtons: {
-    gap: 20,
-    flexDirection: "row",
-  },
-
-  buttonText: {
-    color: "white",
-    fontSize: 16,
   },
 
   // Dados
