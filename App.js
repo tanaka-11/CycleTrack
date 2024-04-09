@@ -25,6 +25,9 @@ export default function App() {
           screenOptions={{
             headerShown: false,
             tabBarLabelStyle: { fontSize: 16, padding: 5 },
+            tabBarInactiveTintColor: "#ffffff",
+            tabBarActiveTintColor: "#dddddd",
+            tabBarActiveBackgroundColor: "#271177",
             tabBarStyle: styles.tabBar,
           }}
           initialRouteName="Home"
