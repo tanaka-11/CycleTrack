@@ -227,7 +227,7 @@ export default function Play() {
     }
   }
 
-  console.log(speed);
+  console.log(distance);
   return (
     <ScrollView>
       <View style={styles.container}>
