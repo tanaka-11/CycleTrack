@@ -1,16 +1,14 @@
+import React from "react";
 import { StyleSheet, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-// Importação do bottom navigator
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-// Telas
 import Home from "./screens/Home";
 import Perfil from "./screens/Perfil";
 import Atividades from "./screens/Atividades";
 import Play from "./screens/Play";
 import Configuracao from "./screens/Configuracao";
 
-// constante iniciando a criação do navigator
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -18,7 +16,10 @@ export default function App() {
     <>
       <StatusBar barStyle="light-content" />
       <NavigationContainer>
-        <Tab.Navigator screenOptions={{ headerShown: false }} initialRouteName="Home">
+        <Tab.Navigator 
+          screenOptions={{ headerShown: false }}
+          initialRouteName="Home"
+        >
           <Tab.Screen name="Home" component={Home} />
           <Tab.Screen name="Atividades" component={Atividades} />
           <Tab.Screen name="Play" component={Play} />
@@ -31,10 +32,5 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  
 });
