@@ -7,6 +7,7 @@ export default function Stopwatch() {
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const [pause, setPause] = useState(false);
   const [running, setRunning] = useState(false);
+  const [stop, setStop] = useState(false);
   const intervalRef = useRef(null);
   const startTimeRef = useRef(0);
 
@@ -60,6 +61,18 @@ export default function Stopwatch() {
     setPause(false);
   };
 
+  // Stop stopwtach
+  const stopAll = () => {
+    clearInterval(intervalRef.current);
+    setTime({
+      hours: time.hours,
+      minutes: time.minutes,
+      seconds: time.seconds,
+    });
+    setRunning(false);
+    setPause(false);
+    setStop(true);
+  };
   return (
     <>
       <View style={styles.container}>
@@ -75,10 +88,12 @@ export default function Stopwatch() {
         <ControlButtons
           running={running}
           pause={pause}
+          stop={stop}
           pauseStopwatch={pauseStopwatch}
           startStopwatch={startStopwatch}
           resetStopwatch={resetStopwatch}
           resumeStopwatch={resumeStopwatch}
+          stopAll={stopAll}
         />
       </View>
     </>

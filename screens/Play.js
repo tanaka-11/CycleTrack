@@ -7,7 +7,6 @@ import {
   Platform,
 } from "react-native";
 import { useState, useEffect, useRef } from "react";
-import { Accelerometer } from "expo-sensors";
 
 // Componentes
 import Stopwatch from "../components/Stopwatch";
@@ -24,26 +23,6 @@ export default function Play() {
   // States de Velocidade e Distancia
   const [steps, setSteps] = useState(0);
   const [speed, setSpeed] = useState(0);
-
-  // useEffect do acelerometro
-  useEffect(() => {
-    // Solicitar permissão de acesso ao acelerômetro
-    if (Platform.OS === "android" || Platform.OS === "ios") {
-      Accelerometer.setUpdateInterval(1000);
-    }
-    const subscription = Accelerometer.addListener((accelerometerData) => {
-      // Sua lógica para contar passos aqui
-      // Esta é uma lógica de exemplo simples. Você pode precisar ajustá-la.
-      const { x, y, z } = accelerometerData;
-      const magnitude = Math.sqrt(x * x + y * y + z * z);
-      const THRESHOLD = 1.2;
-      if (magnitude > THRESHOLD) {
-        setSteps((prevSteps) => prevSteps + 1);
-      }
-    });
-
-    return () => subscription.remove();
-  }, []);
 
   // Atualizar o tempo decorrido
   useEffect(() => {
@@ -76,7 +55,6 @@ export default function Play() {
           setPause={setPause}
           intervalRef={intervalRef}
           startTimeRef={startTimeRef}
-          setSteps={setSteps}
         />
 
         <Mapa setSteps={setSteps} setSpeed={setSpeed} />

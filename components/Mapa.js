@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Platform, StyleSheet, Text, View } from "react-native";
 import { useEffect, useState, useRef } from "react";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
+import { Accelerometer } from "expo-sensors";
 
 export default function Mapa() {
   // States utizados para as funções de "Location"
@@ -15,7 +16,7 @@ export default function Mapa() {
   const [steps, setSteps] = useState(0);
   const [speed, setSpeed] = useState(0);
 
-  // useEffect monitorando permissão do Location
+  // Dentro do useEffect para monitorar a permissão de localização
   useEffect(() => {
     async function getLocation() {
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -32,6 +33,9 @@ export default function Mapa() {
         longitude: currentLocation.coords.longitude,
       });
 
+      // Inicia o monitoramento da velocidade
+      startMonitoringSpeed();
+
       // Animação do mapa para localização atual
       mapViewRef.current.animateToRegion({
         latitude: currentLocation.coords.latitude,
@@ -43,7 +47,7 @@ export default function Mapa() {
     getLocation();
   }, []);
 
-  // Função de velocidade
+  // Dentro da função startMonitoringSpeed
   async function startMonitoringSpeed() {
     try {
       const locationSubscription = await Location.watchPositionAsync(
@@ -56,6 +60,7 @@ export default function Mapa() {
 
         (position) => {
           setSpeed(position.coords.speed || 0);
+          // Calcule a distância aqui e atualize o estado 'distance'
         }
       );
 
@@ -65,28 +70,47 @@ export default function Mapa() {
     }
   }
 
-  // Para o monitoramento da velocidade e remove a assinatura.
   async function stopMonitoringSpeed(subscription) {
     if (subscription) {
       subscription.remove();
     }
   }
 
+  // useEffect do acelerometro
+  useEffect(() => {
+    // Solicitar permissão de acesso ao acelerômetro
+    if (Platform.OS === "android" || Platform.OS === "ios") {
+      Accelerometer.setUpdateInterval(1000);
+    }
+    const subscription = Accelerometer.addListener((accelerometerData) => {
+      // Sua lógica para contar passos aqui
+      // Esta é uma lógica de exemplo simples. Você pode precisar ajustá-la.
+      const { x, y, z } = accelerometerData;
+      const magnitude = Math.sqrt(x * x + y * y + z * z);
+      const THRESHOLD = 1.2;
+      if (magnitude > THRESHOLD) {
+        setSteps((prevSteps) => prevSteps + 1);
+      }
+    });
+
+    return () => subscription.remove();
+  }, []);
+
   // Formula de Harvesine para calcular a distancia em metros
-  const haversineDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371e3; // Raio da Terra em metros
-    const φ1 = lat1 * (Math.PI / 180); // Latitude em radianos
-    const φ2 = lat2 * (Math.PI / 180); // Latitude em radianos
-    const Δφ = (lat2 - lat1) * (Math.PI / 180); // Diferença de latitude em radianos
-    const Δλ = (lon2 - lon1) * (Math.PI / 180); // Diferença de longitude em radianos
+  // const haversineDistance = (lat1, lon1, lat2, lon2) => {
+  //   const R = 6371e3; // Raio da Terra em metros
+  //   const φ1 = lat1 * (Math.PI / 180); // Latitude em radianos
+  //   const φ2 = lat2 * (Math.PI / 180); // Latitude em radianos
+  //   const Δφ = (lat2 - lat1) * (Math.PI / 180); // Diferença de latitude em radianos
+  //   const Δλ = (lon2 - lon1) * (Math.PI / 180); // Diferença de longitude em radianos
 
-    const a =
-      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-      Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  //   const a =
+  //     Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+  //     Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  //   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-    return R * c; // Distância em metros
-  };
+  //   return R * c; // Distância em metros
+  // };
 
   return (
     <>

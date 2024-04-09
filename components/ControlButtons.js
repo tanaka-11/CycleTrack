@@ -1,14 +1,19 @@
 import React from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ControlButtons({
   pause,
   running,
+  stop,
   pauseStopwatch,
   startStopwatch,
   resetStopwatch,
   resumeStopwatch,
+  stopAll,
 }) {
+  // Recurso de navegação
+  const navigation = useNavigation();
   return (
     <>
       <View style={styles.buttonContainer}>
@@ -24,7 +29,7 @@ export default function ControlButtons({
 
               <Pressable
                 style={[styles.button, styles.stopButton]}
-                onPress={resetStopwatch}
+                onPress={stopAll}
               >
                 <Text style={styles.buttonText}>Parar</Text>
               </Pressable>
@@ -50,12 +55,24 @@ export default function ControlButtons({
           </>
         )}
 
-        {!running && !pause && (
+        {!running && !pause && !stop && (
           <Pressable
             style={[styles.button, styles.startButton]}
             onPress={startStopwatch}
           >
             <Text style={styles.buttonText}>Começar</Text>
+          </Pressable>
+        )}
+
+        {stop && (
+          <Pressable
+            style={[styles.button, styles.resumeButton]}
+            onPress={() => {
+              stopAll();
+              navigation.navigate("Atividades");
+            }}
+          >
+            <Text style={styles.buttonText}>Salvar</Text>
           </Pressable>
         )}
       </View>
