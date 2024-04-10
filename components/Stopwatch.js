@@ -49,10 +49,17 @@ export default function Stopwatch() {
 
   // Reset stopwatch
   const resetStopwatch = () => {
+    // Parar o intervalo, se estiver em execução
     clearInterval(intervalRef.current);
+
+    // Resetar o tempo para 0
     setTime({ hours: 0, minutes: 0, seconds: 0 });
+
+    // Definir os estados para seus valores padrão
     setRunning(false);
     setPause(false);
+    setSpeed(0);
+    setSteps(0);
     setHasStarted(false);
   };
 
@@ -86,10 +93,8 @@ export default function Stopwatch() {
     setRunning(false);
     setPause(false);
     setStop(true);
-    if (locationSubscription) {
-      stopMonitoringSpeed(locationSubscription);
-      setLocationSubscription(null);
-    }
+    setSteps(steps);
+    setHasStarted(speed);
   };
 
   return (
