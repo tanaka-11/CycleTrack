@@ -231,13 +231,32 @@ export default function Play() {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.header}></Text>
-        <Text style={styles.subHeader}>Tempo</Text>
-        <Text style={styles.timeText}>
-          {`${time.hours.toString().padStart(2, "0")}:${time.minutes
-            .toString()
-            .padStart(2, "0")}:${time.seconds.toString().padStart(2, "0")}`}
-        </Text>
+        <Text style={styles.textoComum}>Seu tempo pedalando</Text>
+
+        <View style={styles.bordaContador}>
+          <Text style={styles.timeText}>
+            {`${time.hours.toString().padStart(2, "0")}:${time.minutes
+              .toString()
+              .padStart(2, "0")}:${time.seconds.toString().padStart(2, "0")}`}
+          </Text>
+        </View>
+
+        <View style={styles.sessaoBotoes}>
+          <Pressable style={styles.botaoVazado}>
+            <Text style={styles.textoBotaoVazado}>Velocidade</Text>
+            <Text style={styles.textoBotaoVazado}>{speed.toFixed(2)}</Text>
+          </Pressable>
+
+          <Pressable style={styles.botaoPreenchido}>
+            <Text style={styles.textoBotaoPreenchido}>Tempo</Text>
+            <Text style={styles.textoBotaoPreenchido}>0h 0min</Text>
+          </Pressable>
+
+          <Pressable style={styles.botaoVazadoPreto}>
+            <Text style={styles.textoBotaoVazadoP}>Distância</Text>
+            <Text style={styles.textoBotaoVazadoP}>{steps.toFixed(2)}</Text>
+          </Pressable>
+        </View>
 
         <View style={styles.viewMapa}>
           <MapView
@@ -250,17 +269,6 @@ export default function Play() {
           >
             {initialLocation && <Marker coordinate={location} />}
           </MapView>
-        </View>
-
-        <View style={styles.viewDados}>
-          <Text style={styles.distanceText}>
-            {/* Distância percorrida: {(distance / 1000).toFixed(2)} km */}
-            Distância percorrida: {steps.toFixed(2)}
-          </Text>
-
-          <Text style={styles.distanceText}>
-            Velocidade: {speed.toFixed(2)}
-          </Text>
         </View>
 
         <View style={styles.buttonContainer}>
@@ -276,7 +284,7 @@ export default function Play() {
 
                 <Pressable
                   style={[styles.button, styles.stopButton]}
-                  // onPress={}
+                // onPress={}
                 >
                   <Text style={styles.buttonText}>Parar</Text>
                 </Pressable>
@@ -303,11 +311,8 @@ export default function Play() {
           )}
 
           {!running && !pause && (
-            <Pressable
-              style={[styles.button, styles.startButton]}
-              onPress={startStopwatch}
-            >
-              <Text style={styles.buttonText}>Começar</Text>
+            <Pressable onPress={startStopwatch} style={styles.botaoPadrao}>
+              <Text style={styles.textoBotaoPadrao}>Iniciar</Text>
             </Pressable>
           )}
         </View>
@@ -338,6 +343,13 @@ const styles = StyleSheet.create({
 
   timeText: {
     fontSize: 48,
+    color: "#5442D2",
+    backgroundColor: "#CFC3EE",
+    paddingVertical: 70,
+    paddingHorizontal: 10,
+    borderRadius: 200,
+    borderColor: "#fcfdfb",
+    borderWidth: 2,
   },
 
   buttonContainer: {
@@ -393,7 +405,7 @@ const styles = StyleSheet.create({
 
   // Map
   mapa: {
-    width: 280,
+    width: 350,
     height: 280,
   },
 
@@ -401,4 +413,62 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 10,
   },
+  textoComum: {
+    fontWeight: "bold",
+    fontSize: 22,
+    marginVertical: 20,
+    marginHorizontal: 10,
+    textAlign: "left"
+  },
+  bordaContador: {
+    borderColor: "#5442D2",
+    borderWidth: 2,
+    borderRadius: 600,
+  },
+  sessaoBotoes: {
+    flexDirection: "row",
+    gap: 20,
+  },
+  botaoVazado: {
+    borderColor: "#3A2293",
+    borderWidth: 2,
+    padding: 8,
+    width: 100,
+    borderRadius: 8,
+  },
+  textoBotaoVazado: {
+    color: "#3A2293",
+    textAlign: "center"
+  },
+  botaoPreenchido: {
+    backgroundColor: "#412CAB",
+    padding: 8,
+    width: 100,
+    borderRadius: 8,
+  },
+  textoBotaoPreenchido: {
+    color: "#ffffff",
+    textAlign: "center"
+  },
+  botaoVazadoPreto: {
+    borderColor: "rgba(13, 30, 82, 0.5)",
+    borderWidth: 2,
+    padding: 8,
+    width: 100,
+    borderRadius: 8,
+  },
+  textoBotaoVazadoP: {
+    color: "#0A045A",
+    textAlign: "center"
+  },
+  botaoPadrao: {
+    backgroundColor: "#CFC3EE",
+    padding: 8,
+    width: 100,
+    borderRadius: 8,
+  },
+  textoBotaoPadrao: {
+    color: "#5442D2",
+    textAlign: "center",
+  }
 });
