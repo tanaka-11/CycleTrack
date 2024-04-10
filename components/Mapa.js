@@ -1,10 +1,10 @@
-import { Platform, StyleSheet, Text, View } from "react-native";
+import { Alert, Platform, StyleSheet, Text, View } from "react-native";
 import { useEffect, useState, useRef } from "react";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { Accelerometer } from "expo-sensors";
 
-export default function Mapa() {
+export default function Mapa({ hasStarted }) {
   // States utizados para as funções de "Location"
   const [myLocation, setMyLocation] = useState(null);
   const [location, setLocation] = useState(null);
@@ -16,12 +16,14 @@ export default function Mapa() {
   const [steps, setSteps] = useState(0);
   const [speed, setSpeed] = useState(0);
 
+  const [locationSubscription, setLocationSubscription] = useState();
+
   // Dentro do useEffect para monitorar a permissão de localização
   useEffect(() => {
     async function getLocation() {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        console.log("Permissão negada");
+        Alert.alert("Permissão negada");
         return;
       }
 
@@ -33,9 +35,6 @@ export default function Mapa() {
         longitude: currentLocation.coords.longitude,
       });
 
-      // Inicia o monitoramento da velocidade
-      startMonitoringSpeed();
-
       // Animação do mapa para localização atual
       mapViewRef.current.animateToRegion({
         latitude: currentLocation.coords.latitude,
@@ -43,14 +42,20 @@ export default function Mapa() {
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       });
+
+      if (hasStarted) {
+        startMonitoringSpeed();
+      } else {
+        stopMonitoringSpeed();
+      }
     }
     getLocation();
-  }, []);
+  }, [hasStarted]);
 
   // Dentro da função startMonitoringSpeed
   async function startMonitoringSpeed() {
     try {
-      const locationSubscription = await Location.watchPositionAsync(
+      const newLocationSubscription = await Location.watchPositionAsync(
         {
           accuracy: Location.Accuracy.Highest,
           timeInterval: 1000,
@@ -64,7 +69,10 @@ export default function Mapa() {
         }
       );
 
-      return locationSubscription;
+      if (locationSubscription) {
+        locationSubscription.remove();
+      }
+      setLocationSubscription(newLocationSubscription);
     } catch (error) {
       console.error(error);
     }
@@ -75,6 +83,13 @@ export default function Mapa() {
       subscription.remove();
     }
   }
+
+  useEffect(() => {
+    if (!hasStarted) {
+      stopMonitoringSpeed(locationSubscription);
+      setLocationSubscription(null);
+    }
+  }, [hasStarted, locationSubscription]);
 
   // useEffect do acelerometro
   useEffect(() => {
@@ -111,6 +126,7 @@ export default function Mapa() {
 
   //   return R * c; // Distância em metros
   // };
+  console.log(speed);
 
   return (
     <>

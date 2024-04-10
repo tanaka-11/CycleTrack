@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { useState, useRef } from "react";
 import ControlButtons from "./ControlButtons";
+import Mapa from "./Mapa";
 
 export default function Stopwatch() {
   // States
@@ -11,8 +12,15 @@ export default function Stopwatch() {
   const intervalRef = useRef(null);
   const startTimeRef = useRef(0);
 
+  // States utilizados para a contagem de passos
+  const [steps, setSteps] = useState(0);
+  const [speed, setSpeed] = useState(0);
+  const [hasStarted, setHasStarted] = useState(false);
+  const [locationSubscription, setLocationSubscription] = useState(null);
+
   // Play
   const startStopwatch = () => {
+    // Cronometro
     startTimeRef.current =
       Date.now() -
       (time.hours * 3600 + time.minutes * 60 + time.seconds) * 1000;
@@ -25,7 +33,10 @@ export default function Stopwatch() {
       const seconds = elapsedTime % 60;
       setTime({ hours, minutes, seconds });
     }, 1000);
+
+    // State
     setRunning(true);
+    setHasStarted(true);
   };
 
   // Pause stopwatch
@@ -33,6 +44,7 @@ export default function Stopwatch() {
     clearInterval(intervalRef.current);
     setRunning(false);
     setPause(true);
+    setHasStarted(false);
   };
 
   // Reset stopwatch
@@ -41,6 +53,7 @@ export default function Stopwatch() {
     setTime({ hours: 0, minutes: 0, seconds: 0 });
     setRunning(false);
     setPause(false);
+    setHasStarted(false);
   };
 
   // Resume stopwatch
@@ -59,6 +72,7 @@ export default function Stopwatch() {
     }, 1000);
     setRunning(true);
     setPause(false);
+    setHasStarted(true);
   };
 
   // Stop stopwtach
@@ -72,7 +86,12 @@ export default function Stopwatch() {
     setRunning(false);
     setPause(false);
     setStop(true);
+    if (locationSubscription) {
+      stopMonitoringSpeed(locationSubscription);
+      setLocationSubscription(null);
+    }
   };
+
   return (
     <>
       <View style={styles.container}>
@@ -84,6 +103,13 @@ export default function Stopwatch() {
             .toString()
             .padStart(2, "0")}:${time.seconds.toString().padStart(2, "0")}`}
         </Text>
+
+        <Mapa
+          running={running}
+          speed={speed}
+          hasStarted={hasStarted}
+          locationSubscription={locationSubscription}
+        />
 
         <ControlButtons
           running={running}

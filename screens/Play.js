@@ -1,16 +1,8 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Pressable,
-  ScrollView,
-  Platform,
-} from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { useState, useEffect, useRef } from "react";
 
 // Componentes
 import Stopwatch from "../components/Stopwatch";
-import Mapa from "../components/Mapa";
 
 export default function Play() {
   // States utilizados para as funções de "Play"
@@ -50,14 +42,16 @@ export default function Play() {
           time={time}
           running={running}
           pause={pause}
+          speed={speed}
+          steps={steps}
           setTime={setTime}
           setRunning={setRunning}
           setPause={setPause}
           intervalRef={intervalRef}
           startTimeRef={startTimeRef}
+          setSpeed={setSpeed}
+          setSteps={setSteps}
         />
-
-        <Mapa setSteps={setSteps} setSpeed={setSpeed} />
       </View>
     </ScrollView>
   );
