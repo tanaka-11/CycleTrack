@@ -82,8 +82,6 @@ export default function Mapa({ hasStarted }) {
     if (subscription) {
       subscription.remove();
       setSpeed(0);
-    } else {
-      setSpeed(speed);
     }
   }
 
