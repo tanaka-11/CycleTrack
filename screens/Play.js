@@ -11,6 +11,8 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { Accelerometer } from "expo-sensors";
 
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 export default function Play() {
   // States utizados para as funções de "Play"
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
@@ -230,8 +232,12 @@ export default function Play() {
   console.log(speed);
   return (
     <ScrollView>
-      <View style={styles.container}>
+      <View style={styles.sessaoTituloIcon}>
         <Text style={styles.textoComum}>Seu tempo pedalando</Text>
+        <MaterialCommunityIcons name="clock-time-eight-outline" size={24} color="#412CAB" />
+      </View>
+
+      <View style={styles.container}>
 
         <View style={styles.bordaContador}>
           <Text style={styles.timeText}>
@@ -462,13 +468,20 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   botaoPadrao: {
-    backgroundColor: "#CFC3EE",
+    backgroundColor: "#5442D2",
     padding: 8,
     width: 100,
     borderRadius: 8,
   },
   textoBotaoPadrao: {
-    color: "#5442D2",
+    color: "#fff",
     textAlign: "center",
+  },
+  sessaoTituloIcon: {
+    marginHorizontal: 20,
+    marginVertical: 10,
+    flexDirection: "row",
+    gap: 100,
+    alignItems: "center"
   }
 });
