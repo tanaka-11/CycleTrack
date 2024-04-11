@@ -234,18 +234,21 @@ export default function Play() {
     <ScrollView>
       <View style={styles.sessaoTituloIcon}>
         <Text style={styles.textoComum}>Seu tempo pedalando</Text>
-        <MaterialCommunityIcons name="clock-time-eight-outline" size={24} color="#412CAB" />
+        <MaterialCommunityIcons name="clock-time-eight-outline" size={28} color="#412CAB" />
       </View>
 
       <View style={styles.container}>
 
         <View style={styles.bordaContador}>
-          <Text style={styles.timeText}>
-            {`${time.hours.toString().padStart(2, "0")}:${time.minutes
-              .toString()
-              .padStart(2, "0")}:${time.seconds.toString().padStart(2, "0")}`}
-          </Text>
+          <View style={styles.timeText}>
+            <Text style={styles.timeText2}>
+              {`${time.hours.toString().padStart(2, "0")}:${time.minutes
+                .toString()
+                .padStart(2, "0")}:${time.seconds.toString().padStart(2, "0")}`}
+            </Text>
+          </View>
         </View>
+
 
         <View style={styles.sessaoBotoes}>
           <Pressable style={styles.botaoVazado}>
@@ -262,19 +265,6 @@ export default function Play() {
             <Text style={styles.textoBotaoVazadoP}>Distância</Text>
             <Text style={styles.textoBotaoVazadoP}>{steps.toFixed(2)}</Text>
           </Pressable>
-        </View>
-
-        <View style={styles.viewMapa}>
-          <MapView
-            ref={mapViewRef}
-            mapType="standard"
-            style={styles.mapa}
-            region={location}
-            followsUserLocation={true}
-            showsUserLocation={true}
-          >
-            {initialLocation && <Marker coordinate={location} />}
-          </MapView>
         </View>
 
         <View style={styles.buttonContainer}>
@@ -322,6 +312,19 @@ export default function Play() {
             </Pressable>
           )}
         </View>
+
+        <View style={styles.viewMapa}>
+          <MapView
+            ref={mapViewRef}
+            mapType="standard"
+            style={styles.mapa}
+            region={location}
+            followsUserLocation={true}
+            showsUserLocation={true}
+          >
+            {initialLocation && <Marker coordinate={location} />}
+          </MapView>
+        </View>
       </View>
     </ScrollView>
   );
@@ -348,14 +351,19 @@ const styles = StyleSheet.create({
   },
 
   timeText: {
-    fontSize: 48,
     color: "#5442D2",
     backgroundColor: "#CFC3EE",
-    paddingVertical: 70,
-    paddingHorizontal: 10,
-    borderRadius: 200,
+    width: 170,
+    height: 170,
+    borderRadius: 100,
     borderColor: "#fcfdfb",
     borderWidth: 2,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  timeText2: {
+    fontSize: 38,
+    color: "#5442D2",
   },
 
   buttonContainer: {
@@ -429,11 +437,13 @@ const styles = StyleSheet.create({
   bordaContador: {
     borderColor: "#5442D2",
     borderWidth: 2,
-    borderRadius: 600,
+    borderRadius: 100,
   },
   sessaoBotoes: {
     flexDirection: "row",
     gap: 20,
+    marginVertical: 35,
+    marginHorizontal: 20,
   },
   botaoVazado: {
     borderColor: "#3A2293",
@@ -470,8 +480,8 @@ const styles = StyleSheet.create({
   botaoPadrao: {
     backgroundColor: "#5442D2",
     padding: 8,
-    width: 100,
     borderRadius: 8,
+    flex: 1
   },
   textoBotaoPadrao: {
     color: "#fff",
