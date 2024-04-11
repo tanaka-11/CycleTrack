@@ -10,6 +10,7 @@ import Atividades from "./screens/Atividades";
 import Play from "./screens/Play";
 import Configuracao from "./screens/Configuracao";
 import Login from "./screens/Login";
+import Cadastro from "./screens/Cadastro";
 
 // constante iniciando a criação do navigator
 const Tab = createBottomTabNavigator();
@@ -22,7 +23,8 @@ export default function App() {
         <Tab.Screen name="Atividades" component={Atividades} />
         <Tab.Screen name="Play" component={Play} />
         <Tab.Screen name="Perfil" component={Perfil} />
-
+        <Tab.Screen name="Login" component={Login} />
+        <Tab.Screen name="Cadastro" component={Cadastro} />
         <Tab.Screen name="Configuracao" component={Configuracao} />
       </Tab.Navigator>
     </NavigationContainer>
