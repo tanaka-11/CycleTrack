@@ -129,21 +129,27 @@ export default function Mapa({ hasStarted }) {
 
   // Função para parar o monitoramento da velocidade
   async function stopMonitoringSpeed(subscription) {
-    if (subscription) {
-      subscription.remove();
-      setSpeed(0);
-      setSteps(0);
-      setDistance(0);
+    if (!pause) {
+      if (subscription) {
+        subscription.remove();
+        setSpeed(0);
+        setSteps(0);
+        setDistance(0);
+      }
+    } else {
+      setDistance(steps);
     }
   }
 
   // Função para pausar o monitoramento da velocidade
   async function pauseMonitoring(subscription) {
-    if (subscription) {
-      subscription.pause();
-      setPause(true);
-      setDistance(steps);
-      setSpeed(speed);
+    if (pause) {
+      if (subscription) {
+        subscription.pause();
+        setPause(true);
+        setDistance(steps);
+        setSpeed(speed);
+      }
     }
   }
 
@@ -153,14 +159,14 @@ export default function Mapa({ hasStarted }) {
       subscription.resume();
       setPause(false);
       setDistance(steps);
-      setSpeed(speed);
+      setSpeed(0);
     }
   }
 
   // Efeito para parar o monitoramento da velocidade quando a atividade é encerrada
   useEffect(() => {
-    if (!hasStarted) {
-      stopMonitoringSpeed(locationSubscription);
+    if (!hasStarted && !pause) {
+      stopMonitoringSpeed();
       setLocationSubscription(null);
     }
   }, [hasStarted, locationSubscription]);
@@ -208,7 +214,7 @@ export default function Mapa({ hasStarted }) {
           Distância percorrida: {steps.toFixed(2)}
         </Text>
 
-        <Text style={styles.distanceText}>Velocidade: {speed.toFixed(4)}</Text>
+        <Text style={styles.distanceText}>Velocidade: {speed.toFixed(3)}</Text>
       </View>
     </>
   );
