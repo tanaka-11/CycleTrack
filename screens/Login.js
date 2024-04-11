@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useState, useEffect } from "react";
+import SafeContainer from "../components/SafeCintainer";
 // import { auth, provider } from "../../firebaseConfig";
 // import { signInWithEmailAndPassword } from "firebase/auth";
 // import { signInWithCredential } from "firebase/auth";
@@ -50,7 +51,7 @@ export default function Login({ navigation }) {
   };
 
   return (
-    <>
+    <SafeContainer>
       <View style={estilos.container}>
         <View style={estilos.formulario}>
           <Text style={estilos.logo}>CycleTrack</Text>
@@ -87,7 +88,7 @@ export default function Login({ navigation }) {
           </Pressable>
         </View>
       </View>
-    </>
+    </SafeContainer>
   );
 }
 

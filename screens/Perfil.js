@@ -18,6 +18,7 @@ import { useState, useEffect } from "react";
 // import * as FileSystem from "expo-file-system";
 
 import { ActivityIndicator, ScrollView } from "react-native";
+import SafeContainer from "../components/SafeCintainer";
 
 export default function Perfil() {
   const [nome, setNome] = useState("");
@@ -125,6 +126,7 @@ export default function Perfil() {
   };
 
   return (
+    <SafeContainer>
     <ScrollView>
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" backgroundColor="#A8A0D0" />
@@ -170,6 +172,7 @@ export default function Perfil() {
         </Pressable>
       </View>
     </ScrollView>
+    </SafeContainer>
   );
 }
 

@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 
 // Componentes
 import Stopwatch from "../components/Stopwatch";
+import SafeContainer from "../components/SafeCintainer";
 
 export default function Play() {
   // States utilizados para as funções de "Play"
@@ -36,24 +37,26 @@ export default function Play() {
   }, [running]);
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Stopwatch
-          time={time}
-          running={running}
-          pause={pause}
-          speed={speed}
-          steps={steps}
-          setTime={setTime}
-          setRunning={setRunning}
-          setPause={setPause}
-          intervalRef={intervalRef}
-          startTimeRef={startTimeRef}
-          setSpeed={setSpeed}
-          setSteps={setSteps}
-        />
-      </View>
-    </ScrollView>
+    <SafeContainer>
+      <ScrollView>
+        <View style={styles.container}>
+          <Stopwatch
+            time={time}
+            running={running}
+            pause={pause}
+            speed={speed}
+            steps={steps}
+            setTime={setTime}
+            setRunning={setRunning}
+            setPause={setPause}
+            intervalRef={intervalRef}
+            startTimeRef={startTimeRef}
+            setSpeed={setSpeed}
+            setSteps={setSteps}
+          />
+        </View>
+      </ScrollView>
+    </SafeContainer>
   );
 }
 

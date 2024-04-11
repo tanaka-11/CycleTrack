@@ -1,10 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
+import SafeContainer from "../components/SafeCintainer";
 
 export default function Configuracao() {
   return (
-    <View>
-      <Text>Configuracao</Text>
-    </View>
+    <SafeContainer>
+      <View>
+        <Text>Configuracao</Text>
+      </View>
+    </SafeContainer>
   );
 }
 
