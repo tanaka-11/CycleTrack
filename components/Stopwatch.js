@@ -1,29 +1,37 @@
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { useState, useRef } from "react";
-import ControlButtons from "./ControlButtons";
-import Mapa from "./Mapa";
+import ControlButtons from "./ControlButtons"; // Componente para os botões de controle
+import Mapa from "./Mapa"; // Componente do mapa
 
-export default function Stopwatch() {
-  // States
+export default function Stopwatch({
+  startMonitoringSpeed,
+  stopMonitoringSpeed,
+  pauseMonitoring,
+  resumeMonitoring,
+}) {
+  // Estados para controlar o tempo do cronômetro
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
-  const [pause, setPause] = useState(false);
-  const [running, setRunning] = useState(false);
-  const [stop, setStop] = useState(false);
-  const intervalRef = useRef(null);
-  const startTimeRef = useRef(0);
+  const [pause, setPause] = useState(false); // Estado para indicar pausa
+  const [running, setRunning] = useState(false); // Estado para indicar se o cronômetro está em execução
+  const [stop, setStop] = useState(false); // Estado para indicar se o cronômetro foi parado
+  const intervalRef = useRef(null); // Referência para o intervalo do cronômetro
+  const startTimeRef = useRef(0); // Referência para o tempo de início do cronômetro
 
-  // States utilizados para a contagem de passos
+  // Estados para a contagem de passos e velocidade
   const [steps, setSteps] = useState(0);
   const [speed, setSpeed] = useState(0);
+  const [distance, setDistance] = useState(0);
   const [hasStarted, setHasStarted] = useState(false);
   const [locationSubscription, setLocationSubscription] = useState(null);
 
-  // Play
+  // Função para iniciar o cronômetro
   const startStopwatch = () => {
-    // Cronometro
+    // Calcular o tempo de início
     startTimeRef.current =
       Date.now() -
       (time.hours * 3600 + time.minutes * 60 + time.seconds) * 1000;
+
+    // Iniciar o intervalo para atualizar o tempo
     intervalRef.current = setInterval(() => {
       const elapsedTime = Math.floor(
         (Date.now() - startTimeRef.current) / 1000
@@ -34,40 +42,56 @@ export default function Stopwatch() {
       setTime({ hours, minutes, seconds });
     }, 1000);
 
-    // State
+    // Definir os estados apropriados
     setRunning(true);
     setHasStarted(true);
+    setDistance(0);
+    setSteps(0);
   };
 
-  // Pause stopwatch
+  // Função para pausar o cronômetro
   const pauseStopwatch = () => {
+    // Parar o intervalo
     clearInterval(intervalRef.current);
+
+    // Atualizar os estados
     setRunning(false);
     setPause(true);
     setHasStarted(false);
+    setDistance(steps);
+
+    // Pausar o monitoramento de velocidade
+    pauseMonitoring;
   };
 
-  // Reset stopwatch
+  // Função para resetar o cronômetro
   const resetStopwatch = () => {
-    // Parar o intervalo, se estiver em execução
+    // Parar o intervalo
     clearInterval(intervalRef.current);
 
-    // Resetar o tempo para 0
+    // Resetar o tempo
     setTime({ hours: 0, minutes: 0, seconds: 0 });
 
-    // Definir os estados para seus valores padrão
+    // Resetar os estados
     setRunning(false);
     setPause(false);
     setSpeed(0);
     setSteps(0);
+    setDistance(0);
     setHasStarted(false);
+
+    // Parar o monitoramento de velocidade
+    stopMonitoringSpeed;
   };
 
-  // Resume stopwatch
+  // Função para retomar o cronômetro
   const resumeStopwatch = () => {
+    // Calcular o tempo de início
     startTimeRef.current =
       Date.now() -
       (time.hours * 3600 + time.minutes * 60 + time.seconds) * 1000;
+
+    // Iniciar o intervalo para atualizar o tempo
     intervalRef.current = setInterval(() => {
       const elapsedTime = Math.floor(
         (Date.now() - startTimeRef.current) / 1000
@@ -77,24 +101,37 @@ export default function Stopwatch() {
       const seconds = elapsedTime % 60;
       setTime({ hours, minutes, seconds });
     }, 1000);
+
+    // Definir os estados apropriados
     setRunning(true);
     setPause(false);
     setHasStarted(true);
+
+    // Retomar o monitoramento de velocidade
+    resumeMonitoring;
   };
 
-  // Stop stopwtach
+  // Função para parar o cronômetro
   const stopAll = () => {
+    // Parar o intervalo
     clearInterval(intervalRef.current);
+
+    // Manter o tempo atual
     setTime({
       hours: time.hours,
       minutes: time.minutes,
       seconds: time.seconds,
     });
+
+    // Resetar os estados
     setRunning(false);
     setPause(false);
     setStop(true);
     setSteps(steps);
     setHasStarted(speed);
+
+    // Parar o monitoramento de velocidade
+    stopMonitoringSpeed;
   };
 
   return (
@@ -103,19 +140,29 @@ export default function Stopwatch() {
         <Text style={styles.header}></Text>
         <Text style={styles.subHeader}>Tempo</Text>
 
+        {/* Exibir o tempo atual */}
         <Text style={styles.timeText}>
           {`${time.hours.toString().padStart(2, "0")}:${time.minutes
             .toString()
             .padStart(2, "0")}:${time.seconds.toString().padStart(2, "0")}`}
         </Text>
 
+        {/* Componente do mapa para exibir a localização */}
         <Mapa
-          running={running}
-          speed={speed}
           hasStarted={hasStarted}
-          locationSubscription={locationSubscription}
+          pause={pause}
+          setPause={setPause}
+          setSpeed={setSpeed}
+          setDistance={setDistance}
+          setSteps={setSteps}
+          setLocationSubscription={setLocationSubscription}
+          startMonitoringSpeed={startMonitoringSpeed}
+          stopMonitoringSpeed={stopMonitoringSpeed}
+          pauseMonitoring={pauseMonitoring}
+          resumeMonitoring={resumeMonitoring}
         />
 
+        {/* Componente para os botões de controle */}
         <ControlButtons
           running={running}
           pause={pause}
@@ -138,7 +185,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  // Play, Pause
   header: {
     fontSize: 30,
     color: "green",

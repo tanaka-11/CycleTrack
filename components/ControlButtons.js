@@ -13,6 +13,8 @@ export default function ControlButtons({
   stopAll,
   startMonitoringSpeed,
   stopMonitoringSpeed,
+  pauseMonitoring,
+  resumeMonitoring,
 }) {
   // Recurso de navegação
   const navigation = useNavigation();
@@ -26,7 +28,7 @@ export default function ControlButtons({
                 style={[styles.button, styles.pauseButton]}
                 onPress={() => {
                   pauseStopwatch();
-                  stopMonitoringSpeed;
+                  pauseMonitoring;
                 }}
               >
                 <Text style={styles.buttonText}>Pausar</Text>
@@ -34,7 +36,10 @@ export default function ControlButtons({
 
               <Pressable
                 style={[styles.button, styles.stopButton]}
-                onPress={stopAll}
+                onPress={() => {
+                  stopAll();
+                  stopMonitoringSpeed;
+                }}
               >
                 <Text style={styles.buttonText}>Parar</Text>
               </Pressable>
@@ -46,14 +51,20 @@ export default function ControlButtons({
           <>
             <Pressable
               style={[styles.button, styles.resetButton]}
-              onPress={resetStopwatch}
+              onPress={() => {
+                resetStopwatch();
+                stopMonitoringSpeed;
+              }}
             >
               <Text style={styles.buttonText}>Reset</Text>
             </Pressable>
 
             <Pressable
               style={[styles.button, styles.resumeButton]}
-              onPress={resumeStopwatch}
+              onPress={() => {
+                resumeStopwatch();
+                resumeMonitoring;
+              }}
             >
               <Text style={styles.buttonText}>Retomar</Text>
             </Pressable>
