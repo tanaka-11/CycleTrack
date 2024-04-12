@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { useState, useRef } from "react";
 import ControlButtons from "./ControlButtons"; // Componente para os botões de controle
-import Mapa from "./Mapa"; // Componente do mapa
-
-export default function Stopwatch({
+import {
   startMonitoringSpeed,
   stopMonitoringSpeed,
   pauseMonitoring,
   resumeMonitoring,
-}) {
+} from "./Mapa";
+
+export default function Stopwatch({}) {
   // Estados para controlar o tempo do cronômetro
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const [pause, setPause] = useState(false); // Estado para indicar pausa
@@ -21,7 +21,7 @@ export default function Stopwatch({
   const [steps, setSteps] = useState(0);
   const [speed, setSpeed] = useState(0);
   const [distance, setDistance] = useState(0);
-  const [hasStarted, setHasStarted] = useState(false);
+
   const [locationSubscription, setLocationSubscription] = useState(null);
 
   // Função para iniciar o cronômetro
@@ -44,7 +44,7 @@ export default function Stopwatch({
 
     // Definir os estados apropriados
     setRunning(true);
-    setHasStarted(true);
+
     setDistance(0);
     setSteps(0);
   };
@@ -57,11 +57,9 @@ export default function Stopwatch({
     // Atualizar os estados
     setRunning(false);
     setPause(true);
-    setHasStarted(false);
     setDistance(steps);
 
     // Pausar o monitoramento de velocidade
-    pauseMonitoring;
   };
 
   // Função para resetar o cronômetro
@@ -78,10 +76,8 @@ export default function Stopwatch({
     setSpeed(0);
     setSteps(0);
     setDistance(0);
-    setHasStarted(false);
 
     // Parar o monitoramento de velocidade
-    stopMonitoringSpeed;
   };
 
   // Função para retomar o cronômetro
@@ -105,10 +101,8 @@ export default function Stopwatch({
     // Definir os estados apropriados
     setRunning(true);
     setPause(false);
-    setHasStarted(true);
 
     // Retomar o monitoramento de velocidade
-    resumeMonitoring;
   };
 
   // Função para parar o cronômetro
@@ -128,10 +122,14 @@ export default function Stopwatch({
     setPause(false);
     setStop(true);
     setSteps(steps);
-    setHasStarted(speed);
 
     // Parar o monitoramento de velocidade
-    stopMonitoringSpeed;
+  };
+
+  /* 1) Função teste está no PAI (Stopwatch) 
+  e queremos torná-la acessível pelo FILHO (Mapa). */
+  const teste = () => {
+    console.log("oi");
   };
 
   return (
@@ -149,29 +147,35 @@ export default function Stopwatch({
 
         {/* Componente do mapa para exibir a localização */}
         <Mapa
-          hasStarted={hasStarted}
           pause={pause}
+          running={running}
+          setRunning={setRunning}
           setPause={setPause}
           setSpeed={setSpeed}
           setDistance={setDistance}
           setSteps={setSteps}
           setLocationSubscription={setLocationSubscription}
-          startMonitoringSpeed={startMonitoringSpeed}
-          stopMonitoringSpeed={stopMonitoringSpeed}
-          pauseMonitoring={pauseMonitoring}
-          resumeMonitoring={resumeMonitoring}
+          /* 2) Criamos uma prop especificamente para a função
+          PAI ficar acessível pelo FILHO, e passamos o nome da função nesta prop. */
         />
 
         {/* Componente para os botões de controle */}
         <ControlButtons
+          // States
           running={running}
           pause={pause}
           stop={stop}
+          // Função do Cronometro
           pauseStopwatch={pauseStopwatch}
           startStopwatch={startStopwatch}
           resetStopwatch={resetStopwatch}
           resumeStopwatch={resumeStopwatch}
           stopAll={stopAll}
+          // Função de Speed e Steps
+          startMonitoringSpeed={startMonitoringSpeed}
+          stopMonitoringSpeed={stopMonitoringSpeed}
+          pauseMonitoring={pauseMonitoring}
+          resumeMonitoring={resumeMonitoring}
         />
       </View>
     </>

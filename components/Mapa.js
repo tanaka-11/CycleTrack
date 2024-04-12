@@ -4,7 +4,14 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { Accelerometer } from "expo-sensors";
 
-export default function Mapa({ hasStarted }) {
+/* 3) Acessar a prop que tem a função do PAI */
+export default function Mapa({
+  running,
+  startMonitoringSpeed,
+  stopMonitoringSpeed,
+  resumeMonitoring,
+  pauseMonitoring,
+}) {
   // States utizados para as funções de "Location"
   const [myLocation, setMyLocation] = useState(null); // Localização do usuário
   const [location, setLocation] = useState(null); // Localização atual
@@ -75,7 +82,7 @@ export default function Mapa({ hasStarted }) {
       });
 
       // Iniciar monitoramento da velocidade se a atividade já começou
-      if (hasStarted) {
+      if (running) {
         startMonitoringSpeed();
       } else if (!pause) {
         pauseMonitoring();
@@ -86,7 +93,7 @@ export default function Mapa({ hasStarted }) {
       }
     }
     getLocation();
-  }, [hasStarted]);
+  }, [running]);
 
   // Função para iniciar o monitoramento da velocidade do usuário
   async function startMonitoringSpeed() {
@@ -118,10 +125,7 @@ export default function Mapa({ hasStarted }) {
       if (locationSubscription) {
         locationSubscription.remove();
       }
-
       setLocationSubscription(newLocationSubscription);
-      setSteps(0);
-      setDistance(0);
     } catch (error) {
       console.error(error);
     }
@@ -129,51 +133,51 @@ export default function Mapa({ hasStarted }) {
 
   // Função para parar o monitoramento da velocidade
   async function stopMonitoringSpeed(subscription) {
-    if (!pause) {
+    if (!pause && running) {
       if (subscription) {
         subscription.remove();
         setSpeed(0);
         setSteps(0);
         setDistance(0);
       }
-    } else {
-      setDistance(steps);
     }
   }
 
   // Função para pausar o monitoramento da velocidade
   async function pauseMonitoring(subscription) {
-    if (pause) {
+    if (pause && !running) {
       if (subscription) {
         subscription.pause();
         setPause(true);
         setDistance(steps);
-        setSpeed(speed);
+        setSpeed(0);
       }
     }
   }
 
   // Função para retomar o monitoramento da velocidade
   async function resumeMonitoring(subscription) {
-    if (subscription) {
-      subscription.resume();
-      setPause(false);
-      setDistance(steps);
-      setSpeed(0);
+    if (!running && pause) {
+      if (subscription) {
+        subscription.resume();
+        setPause(false);
+        setDistance(steps);
+        setSpeed(speed);
+      }
     }
   }
 
   // Efeito para parar o monitoramento da velocidade quando a atividade é encerrada
   useEffect(() => {
-    if (!hasStarted && !pause) {
+    if (!running && !pause) {
       stopMonitoringSpeed();
       setLocationSubscription(null);
     }
-  }, [hasStarted, locationSubscription]);
+  }, [running, locationSubscription]);
 
   // useEffect do acelerometro
   useEffect(() => {
-    if (hasStarted) {
+    if (running) {
       if (Platform.OS === "android" || Platform.OS === "ios") {
         Accelerometer.setUpdateInterval(1000);
       }
@@ -187,7 +191,7 @@ export default function Mapa({ hasStarted }) {
       });
       return () => subscription.remove();
     }
-  }, [hasStarted]);
+  }, [running]);
 
   // Exibindo a velocidade atual e a distância percorrida
   console.log(speed);
