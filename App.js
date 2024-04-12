@@ -34,8 +34,8 @@ export default function App() {
 
   return (
     <NavigationContainer>
+      {/* <Tab.Navigator initialRouteName={isUserLoggedIn ? "Home" : "Login"}> */}
       <Tab.Navigator initialRouteName="Home">
-        {/* <Tab.Navigator initialRouteName={isUserLoggedIn ? "Home" : "Login"}> */}
         {/* {isUserLoggedIn ? (
           <>
             <Tab.Screen name="Home" component={Home} />
