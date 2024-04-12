@@ -8,8 +8,8 @@ import {
   Text,
   ActivityIndicator,
 } from "react-native";
-import { useState, useEffect } from "react";
-import { auth } from "../../firebaseConfig";
+import { useState } from "react";
+import { auth } from "../firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -48,7 +48,7 @@ export default function Login({ navigation }) {
   };
 
   return (
-    <SafeContainer>
+    <>
       <View style={estilos.container}>
         <View style={estilos.formulario}>
           <Text style={estilos.logo}>CycleTrack</Text>
@@ -85,7 +85,7 @@ export default function Login({ navigation }) {
           </Pressable>
         </View>
       </View>
-    </SafeContainer>
+    </>
   );
 }
 
