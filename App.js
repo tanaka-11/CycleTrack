@@ -15,7 +15,7 @@ import Cadastro from "./screens/Cadastro";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-// Icones
+// Icones 
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
@@ -24,32 +24,37 @@ function StackNavigator() {
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
-        name="ScreenHome"
+        name="Home"
         component={TabNavigator}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="ScreenAtividades"
+        name="Atividades"
         component={TabNavigator}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="ScreenPlay"
+        name="Play"
         component={TabNavigator}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="ScreenLogin"
+        name="Login"
         component={TabNavigator}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="ScreenPerfil"
+        name="Cadastro"
         component={TabNavigator}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="ScreenConfiguracao"
+        name="Perfil"
+        component={TabNavigator}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Configuracao"
         component={TabNavigator}
         options={{ headerShown: false }}
       />
@@ -62,7 +67,7 @@ function TabNavigator() {
     <Tab.Navigator>
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={StackNavigator}
         options={{
           headerShown: false, tabBarIcon: () => {
             return <Ionicons name="home" size={24} color="white" />
@@ -72,7 +77,7 @@ function TabNavigator() {
 
       <Tab.Screen
         name="Atividades"
-        component={Atividades}
+        component={StackNavigator}
         options={{
           headerShown: false, tabBarIcon: () => {
             return <MaterialCommunityIcons name="clock-check" size={24} color="white" />
@@ -82,7 +87,7 @@ function TabNavigator() {
 
       <Tab.Screen
         name="Play"
-        component={Play}
+        component={StackNavigator}
         options={{
           headerShown: false, tabBarIcon: () => {
             return <Ionicons name="bicycle-sharp" size={28} color="white" />
@@ -92,7 +97,7 @@ function TabNavigator() {
 
       <Tab.Screen
         name="Perfil"
-        component={Perfil}
+        component={StackNavigator}
         options={{
           headerShown: false, tabBarIcon: () => {
             return <FontAwesome name="user" size={24} color="white" />
@@ -102,7 +107,7 @@ function TabNavigator() {
 
       <Tab.Screen
         name="Configuracao"
-        component={Configuracao}
+        component={StackNavigator}
         options={{
           headerShown: false, tabBarIcon: () => {
             return <Ionicons name="settings-sharp" size={24} color="white" />

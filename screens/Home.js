@@ -1,5 +1,6 @@
+import 'react-native-gesture-handler';
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import SafeContainer from "../components/SafeCintainer";
+import SafeContainer from "../components/SafeContainer";
 
 export default function Home() {
   return (

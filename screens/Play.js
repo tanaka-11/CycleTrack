@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 
 // Componentes
 import Stopwatch from "../components/Stopwatch";
-import SafeContainer from "../components/SafeCintainer";
+import SafeContainer from "../components/SafeContainer";
 
 export default function Play() {
   // States utilizados para as funções de "Play"

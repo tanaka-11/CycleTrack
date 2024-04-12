@@ -18,7 +18,7 @@ import { useState, useEffect } from "react";
 // import * as FileSystem from "expo-file-system";
 
 import { ActivityIndicator, ScrollView } from "react-native";
-import SafeContainer from "../components/SafeCintainer";
+import SafeContainer from "../components/SafeContainer";
 
 export default function Perfil() {
   const [nome, setNome] = useState("");

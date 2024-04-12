@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useState, useEffect } from "react";
-import SafeContainer from "../components/SafeCintainer";
+import SafeContainer from "../components/SafeContainer";
 // import { auth, provider } from "../../firebaseConfig";
 // import { signInWithEmailAndPassword } from "firebase/auth";
 // import { signInWithCredential } from "firebase/auth";
