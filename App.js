@@ -12,6 +12,8 @@ import Play from "./screens/Play";
 import Configuracao from "./screens/Configuracao";
 import Login from "./screens/Login";
 import Cadastro from "./screens/Cadastro";
+// Acesso firebase auth
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 // constante iniciando a criação do navigator
 const Tab = createBottomTabNavigator();
