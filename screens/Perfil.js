@@ -11,11 +11,11 @@ import {
 } from "react-native";
 import { useState, useEffect } from "react";
 // Instalar dependencias
-// import { auth } from "../../firebaseConfig";
-// import { updateEmail, updateProfile } from "firebase/auth";
-// import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-// import * as ImagePicker from "expo-image-picker";
-// import * as FileSystem from "expo-file-system";
+import { auth } from "../firebaseConfig";
+import { updateEmail, updateProfile } from "firebase/auth";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 
 import { ActivityIndicator, ScrollView } from "react-native";
 
@@ -23,22 +23,22 @@ export default function Perfil() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [fotoPerfil, setfotoPerfil] = useState("");
-  // const storage = getStorage();
+  const storage = getStorage();
   const [carregandoImagem, setCarregandoImagem] = useState(false);
   const [atualizarFoto, setAtualizarFoto] = useState(false);
 
-  // useEffect(() => {
-  //   const carregarUsuarioAtual = async () => {
-  //     const usuarioAtual = auth.currentUser;
-  //     if (usuarioAtual) {
-  //       setNome(usuarioAtual.displayName || "");
-  //       setEmail(usuarioAtual.email || "");
-  //       setfotoPerfil(usuarioAtual.photoURL || "");
-  //     }
-  //   };
+  useEffect(() => {
+    const carregarUsuarioAtual = async () => {
+      const usuarioAtual = auth.currentUser;
+      if (usuarioAtual) {
+        setNome(usuarioAtual.displayName || "");
+        setEmail(usuarioAtual.email || "");
+        setfotoPerfil(usuarioAtual.photoURL || "");
+      }
+    };
 
-  //   carregarUsuarioAtual();
-  // }, []);
+    carregarUsuarioAtual();
+  }, []);
 
   const salvarPerfil = async () => {
     try {
@@ -55,7 +55,7 @@ export default function Perfil() {
       }
 
       // Atualizar o email do usuário
-      //await updateEmail(usuarioAtual, email);
+      await updateEmail(usuarioAtual, email);
 
       //  Chamando a função para Atualizar o nome do usuário
       await atualizarNome(nome);

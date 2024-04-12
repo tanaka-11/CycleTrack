@@ -10,12 +10,12 @@ import {
   Image,
   StatusBar,
 } from "react-native";
-// import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { FontAwesome } from "@expo/vector-icons";
-// import { auth } from "../../firebaseConfig";
-// import * as ImagePicker from "expo-image-picker";
-// import * as FileSystem from "expo-file-system";
-// import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { auth } from "../firebaseConfig";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default function Cadastro({ navigation }) {
   const [email, setEmail] = useState("");
@@ -24,21 +24,21 @@ export default function Cadastro({ navigation }) {
 
   const [imagem, setImagem] = useState(null);
   const [downloadURL, setDownloadURL] = useState(null);
-  //   const storage = getStorage();
+  const storage = getStorage();
 
-  //   const [status, requestPermission] = ImagePicker.useCameraPermissions();
+  const [status, requestPermission] = ImagePicker.useCameraPermissions();
 
-  //   useEffect(() => {
-  //     async function verificaPermissoes() {
-  //       // CameraStatus guardando a requisição da permissão de camera
-  //       const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
+  useEffect(() => {
+    async function verificaPermissoes() {
+      // CameraStatus guardando a requisição da permissão de camera
+      const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
 
-  //       // Requisição da permissão recebendo o cameraStatus com o parametro de ter permitido
-  //       requestPermission(cameraStatus === "granted");
-  //     }
+      // Requisição da permissão recebendo o cameraStatus com o parametro de ter permitido
+      requestPermission(cameraStatus === "granted");
+    }
 
-  //     verificaPermissoes();
-  //   }, []);
+    verificaPermissoes();
+  }, []);
 
   // Função para fazer upload da imagem para o Firebase Storage e depois enviar pela função Cadastrar
   const carregarStorage = async () => {

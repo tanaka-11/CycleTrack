@@ -8,12 +8,10 @@ import {
   Text,
   ActivityIndicator,
 } from "react-native";
-import { useState, useEffect } from "react";
-// import { auth, provider } from "../../firebaseConfig";
-// import { signInWithEmailAndPassword } from "firebase/auth";
-// import { signInWithCredential } from "firebase/auth";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
-// import { AntDesign } from "@expo/vector-icons";
+import { useState } from "react";
+import { auth } from "../firebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
