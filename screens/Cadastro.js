@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { FontAwesome } from "@expo/vector-icons";
-import { auth } from "../../firebaseConfig";
+import { auth } from "../firebaseConfig";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -86,8 +86,6 @@ export default function Cadastro({ navigation }) {
       // Foto e nome do current userr
       if (contaUsuario.user) {
         // Fazer upload no firestore
-        const urlImagem = await uploadImagemFirebaseStorage(imagem);
-
         // Atualize o perfil do usuário com o nome e a URL da imagem
         await updateProfile(auth.currentUser, {
           displayName: nome,
@@ -133,13 +131,9 @@ export default function Cadastro({ navigation }) {
   const escolhaImagem = async () => {
     // Resultado guardando a biblioteca de fotos
     const resultado = await ImagePicker.launchImageLibraryAsync({
-      // Habilitando apenas as imagens do dispositivo atraves do (MediaTypeOptions)
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      // Permitindo edição de foto
       allowsEditing: true,
-      // Formato da foto
       aspect: [16, 9],
-      // Qualidade da imagem de 0 a 1
       quality: 1,
     });
 
