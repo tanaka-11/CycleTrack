@@ -12,7 +12,7 @@ const firebaseConfig = {
   appId: "1:619328327967:web:0d0856de25bbe25003202a",
 };
 
-// Initialize Firebase app
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 // Initialize authentication with AsyncStorage persistence
