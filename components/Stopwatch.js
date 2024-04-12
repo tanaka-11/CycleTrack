@@ -8,6 +8,7 @@ import {
   resumeMonitoring,
 } from "./Mapa";
 
+import Mapa from "./Mapa";
 export default function Stopwatch({}) {
   // Estados para controlar o tempo do cronômetro
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
