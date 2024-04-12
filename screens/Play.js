@@ -481,11 +481,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#5442D2",
     padding: 8,
     borderRadius: 8,
-    flex: 1
+    width: 120,
+    height: 45
   },
   textoBotaoPadrao: {
     color: "#fff",
     textAlign: "center",
+    alignItems: "center",
+    fontSize: 22,
   },
   sessaoTituloIcon: {
     marginHorizontal: 20,
