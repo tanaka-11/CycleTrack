@@ -10,6 +10,7 @@ import Atividades from "./screens/Atividades";
 import Play from "./screens/Play";
 import Configuracao from "./screens/Configuracao";
 import Login from "./screens/Login";
+import Cadastro from "./screens/Cadastro";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
