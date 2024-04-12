@@ -32,28 +32,28 @@ export default function Mapa({}) {
     if (!running) {
       startMonitoringSpeed();
     }
-  }, []);
+  }, [running]);
 
   // Função para parar o monitoramento da velocidade
   useEffect(() => {
     if (running && !stop && !pause) {
       stopMonitoringSpeed();
     }
-  }, []);
+  }, [!running]);
 
   // Função para pausar o monitoramento da velocidade
   useEffect(() => {
     if (pause && !running) {
       pauseMonitoring();
     }
-  }, []);
+  }, [!running, pause]);
 
   // Função para retomar o monitoramento da velocidade
   useEffect(() => {
     if (!pause) {
       resumeMonitoring();
     }
-  }, []);
+  }, [!pause]);
 
   // Efeito para parar o monitoramento da velocidade quando a atividade é encerrada
   useEffect(() => {
