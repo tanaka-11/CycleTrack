@@ -20,22 +20,23 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
   // Estado para rastrear o status de login do usuário
-  const [isUserLoggedIn, setUserLoggedIn] = useState(false);
+  // const [isUserLoggedIn, setUserLoggedIn] = useState(false);
 
-  // Efeito para verificar o status de login do usuário ao montar o componente
-  useEffect(() => {
-    const auth = getAuth(); // Obtém a instância de autenticação
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUserLoggedIn(!!user); // Define isUserLoggedIn com base no estado de autenticação do usuário
-    });
+  // // Efeito para verificar o status de login do usuário ao montar o componente
+  // useEffect(() => {
+  //   const auth = getAuth(); // Obtém a instância de autenticação
+  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
+  //     setUserLoggedIn(!!user); // Define isUserLoggedIn com base no estado de autenticação do usuário
+  //   });
 
-    return unsubscribe; // Limpa a inscrição quando o componente for desmontado
-  }, []);
+  //   return unsubscribe; // Limpa a inscrição quando o componente for desmontado
+  // }, []);
 
   return (
     <NavigationContainer>
-      <Tab.Navigator initialRouteName={isUserLoggedIn ? "Home" : "Login"}>
-        {isUserLoggedIn ? (
+      {/* <Tab.Navigator initialRouteName={isUserLoggedIn ? "Home" : "Login"}> */}
+      <Tab.Navigator initialRouteName="Home">
+        {/* {isUserLoggedIn ? (
           <>
             <Tab.Screen name="Home" component={Home} />
             <Tab.Screen name="Atividades" component={Atividades} />
@@ -48,7 +49,16 @@ export default function App() {
             <Tab.Screen name="Login" component={Login} />
             <Tab.Screen name="Cadastro" component={Cadastro} />
           </>
-        )}
+        )} */}
+
+        <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen name="Atividades" component={Atividades} />
+        <Tab.Screen name="Play" component={Play} />
+        <Tab.Screen name="Perfil" component={Perfil} />
+        <Tab.Screen name="Configuracao" component={Configuracao} />
+
+        <Tab.Screen name="Login" component={Login} />
+        <Tab.Screen name="Cadastro" component={Cadastro} />
       </Tab.Navigator>
     </NavigationContainer>
   );

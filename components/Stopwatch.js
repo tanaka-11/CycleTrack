@@ -7,6 +7,7 @@ import {
   pauseMonitoring,
   resumeMonitoring,
 } from "./Mapa";
+import Mapa from "./Mapa";
 
 export default function Stopwatch({}) {
   // Estados para controlar o tempo do cronômetro
