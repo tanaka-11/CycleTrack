@@ -1,12 +1,7 @@
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { useState, useRef } from "react";
 import ControlButtons from "./ControlButtons"; // Componente para os botões de controle
-import {
-  startMonitoringSpeed,
-  stopMonitoringSpeed,
-  pauseMonitoring,
-  resumeMonitoring,
-} from "./Mapa";
+import Mapa from "./Mapa";
 
 export default function Stopwatch({}) {
   // Estados para controlar o tempo do cronômetro
@@ -126,12 +121,6 @@ export default function Stopwatch({}) {
     // Parar o monitoramento de velocidade
   };
 
-  /* 1) Função teste está no PAI (Stopwatch) 
-  e queremos torná-la acessível pelo FILHO (Mapa). */
-  const teste = () => {
-    console.log("oi");
-  };
-
   return (
     <>
       <View style={styles.container}>
@@ -171,11 +160,6 @@ export default function Stopwatch({}) {
           resetStopwatch={resetStopwatch}
           resumeStopwatch={resumeStopwatch}
           stopAll={stopAll}
-          // Função de Speed e Steps
-          startMonitoringSpeed={startMonitoringSpeed}
-          stopMonitoringSpeed={stopMonitoringSpeed}
-          pauseMonitoring={pauseMonitoring}
-          resumeMonitoring={resumeMonitoring}
         />
       </View>
     </>

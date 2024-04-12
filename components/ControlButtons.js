@@ -28,7 +28,7 @@ export default function ControlButtons({
                 style={[styles.button, styles.pauseButton]}
                 onPress={() => {
                   pauseStopwatch();
-                  pauseMonitoring;
+                  pauseMonitoring();
                 }}
               >
                 <Text style={styles.buttonText}>Pausar</Text>
