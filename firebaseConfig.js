@@ -16,10 +16,3 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Initialize authentication with AsyncStorage persistence
-const auth = initializeAuth(app, {
-  persistence: getReactNativePersistence(AsyncStorage),
-});
-
-// const googleProvider = new GoogleAuthProvider();
-
-export { auth }; // Exporte o serviço de autenticação
