@@ -8,13 +8,10 @@ import {
   Text,
   ActivityIndicator,
 } from "react-native";
-import { auth, provider } from "../../firebaseConfig";
-
+import { useState } from "react";
+import { auth } from "../firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import { AntDesign } from "@expo/vector-icons";
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
@@ -103,7 +100,7 @@ const estilos = StyleSheet.create({
     marginBottom: 22,
     marginTop: -10,
     width: "85%",
-    height: "75%",
+    height: "85%",
 
     backgroundColor: "rgba(255, 255, 255, 0.88)",
     borderRadius: 20,
