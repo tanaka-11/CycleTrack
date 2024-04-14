@@ -97,6 +97,8 @@ export default function ControlButtons({
           <Pressable
             style={[styles.button, styles.startButton]}
             onPress={() => {
+              // State para funcionar apos Salvar
+              setRunning(true);
               startStopwatch();
               startMonitoring();
             }}
