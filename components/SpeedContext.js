@@ -36,9 +36,6 @@ export const SpeedProvider = ({ children }) => {
   // Definir mapViewRef dentro da função SpeedProvider
   const mapViewRef = useRef();
 
-  // State para função pausar
-  const [updateSpeed, setUpdateSpeed] = useState(true);
-
   // Função para obter a localização do usuário
   const getLocation = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
@@ -126,18 +123,16 @@ export const SpeedProvider = ({ children }) => {
           },
 
           (position) => {
-            if (updateSpeed) {
-              setSpeed(position.coords.speed || 0);
-              // Calcule a distância aqui e atualize o estado 'distance'
-              if (myLocation) {
-                const newDistance = calculateDistance(
-                  myLocation.coords.latitude,
-                  myLocation.coords.longitude,
-                  position.coords.latitude,
-                  position.coords.longitude
-                );
-                setDistance(newDistance);
-              }
+            setSpeed(position.coords.speed || 0);
+            // Calcule a distância aqui e atualize o estado 'distance'
+            if (myLocation) {
+              const newDistance = calculateDistance(
+                myLocation.coords.latitude,
+                myLocation.coords.longitude,
+                position.coords.latitude,
+                position.coords.longitude
+              );
+              setDistance(newDistance);
             }
           }
         );
@@ -185,6 +180,7 @@ export const SpeedProvider = ({ children }) => {
   // Função para retomar o monitoramento
   const resumeMonitoring = async () => {
     if (!running && pause) {
+      console.log("voltando a assinatura de localização");
       setPause(false);
       await startMonitoringSpeed();
     }

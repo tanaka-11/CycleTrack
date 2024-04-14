@@ -127,7 +127,6 @@ export default function Stopwatch() {
     setRunning(false);
     setPause(false);
     setStop(true);
-    setSteps(steps);
   };
 
   return (
