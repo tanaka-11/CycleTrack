@@ -6,6 +6,7 @@ import React, {
   useRef,
 } from "react";
 import * as Location from "expo-location";
+import MapView from "react-native-maps";
 
 // Criar o Contexto
 const SpeedContext = createContext();
@@ -19,9 +20,9 @@ export const SpeedProvider = ({ children }) => {
   const [speed, setSpeed] = useState(0);
   const [distance, setDistance] = useState(0);
   const [steps, setSteps] = useState(0);
-  const [pause, setPause] = useState(false);
-  const [running, setRunning] = useState(false);
-  const [stop, setStop] = useState(true);
+  const [pause, setPause] = useState();
+  const [running, setRunning] = useState();
+  const [stop, setStop] = useState();
 
   // States para uso da localização
   // Localização do usuário
@@ -31,36 +32,49 @@ export const SpeedProvider = ({ children }) => {
   const [locationSubscription, setLocationSubscription] = useState();
   const [location, setLocation] = useState(null);
   const [initialLocation, setInitialLocation] = useState(null);
+
+  // Definir mapViewRef dentro da função SpeedProvider
   const mapViewRef = useRef(null);
+
+  // Função para obter a localização do usuário
+  const getLocation = async () => {
+    // Solicitar permissão para acessar a localização do usuário
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert("Permissão negada");
+      return;
+    }
+
+    // Obter a localização atual do usuário
+    let currentLocation = await Location.getCurrentPositionAsync({});
+    setMyLocation(currentLocation);
+    setLocation({
+      latitude: currentLocation.coords.latitude,
+      longitude: currentLocation.coords.longitude,
+    });
+
+    // Animação do mapa para a localização atual do usuário
+    mapViewRef.current.animateToRegion({
+      latitude: currentLocation.coords.latitude,
+      longitude: currentLocation.coords.longitude,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    });
+  };
 
   // useEffect da permissão de localização e animação no mapa
   useEffect(() => {
-    async function getLocation() {
-      // Solicitar permissão para acessar a localização do usuário
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert("Permissão negada");
-        return;
-      }
-
-      // Obter a localização atual do usuário
-      let currentLocation = await Location.getCurrentPositionAsync({});
-      setMyLocation(currentLocation);
-      setLocation({
-        latitude: currentLocation.coords.latitude,
-        longitude: currentLocation.coords.longitude,
-      });
-
-      // Animação do mapa para a localização atual do usuário
-      mapViewRef.current.animateToRegion({
-        latitude: currentLocation.coords.latitude,
-        longitude: currentLocation.coords.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      });
-    }
-    getLocation();
+    permissionLocationAndAnimated();
   }, []);
+
+  // Função de permissão de localização e animação no mapa
+  const permissionLocationAndAnimated = async () => {
+    try {
+      await getLocation();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // Função para começar o monitoramento
   const startMonitoringSpeed = async () => {
@@ -151,9 +165,8 @@ export const SpeedProvider = ({ children }) => {
   };
 
   // Função para retomar o monitoramento
-  const resumeMonitoring = (locationSubscription) => {
+  const resumeMonitoring = () => {
     if (!running && pause) {
-      locationSubscription.resume();
       setPause(false);
       setDistance(steps);
       setSpeed(speed);
@@ -162,6 +175,7 @@ export const SpeedProvider = ({ children }) => {
 
   // Valor do contexto
   const value = {
+    // States
     location,
     currentLocation,
     initialLocation,
@@ -174,10 +188,27 @@ export const SpeedProvider = ({ children }) => {
     running,
     locationSubscription,
     mapViewRef,
+
+    // Set
+    setSpeed,
+    setRunning,
+    setDistance,
+    setSteps,
+    setPause,
+    setStop,
+    setMyLocation,
+    setCurrentLocation,
+    setLocationSubscription,
+    setLocation,
+    setInitialLocation,
+
+    // Funções
     startMonitoringSpeed,
     stopMonitoringSpeed,
     pauseMonitoring,
     resumeMonitoring,
+    permissionLocationAndAnimated,
+    getLocation,
   };
 
   return (

@@ -1,5 +1,5 @@
 import { Alert, Platform, StyleSheet, Text, View } from "react-native";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { Accelerometer } from "expo-sensors";
@@ -7,80 +7,43 @@ import { Accelerometer } from "expo-sensors";
 // useContext
 import { useSpeedContext } from "./SpeedContext";
 
-export default function Mapa({}) {
+export default function Mapa() {
   const {
-    myLocation,
+    // States
     location,
-    currentLocation,
     initialLocation,
     mapViewRef,
     speed,
     steps,
-    distance,
-    stop,
-    pause,
     running,
-    locationSubscription,
-    startMonitoringSpeed,
-    stopMonitoringSpeed,
-    pauseMonitoring,
-    resumeMonitoring,
+
+    // Set
+    setSteps,
   } = useSpeedContext();
 
-  // Função para iniciar o monitoramento da velocidade do usuário
-  useEffect(() => {
-    if (!running) {
-      startMonitoringSpeed();
-    }
-  }, [running]);
-
-  // Função para parar o monitoramento da velocidade
-  useEffect(() => {
-    if (running && !stop && !pause) {
-      stopMonitoringSpeed();
-    }
-  }, [!running]);
-
-  // Função para pausar o monitoramento da velocidade
-  useEffect(() => {
-    if (pause && !running) {
-      pauseMonitoring();
-    }
-  }, [!running, pause]);
-
-  // Função para retomar o monitoramento da velocidade
-  useEffect(() => {
-    if (!pause) {
-      resumeMonitoring();
-    }
-  }, [!pause]);
-
-  // Efeito para parar o monitoramento da velocidade quando a atividade é encerrada
-  useEffect(() => {
-    if (!running && !pause) {
-      stopMonitoringSpeed();
-    }
-  }, [running, locationSubscription]);
-
   // useEffect do acelerometro
+  const handleAccelerometerData = useCallback(
+    (accelerometerData) => {
+      const { x, y, z } = accelerometerData;
+      const magnitude = Math.sqrt(x * x + y * y + z * z);
+      const THRESHOLD = 1.2;
+      if (magnitude > THRESHOLD) {
+        setSteps((prevSteps) => prevSteps + 1);
+      }
+    },
+    [setSteps]
+  );
+
   useEffect(() => {
     if (running) {
       if (Platform.OS === "android" || Platform.OS === "ios") {
         Accelerometer.setUpdateInterval(1000);
       }
-      const subscription = Accelerometer.addListener((accelerometerData) => {
-        const { x, y, z } = accelerometerData;
-        const magnitude = Math.sqrt(x * x + y * y + z * z);
-        const THRESHOLD = 1.2;
-        if (magnitude > THRESHOLD) {
-          setSteps((prevSteps) => prevSteps + 1);
-        }
-      });
+      const subscription = Accelerometer.addListener(handleAccelerometerData);
       return () => subscription.remove();
     }
-  }, [running]);
+  }, [running, setSteps, handleAccelerometerData]);
 
-  // Exibindo a velocidade atual e a distância percorrida
   console.log(speed);
   console.log(steps);
 

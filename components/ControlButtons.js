@@ -2,22 +2,33 @@ import React from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
+// useContext
+import { useSpeedContext } from "./SpeedContext";
+
 export default function ControlButtons({
-  pause,
-  running,
-  stop,
   pauseStopwatch,
   startStopwatch,
   resetStopwatch,
   resumeStopwatch,
   stopAll,
-  startMonitoringSpeed,
-  stopMonitoringSpeed,
-  pauseMonitoring,
-  resumeMonitoring,
 }) {
+  // values do useContext
+  const {
+    // States
+    stop,
+    pause,
+    running,
+
+    // Funções
+    startMonitoringSpeed,
+    stopMonitoringSpeed,
+    pauseMonitoring,
+    resumeMonitoring,
+  } = useSpeedContext();
+
   // Recurso de navegação
   const navigation = useNavigation();
+
   return (
     <>
       <View style={styles.buttonContainer}>
@@ -38,7 +49,7 @@ export default function ControlButtons({
                 style={[styles.button, styles.stopButton]}
                 onPress={() => {
                   stopAll();
-                  stopMonitoringSpeed;
+                  stopMonitoringSpeed();
                 }}
               >
                 <Text style={styles.buttonText}>Parar</Text>
@@ -53,7 +64,7 @@ export default function ControlButtons({
               style={[styles.button, styles.resetButton]}
               onPress={() => {
                 resetStopwatch();
-                stopMonitoringSpeed;
+                stopMonitoringSpeed();
               }}
             >
               <Text style={styles.buttonText}>Reset</Text>
@@ -63,7 +74,7 @@ export default function ControlButtons({
               style={[styles.button, styles.resumeButton]}
               onPress={() => {
                 resumeStopwatch();
-                resumeMonitoring;
+                resumeMonitoring();
               }}
             >
               <Text style={styles.buttonText}>Retomar</Text>
@@ -76,7 +87,7 @@ export default function ControlButtons({
             style={[styles.button, styles.startButton]}
             onPress={() => {
               startStopwatch();
-              startMonitoringSpeed;
+              startMonitoringSpeed();
             }}
           >
             <Text style={styles.buttonText}>Começar</Text>
