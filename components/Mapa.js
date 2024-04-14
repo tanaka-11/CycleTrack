@@ -76,7 +76,7 @@ export default function Mapa() {
           Distância percorrida: {steps.toFixed(2)}
         </Text>
 
-        <Text style={styles.distanceText}>Velocidade: {speed.toFixed(3)}</Text>
+        <Text style={styles.distanceText}>Velocidade: {speed.toFixed(2)}</Text>
       </View>
     </>
   );
