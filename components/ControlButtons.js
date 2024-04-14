@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Alert,
+  Vibration,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 // useContext
@@ -123,8 +130,22 @@ export default function ControlButtons({
               setDistance(0);
               setSteps(0);
 
-              // Trocando de tela
-              navigation.navigate("Atividades");
+              // Alerta de operação bem sucedida
+              Vibration.vibrate();
+              Alert.alert(
+                "Corrida salva!",
+                "Sua corrida foi salva com sucesso",
+                [
+                  {
+                    text: "Visualizar informações",
+                    onPress: () => navigation.navigate("Atividades"),
+                  },
+                  {
+                    text: "Okay",
+                    style: "cancel",
+                  },
+                ]
+              );
             }}
           >
             <Text style={styles.buttonText}>Salvar</Text>
