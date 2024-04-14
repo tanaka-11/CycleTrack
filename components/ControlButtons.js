@@ -20,10 +20,11 @@ export default function ControlButtons({
     running,
 
     // Funções
-    startMonitoringSpeed,
-    stopMonitoringSpeed,
+    startMonitoring,
+    stopMonitoring,
     pauseMonitoring,
     resumeMonitoring,
+    stopMonitoringAndStoreData,
   } = useSpeedContext();
 
   // Recurso de navegação
@@ -49,7 +50,7 @@ export default function ControlButtons({
                 style={[styles.button, styles.stopButton]}
                 onPress={() => {
                   stopAll();
-                  stopMonitoringSpeed();
+                  stopMonitoringAndStoreData();
                 }}
               >
                 <Text style={styles.buttonText}>Parar</Text>
@@ -64,7 +65,7 @@ export default function ControlButtons({
               style={[styles.button, styles.resetButton]}
               onPress={() => {
                 resetStopwatch();
-                stopMonitoringSpeed();
+                stopMonitoring();
               }}
             >
               <Text style={styles.buttonText}>Reset</Text>
@@ -87,7 +88,7 @@ export default function ControlButtons({
             style={[styles.button, styles.startButton]}
             onPress={() => {
               startStopwatch();
-              startMonitoringSpeed();
+              startMonitoring();
             }}
           >
             <Text style={styles.buttonText}>Começar</Text>
@@ -98,7 +99,6 @@ export default function ControlButtons({
           <Pressable
             style={[styles.button, styles.resumeButton]}
             onPress={() => {
-              stopAll();
               navigation.navigate("Atividades");
             }}
           >

@@ -22,7 +22,7 @@ export const SpeedProvider = ({ children }) => {
   const [steps, setSteps] = useState(0);
   const [pause, setPause] = useState();
   const [running, setRunning] = useState();
-  const [stop, setStop] = useState();
+  const [stop, setStop] = useState(false);
 
   // Localização do usuário
   const [myLocation, setMyLocation] = useState();
@@ -32,6 +32,8 @@ export const SpeedProvider = ({ children }) => {
 
   // Monitoramento da distancia e velocidade
   const [locationSubscription, setLocationSubscription] = useState();
+  const [storedSpeed, setStoredSpeed] = useState(0);
+  const [storedDistance, setStoredDistance] = useState(0);
 
   // Definir mapViewRef dentro da função SpeedProvider
   const mapViewRef = useRef();
@@ -81,7 +83,7 @@ export const SpeedProvider = ({ children }) => {
   };
 
   // Função para começar o monitoramento
-  const startMonitoringSpeed = async () => {
+  const startMonitoring = async () => {
     // Função para calcular a distância entre dois pontos geográficos
     const calculateDistance = (lat1, lon1, lat2, lon2) => {
       // Raio da Terra
@@ -150,7 +152,7 @@ export const SpeedProvider = ({ children }) => {
   };
 
   // Função para parar o monitoramento
-  const stopMonitoringSpeed = () => {
+  const stopMonitoring = () => {
     if (locationSubscription) {
       locationSubscription.remove();
     }
@@ -182,8 +184,29 @@ export const SpeedProvider = ({ children }) => {
     if (!running && pause) {
       console.log("voltando a assinatura de localização");
       setPause(false);
-      await startMonitoringSpeed();
+      await startMonitoring();
     }
+  };
+
+  // Função para pausar o monitoramento e armazenar os dados
+  const stopMonitoringAndStoreData = () => {
+    console.log("Pausando o monitoramento e armazenando os dados");
+
+    // Pausar o monitoramento
+    if (locationSubscription) {
+      console.log("Removendo a assinatura de localização");
+      locationSubscription.remove();
+      setLocationSubscription(null);
+    }
+
+    // Armazenar os dados atuais
+    setStoredSpeed(speed);
+    setStoredDistance(distance);
+
+    console.log("Dados atuais: ", {
+      speed: storedSpeed,
+      distance: storedDistance,
+    });
   };
 
   // Valor do contexto
@@ -201,6 +224,8 @@ export const SpeedProvider = ({ children }) => {
     running,
     locationSubscription,
     mapViewRef,
+    storedSpeed,
+    storedDistance,
 
     // Set
     setSpeed,
@@ -214,12 +239,15 @@ export const SpeedProvider = ({ children }) => {
     setLocationSubscription,
     setLocation,
     setInitialLocation,
+    setStoredSpeed,
+    setStoredDistance,
 
     // Funções
-    startMonitoringSpeed,
-    stopMonitoringSpeed,
+    startMonitoring,
+    stopMonitoring,
     pauseMonitoring,
     resumeMonitoring,
+    stopMonitoringAndStoreData,
     permissionLocationAndAnimated,
     getLocation,
   };
