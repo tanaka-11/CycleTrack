@@ -6,7 +6,6 @@ import React, {
   useRef,
 } from "react";
 import * as Location from "expo-location";
-import MapView from "react-native-maps";
 
 // Criar o Contexto
 const SpeedContext = createContext();
@@ -114,38 +113,36 @@ export const SpeedProvider = ({ children }) => {
     };
 
     try {
-      if (!stop) {
-        console.log("Iniciando o monitoramento da velocidade");
-        const newLocationSubscription = await Location.watchPositionAsync(
-          {
-            accuracy: Location.Accuracy.Highest,
-            timeInterval: 1000,
-            distanceInterval: 0,
-            activityType: Location.ActivityType.Fitness,
-          },
+      console.log("Iniciando o monitoramento da velocidade");
+      const newLocationSubscription = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.Highest,
+          timeInterval: 1000,
+          distanceInterval: 0,
+          activityType: Location.ActivityType.Fitness,
+        },
 
-          (position) => {
-            setSpeed(position.coords.speed || 0);
-            // Calcule a distância aqui e atualize o estado 'distance'
-            if (myLocation) {
-              const newDistance = calculateDistance(
-                myLocation.coords.latitude,
-                myLocation.coords.longitude,
-                position.coords.latitude,
-                position.coords.longitude
-              );
-              setDistance(newDistance);
-            }
+        (position) => {
+          setSpeed(position.coords.speed || 0);
+          // Calcule a distância aqui e atualize o estado 'distance'
+          if (myLocation) {
+            const newDistance = calculateDistance(
+              myLocation.coords.latitude,
+              myLocation.coords.longitude,
+              position.coords.latitude,
+              position.coords.longitude
+            );
+            setDistance(newDistance);
           }
-        );
-
-        // Remove o monitoramento anterior de velocidade atraves do "subscription".
-        if (locationSubscription) {
-          locationSubscription.remove();
         }
+      );
 
-        setLocationSubscription(newLocationSubscription);
+      // Remove o monitoramento anterior de velocidade atraves do "subscription".
+      if (locationSubscription) {
+        locationSubscription.remove();
       }
+
+      setLocationSubscription(newLocationSubscription);
     } catch (error) {
       console.error(error);
     }
@@ -201,13 +198,16 @@ export const SpeedProvider = ({ children }) => {
 
     // Armazenar os dados atuais
     setStoredSpeed(speed);
-    setStoredDistance(distance);
+    setStoredDistance(steps);
+  };
 
+  // useEffect para registrar os valores de storedSpeed e storedDistance
+  useEffect(() => {
     console.log("Dados atuais: ", {
       speed: storedSpeed,
-      distance: storedDistance,
+      steps: storedDistance,
     });
-  };
+  }, [storedSpeed, storedDistance, running]);
 
   // Valor do contexto
   const value = {

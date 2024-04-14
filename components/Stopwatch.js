@@ -14,10 +14,6 @@ export default function Stopwatch() {
     mapViewRef,
     speed,
     steps,
-    distance,
-    stop,
-    pause,
-    running,
 
     // Set
     setSpeed,
@@ -152,6 +148,7 @@ export default function Stopwatch() {
           resetStopwatch={resetStopwatch}
           resumeStopwatch={resumeStopwatch}
           stopAll={stopAll}
+          setTime={setTime}
         />
       </View>
     </>

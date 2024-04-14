@@ -6,18 +6,28 @@ import { useNavigation } from "@react-navigation/native";
 import { useSpeedContext } from "./SpeedContext";
 
 export default function ControlButtons({
+  // Funções vindo do componente PAI (StopWatch)
   pauseStopwatch,
   startStopwatch,
   resetStopwatch,
   resumeStopwatch,
   stopAll,
+  setTime,
 }) {
-  // values do useContext
+  // Funções vindo do componente Context
   const {
     // States
     stop,
     pause,
     running,
+
+    // Set
+    setPause,
+    setRunning,
+    setStop,
+    setDistance,
+    setSpeed,
+    setSteps,
 
     // Funções
     startMonitoring,
@@ -99,6 +109,19 @@ export default function ControlButtons({
           <Pressable
             style={[styles.button, styles.resumeButton]}
             onPress={() => {
+              // Redefinir os states para seus valores iniciais
+              // State do Cronometro
+              setStop(false);
+              setPause(false);
+              setRunning(false);
+              setTime({ hours: 0, minutes: 0, seconds: 0 });
+
+              // State do Acelerometro
+              setSpeed(0);
+              setDistance(0);
+              setSteps(0);
+
+              // Trocando de tela
               navigation.navigate("Atividades");
             }}
           >
