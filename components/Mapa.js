@@ -1,7 +1,6 @@
 import { Alert, Platform, StyleSheet, Text, View } from "react-native";
 import { useEffect, useState, useRef, useCallback } from "react";
 import MapView, { Marker } from "react-native-maps";
-import * as Location from "expo-location";
 import { Accelerometer } from "expo-sensors";
 
 // useContext
@@ -10,7 +9,7 @@ import { useSpeedContext } from "./SpeedContext";
 export default function Mapa() {
   const {
     // States
-    location,
+    myLocation,
     initialLocation,
     mapViewRef,
     speed,
@@ -19,9 +18,12 @@ export default function Mapa() {
 
     // Set
     setSteps,
+
+    // Funções
+    getLocation,
   } = useSpeedContext();
 
-  // useEffect do acelerometro
+  // Função do acelerometro
   const handleAccelerometerData = useCallback(
     (accelerometerData) => {
       const { x, y, z } = accelerometerData;
@@ -34,6 +36,7 @@ export default function Mapa() {
     [setSteps]
   );
 
+  // useEffect do acelerometro
   useEffect(() => {
     if (running) {
       if (Platform.OS === "android" || Platform.OS === "ios") {
@@ -44,6 +47,11 @@ export default function Mapa() {
     }
   }, [running, setSteps, handleAccelerometerData]);
 
+  // useEffect do getLocation
+  useEffect(() => {
+    getLocation();
+  }, [running]);
+
   console.log(speed);
   console.log(steps);
 
@@ -51,14 +59,14 @@ export default function Mapa() {
     <>
       <View style={styles.viewMapa}>
         <MapView
-          ref={mapViewRef}
-          mapType="standard"
           style={styles.mapa}
-          region={location}
+          mapType="standard"
+          ref={mapViewRef}
+          region={myLocation}
           followsUserLocation={true}
           showsUserLocation={true}
         >
-          {initialLocation && <Marker coordinate={location} />}
+          {initialLocation && <Marker coordinate={initialLocation} />}
         </MapView>
       </View>
 

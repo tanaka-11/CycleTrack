@@ -26,40 +26,44 @@ export const SpeedProvider = ({ children }) => {
 
   // States para uso da localização
   // Localização do usuário
-  const [myLocation, setMyLocation] = useState(null);
+  const [myLocation, setMyLocation] = useState();
   const [currentLocation, setCurrentLocation] = useState(null);
   // Monitoramento da distancia e velocidade
   const [locationSubscription, setLocationSubscription] = useState();
-  const [location, setLocation] = useState(null);
-  const [initialLocation, setInitialLocation] = useState(null);
+  const [location, setLocation] = useState();
+  const [initialLocation, setInitialLocation] = useState();
 
   // Definir mapViewRef dentro da função SpeedProvider
-  const mapViewRef = useRef(null);
+  const mapViewRef = useRef();
 
   // Função para obter a localização do usuário
   const getLocation = async () => {
-    // Solicitar permissão para acessar a localização do usuário
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
       Alert.alert("Permissão negada");
       return;
     }
 
-    // Obter a localização atual do usuário
-    let currentLocation = await Location.getCurrentPositionAsync({});
-    setMyLocation(currentLocation);
-    setLocation({
-      latitude: currentLocation.coords.latitude,
-      longitude: currentLocation.coords.longitude,
-    });
+    try {
+      let currentLocation = await Location.getCurrentPositionAsync({});
 
-    // Animação do mapa para a localização atual do usuário
-    mapViewRef.current.animateToRegion({
-      latitude: currentLocation.coords.latitude,
-      longitude: currentLocation.coords.longitude,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-    });
+      setMyLocation(currentLocation);
+      setLocation({
+        latitude: currentLocation.coords.latitude,
+        longitude: currentLocation.coords.longitude,
+      });
+
+      if (mapViewRef.current) {
+        mapViewRef.current.animateToRegion({
+          latitude: currentLocation.coords.latitude,
+          longitude: currentLocation.coords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        });
+      }
+    } catch (error) {
+      console.error("Erro ao obter a localização: ", error);
+    }
   };
 
   // useEffect da permissão de localização e animação no mapa
@@ -136,6 +140,7 @@ export const SpeedProvider = ({ children }) => {
         if (locationSubscription) {
           locationSubscription.remove();
         }
+
         setLocationSubscription(newLocationSubscription);
       } catch (error) {
         console.error(error);
