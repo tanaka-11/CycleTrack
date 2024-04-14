@@ -24,17 +24,20 @@ export const SpeedProvider = ({ children }) => {
   const [running, setRunning] = useState();
   const [stop, setStop] = useState();
 
-  // States para uso da localização
   // Localização do usuário
   const [myLocation, setMyLocation] = useState();
   const [currentLocation, setCurrentLocation] = useState(null);
-  // Monitoramento da distancia e velocidade
-  const [locationSubscription, setLocationSubscription] = useState();
   const [location, setLocation] = useState();
   const [initialLocation, setInitialLocation] = useState();
 
+  // Monitoramento da distancia e velocidade
+  const [locationSubscription, setLocationSubscription] = useState();
+
   // Definir mapViewRef dentro da função SpeedProvider
   const mapViewRef = useRef();
+
+  // State para função pausar
+  const [updateSpeed, setUpdateSpeed] = useState(true);
 
   // Função para obter a localização do usuário
   const getLocation = async () => {
@@ -83,36 +86,37 @@ export const SpeedProvider = ({ children }) => {
   // Função para começar o monitoramento
   const startMonitoringSpeed = async () => {
     // Função para calcular a distância entre dois pontos geográficos
-    if (!stop) {
-      const calculateDistance = (lat1, lon1, lat2, lon2) => {
-        // Raio da Terra
-        const R = 6371;
+    const calculateDistance = (lat1, lon1, lat2, lon2) => {
+      // Raio da Terra
+      const R = 6371;
 
-        // Distancia da Latitude
-        const dLat = (lat2 - lat1) * (Math.PI / 180);
+      // Distancia da Latitude
+      const dLat = (lat2 - lat1) * (Math.PI / 180);
 
-        // Distancia da Longitude
-        const dLon = (lon2 - lon1) * (Math.PI / 180);
+      // Distancia da Longitude
+      const dLon = (lon2 - lon1) * (Math.PI / 180);
 
-        // Constante guardando a primeira parte da formula de Haversine
-        const a =
-          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-          Math.cos(lat1 * (Math.PI / 180)) *
-            Math.cos(lat2 * (Math.PI / 180)) *
-            Math.sin(dLon / 2) *
-            Math.sin(dLon / 2);
+      // Constante guardando a primeira parte da formula de Haversine
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * (Math.PI / 180)) *
+          Math.cos(lat2 * (Math.PI / 180)) *
+          Math.sin(dLon / 2) *
+          Math.sin(dLon / 2);
 
-        // Constante guardando a distancia final
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      // Constante guardando a distancia final
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        // Distancia recebendo o raio vezes a distancia final
-        const distance = R * c;
+      // Distancia recebendo o raio vezes a distancia final
+      const distance = R * c;
 
-        // Retornando a const Distancia
-        return distance;
-      };
+      // Retornando a const Distancia
+      return distance;
+    };
 
-      try {
+    try {
+      if (!stop) {
+        console.log("Iniciando o monitoramento da velocidade");
         const newLocationSubscription = await Location.watchPositionAsync(
           {
             accuracy: Location.Accuracy.Highest,
@@ -122,16 +126,18 @@ export const SpeedProvider = ({ children }) => {
           },
 
           (position) => {
-            setSpeed(position.coords.speed || 0);
-            // Calcule a distância aqui e atualize o estado 'distance'
-            if (myLocation) {
-              const newDistance = calculateDistance(
-                myLocation.coords.latitude,
-                myLocation.coords.longitude,
-                position.coords.latitude,
-                position.coords.longitude
-              );
-              setDistance(newDistance);
+            if (updateSpeed) {
+              setSpeed(position.coords.speed || 0);
+              // Calcule a distância aqui e atualize o estado 'distance'
+              if (myLocation) {
+                const newDistance = calculateDistance(
+                  myLocation.coords.latitude,
+                  myLocation.coords.longitude,
+                  position.coords.latitude,
+                  position.coords.longitude
+                );
+                setDistance(newDistance);
+              }
             }
           }
         );
@@ -142,39 +148,45 @@ export const SpeedProvider = ({ children }) => {
         }
 
         setLocationSubscription(newLocationSubscription);
-      } catch (error) {
-        console.error(error);
       }
+    } catch (error) {
+      console.error(error);
     }
   };
 
   // Função para parar o monitoramento
-  const stopMonitoringSpeed = (locationSubscription) => {
-    // Função para parar o monitoramento da velocidade
-    if (stop && locationSubscription) {
+  const stopMonitoringSpeed = () => {
+    if (locationSubscription) {
       locationSubscription.remove();
-      setSpeed(0);
-      setSteps(0);
-      setDistance(0);
+    }
+    setSpeed(0);
+    setSteps(0);
+    setDistance(0);
+  };
+
+  const pauseMonitoring = () => {
+    console.log("Pausando o monitoramento");
+    setPause(true);
+    if (locationSubscription) {
+      console.log("Removendo a assinatura de localização");
+      locationSubscription.remove();
+      setLocationSubscription(null);
     }
   };
 
-  // Função para pausar o monitoramento
-  const pauseMonitoring = (locationSubscription) => {
-    if (pause && !running && locationSubscription) {
-      subscription.pause();
-      setPause(true);
+  // useEffect do pause
+  useEffect(() => {
+    if (pause && !running) {
       setDistance(steps);
       setSpeed(0);
     }
-  };
+  }, [pause, running]);
 
   // Função para retomar o monitoramento
-  const resumeMonitoring = () => {
+  const resumeMonitoring = async () => {
     if (!running && pause) {
       setPause(false);
-      setDistance(steps);
-      setSpeed(speed);
+      await startMonitoringSpeed();
     }
   };
 
