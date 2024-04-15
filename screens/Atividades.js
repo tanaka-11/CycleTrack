@@ -63,6 +63,15 @@ export default function Atividades() {
             if (favorito.localizacao) {
               return (
                 <View key={index} style={styles.viewDados}>
+                  <View style={styles.viewTexto}>
+                    <Text style={styles.texto}>
+                      Distancia: {favorito.storedDistance.toFixed(2)}
+                    </Text>
+                    <Text style={styles.texto}>
+                      Velocidade: {favorito.storedSpeed.toFixed(2)}
+                    </Text>
+                  </View>
+
                   <MapView
                     ref={mapViewRef}
                     style={styles.mapa}
@@ -80,8 +89,6 @@ export default function Atividades() {
                       pinColor="blue"
                     />
                   </MapView>
-                  <Text>Distancia: {favorito.storedDistance}</Text>
-                  <Text>Velocidade: {favorito.storedSpeed}</Text>
                 </View>
               );
             }
@@ -123,7 +130,11 @@ const styles = StyleSheet.create({
     margin: 20,
   },
 
-  cardDados: {
-    flex: 1,
+  viewTexto: {
+    flexDirection: "row",
+    gap: 20,
+    justifyContent: "flex-start",
   },
+
+  texto: {},
 });
