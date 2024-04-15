@@ -36,10 +36,11 @@ export default function App() {
   // }, []);
 
   return (
-    <NavigationContainer>
-      {/* <Tab.Navigator initialRouteName={isUserLoggedIn ? "Home" : "Login"}> */}
-      <Tab.Navigator initialRouteName="Home">
-        {/* {isUserLoggedIn ? (
+    <SpeedProvider>
+      <NavigationContainer>
+        {/* <Tab.Navigator initialRouteName={isUserLoggedIn ? "Home" : "Login"}> */}
+        <Tab.Navigator initialRouteName="Home">
+          {/* {isUserLoggedIn ? (
           <>
             <Tab.Screen name="Home" component={Home} />
             <Tab.Screen name="Atividades" component={Atividades} />
@@ -54,16 +55,17 @@ export default function App() {
           </>
         )} */}
 
-        <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Atividades" component={Atividades} />
-        <Tab.Screen name="Play" component={Play} />
-        <Tab.Screen name="Perfil" component={Perfil} />
-        <Tab.Screen name="Configuracao" component={Configuracao} />
+          <Tab.Screen name="Home" component={Home} />
+          <Tab.Screen name="Atividades" component={Atividades} />
+          <Tab.Screen name="Play" component={Play} />
+          <Tab.Screen name="Perfil" component={Perfil} />
+          <Tab.Screen name="Configuracao" component={Configuracao} />
 
-        <Tab.Screen name="Login" component={Login} />
-        <Tab.Screen name="Cadastro" component={Cadastro} />
-      </Tab.Navigator>
-    </NavigationContainer>
+          <Tab.Screen name="Login" component={Login} />
+          <Tab.Screen name="Cadastro" component={Cadastro} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </SpeedProvider>
   );
 }
 const styles = StyleSheet.create({
