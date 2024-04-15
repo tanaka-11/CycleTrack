@@ -166,7 +166,7 @@ export default function Perfil() {
           />
         </View>
         <Pressable style={styles.botao} onPress={salvarPerfil}>
-          <Text>Salvar Alterações</Text>
+          <Text style={styles.botaoText}>Salvar Alterações</Text>
         </Pressable>
       </View>
     </ScrollView>
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
   },
   botaoText: {
     fontWeight: "bold",
-    // color: "#fff",
+    color: "#4631B4",
   },
   image: {
     width: 170,
