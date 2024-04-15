@@ -86,12 +86,22 @@ export default function Login({ navigation }) {
                 onPress={() => navigation.navigate("RecuperarSenha")}
               >
                 <View style={estilos.esqueciSenha}>
-                  <Text style={estilos.textoBotaoEsqueciSenha}>
-                    Criar Conta
-                  </Text>
-                  <Text style={estilos.textoBotaoEsqueciSenha}>
-                    Recuperar Senha
-                  </Text>
+                  <Pressable
+                    style={estilos.botaoEsqueciSenha}
+                    onPress={() => navigation.navigate("Cadastro")}
+                  >
+                    <Text style={estilos.textoBotaoEsqueciSenha}>
+                      Criar Conta
+                    </Text>
+                  </Pressable>
+                  <Pressable
+                    style={estilos.botaoEsqueciSenha}
+                    onPress={() => navigation.navigate("RecuperarSenha")}
+                  >
+                    <Text style={estilos.textoBotaoEsqueciSenha}>
+                      Recuperar Senha
+                    </Text>
+                  </Pressable>
                 </View>
               </Pressable>
             </View>
