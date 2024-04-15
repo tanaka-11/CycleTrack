@@ -4,6 +4,13 @@ export default function Home() {
   return (
     <ScrollView>
       <View style={styles.container}>
+        <View>
+          <View>
+            <Text></Text>
+            <Text></Text>
+          </View>
+        </View>
+
         {/* Progresso */}
         <Text style={styles.titulo}>Seu progresso semanal</Text>
         <View style={styles.progresso}>
@@ -23,21 +30,7 @@ export default function Home() {
           </View>
         </View>
 
-        {/* Atividade */}
-        <Text style={styles.titulo}>Sua ultima atividade</Text>
-        <View style={styles.atividadeRecente}>
-          <Text style={styles.textoDados}>14/03/2024 às 14:00</Text>
-
-          <View style={styles.viewDistancia}>
-            <Text style={styles.viewTitulo}>Distancia</Text>
-            <Text style={styles.textoDados}>8.5km</Text>
-          </View>
-
-          <View style={styles.viewTempo}>
-            <Text style={styles.viewTitulo}>Tempo</Text>
-            <Text style={styles.textoDados}>39min 10s</Text>
-          </View>
-        </View>
+        
       </View>
     </ScrollView>
   );

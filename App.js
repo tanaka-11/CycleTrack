@@ -17,6 +17,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 // useContext
 import { SpeedProvider } from "./components/SpeedContext";
+import { StatusBar } from "expo-status-bar";
 
 // constante iniciando a criação do navigator
 const Tab = createBottomTabNavigator();
@@ -39,7 +40,17 @@ export default function App() {
     <SpeedProvider>
       <NavigationContainer>
         {/* <Tab.Navigator initialRouteName={isUserLoggedIn ? "Home" : "Login"}> */}
-        <Tab.Navigator initialRouteName="Home">
+        <Tab.Navigator
+          screenOptions={{
+            headerShown: false,
+            tabBarLabelStyle: { fontSize: 16, padding: 5 },
+            tabBarInactiveTintColor: "#ffffff",
+            tabBarActiveTintColor: "#dddddd",
+            tabBarActiveBackgroundColor: "#271177",
+            tabBarStyle: styles.tabBar,
+          }}
+          initialRouteName="Home"
+        >
           {/* {isUserLoggedIn ? (
           <>
             <Tab.Screen name="Home" component={Home} />
@@ -75,4 +86,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  tabBar: {
+    backgroundColor: "#3D2498",
+    height: 80,
+  }
 });
