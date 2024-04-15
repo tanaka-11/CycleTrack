@@ -6,6 +6,7 @@ import React, {
   useRef,
 } from "react";
 import * as Location from "expo-location";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Criar o Contexto
 const SpeedContext = createContext();
@@ -208,6 +209,27 @@ export const SpeedProvider = ({ children }) => {
       steps: storedDistance,
     });
   }, [storedSpeed, storedDistance, running]);
+
+  // // Função para salvarInfos
+  // const salvarInfos = async () => {
+  //   const infos = {
+  //     localizacao: {
+  //       latitude: localizacao.latitude,
+  //       longitude: localizacao.longitude,
+  //     },
+  //   };
+
+  //   try {
+  //     // Adicionando as informações na lista
+  //     listaDeInfos.push(infos);
+
+  //     // Salvando a lista de informações de volta no AsyncStorage
+  //     await AsyncStorage.setItem("@infosSalvas", JSON.stringify(listaDeInfos));
+  //   } catch (error) {
+  //     console.log("Erro ao salvar as informações", error.message);
+  //     Alert.alert("Erro ao salvar as informações", "Tente novamente");
+  //   }
+  // };
 
   // Valor do contexto
   const value = {
