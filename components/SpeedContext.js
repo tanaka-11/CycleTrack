@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
 
 // Criar o Contexto
 const SpeedContext = createContext();
@@ -210,26 +211,32 @@ export const SpeedProvider = ({ children }) => {
     });
   }, [storedSpeed, storedDistance, running]);
 
-  // // Função para salvarInfos
-  // const salvarInfos = async () => {
-  //   const infos = {
-  //     localizacao: {
-  //       latitude: localizacao.latitude,
-  //       longitude: localizacao.longitude,
-  //     },
-  //   };
+  // Função para salvarInfos
+  const savedInfos = async () => {
+    const infos = {
+      localizacao: {
+        latitude: location.latitude,
+        longitude: location.longitude,
+      },
+      storedDistance: steps,
+      storedSpeed: speed,
+    };
 
-  //   try {
-  //     // Adicionando as informações na lista
-  //     listaDeInfos.push(infos);
+    try {
+      const infosSalvas = await AsyncStorage.getItem("@infosSalvas");
+      const listaDeInfos = infosSalvas ? JSON.parse(infosSalvas) : [];
 
-  //     // Salvando a lista de informações de volta no AsyncStorage
-  //     await AsyncStorage.setItem("@infosSalvas", JSON.stringify(listaDeInfos));
-  //   } catch (error) {
-  //     console.log("Erro ao salvar as informações", error.message);
-  //     Alert.alert("Erro ao salvar as informações", "Tente novamente");
-  //   }
-  // };
+      // Adicionando as informações na lista
+      listaDeInfos.push(infos);
+      console.log(listaDeInfos);
+
+      // Salvando a lista de informações de volta no AsyncStorage
+      await AsyncStorage.setItem("@infosSalvas", JSON.stringify(listaDeInfos));
+    } catch (error) {
+      console.log("Erro ao salvar as informações", error.message);
+      Alert.alert("Erro ao salvar as informações", "Tente novamente");
+    }
+  };
 
   // Valor do contexto
   const value = {
@@ -270,6 +277,7 @@ export const SpeedProvider = ({ children }) => {
     pauseMonitoring,
     resumeMonitoring,
     stopMonitoringAndStoreData,
+    savedInfos,
     permissionLocationAndAnimated,
     getLocation,
   };
