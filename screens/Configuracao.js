@@ -5,11 +5,12 @@ export default function Configuracao() {
   const logout = async () => {
     try {
       await signOut(auth);
-      navigation.replace("Inicial");
+      navigation.replace("Login");
     } catch (error) {
       console.error(error.code);
     }
   };
+
   return (
     <View>
       <Text>Configuracao</Text>
