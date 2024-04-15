@@ -7,6 +7,7 @@ import {
   View,
   Text,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { useState } from "react";
 import { auth } from "../firebaseConfig";
@@ -49,42 +50,48 @@ export default function Login({ navigation }) {
 
   return (
     <>
-      <View style={estilos.container}>
-        <View style={estilos.formulario}>
-          <Text style={estilos.logo}>CycleTrack</Text>
+      <ScrollView>
+        <View style={estilos.container}>
+          <View style={estilos.formulario}>
+            <Text style={estilos.logo}>CycleTrack</Text>
 
-          <ActivityIndicator animating={loading} size="large" color="#3D2498" />
+            <ActivityIndicator
+              animating={loading}
+              size="large"
+              color="#3D2498"
+            />
 
-          <TextInput
-            keyboardType="email-address"
-            onChangeText={(valor) => setEmail(valor)}
-            placeholder="E-mail"
-            style={estilos.input}
-          />
-          <TextInput
-            onChangeText={(valor) => setSenha(valor)}
-            placeholder="Senha"
-            style={estilos.input}
-            secureTextEntry
-          />
+            <TextInput
+              keyboardType="email-address"
+              onChangeText={(valor) => setEmail(valor)}
+              placeholder="E-mail"
+              style={estilos.input}
+            />
+            <TextInput
+              onChangeText={(valor) => setSenha(valor)}
+              placeholder="Senha"
+              style={estilos.input}
+              secureTextEntry
+            />
 
-          <Pressable onPress={login} style={estilos.botaoEntre}>
-            <Text style={estilos.textoBotaoEntre}>Entrar</Text>
-          </Pressable>
+            <Pressable onPress={login} style={estilos.botaoEntre}>
+              <Text style={estilos.textoBotaoEntre}>Entrar</Text>
+            </Pressable>
 
-          <Pressable
-            style={estilos.botaoEsqueciSenha}
-            onPress={() => navigation.navigate("RecuperarSenha")}
-          >
-            <View style={estilos.esqueciSenha}>
-              <Text>Esqueceu a senha?</Text>
-              <Text style={estilos.textoBotaoEsqueciSenha}>
-                Recuperar Senha
-              </Text>
-            </View>
-          </Pressable>
+            <Pressable
+              style={estilos.botaoEsqueciSenha}
+              onPress={() => navigation.navigate("RecuperarSenha")}
+            >
+              <View style={estilos.esqueciSenha}>
+                <Text style={estilos.textoBotaoEsqueciSenha}>Criar Conta</Text>
+                <Text style={estilos.textoBotaoEsqueciSenha}>
+                  Recuperar Senha
+                </Text>
+              </View>
+            </Pressable>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </>
   );
 }
@@ -98,10 +105,9 @@ const estilos = StyleSheet.create({
   },
   formulario: {
     marginBottom: 22,
-    marginTop: -10,
+    marginTop: 10,
     width: "85%",
-    height: "85%",
-
+    height: 450,
     backgroundColor: "rgba(255, 255, 255, 0.88)",
     borderRadius: 20,
     padding: 22,
