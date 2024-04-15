@@ -99,5 +99,10 @@ const styles = StyleSheet.create({
   distanceText: {
     fontSize: 18,
     marginTop: 10,
+    borderColor: "#3A2293",
+    borderWidth: 2,
+    padding: 8,
+    width: 100,
+    borderRadius: 8,
   },
 });

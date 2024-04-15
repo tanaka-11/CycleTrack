@@ -128,28 +128,32 @@ export default function Stopwatch() {
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.header}></Text>
-        <Text style={styles.subHeader}>Tempo</Text>
+        <Text style={styles.subHeader}>Passe seu tempo pedalando</Text>
 
-        {/* Exibir o tempo atual */}
-        <Text style={styles.timeText}>
-          {`${time.hours.toString().padStart(2, "0")}:${time.minutes
-            .toString()
-            .padStart(2, "0")}:${time.seconds.toString().padStart(2, "0")}`}
-        </Text>
+        <View style={styles.sessaoCentralizar}>
+          <View style={styles.bordaContador}>
+            <View style={styles.timeText}>
+              <Text style={styles.timeText2}>
+                {`${time.hours.toString().padStart(2, "0")}:${time.minutes
+                  .toString()
+                  .padStart(2, "0")}:${time.seconds.toString().padStart(2, "0")}`}
+              </Text>
+            </View>
+          </View>
 
-        {/* Componente do mapa para exibir a localização */}
-        <Mapa mapViewRef={mapViewRef} />
+          {/* Componente do mapa para exibir a localização */}
+          <Mapa mapViewRef={mapViewRef} />
 
-        {/* Componente para os botões de controle */}
-        <ControlButtons
-          pauseStopwatch={pauseStopwatch}
-          startStopwatch={startStopwatch}
-          resetStopwatch={resetStopwatch}
-          resumeStopwatch={resumeStopwatch}
-          stopAll={stopAll}
-          setTime={setTime}
-        />
+          {/* Componente para os botões de controle */}
+          <ControlButtons
+            pauseStopwatch={pauseStopwatch}
+            startStopwatch={startStopwatch}
+            resetStopwatch={resetStopwatch}
+            resumeStopwatch={resumeStopwatch}
+            stopAll={stopAll}
+            setTime={setTime}
+          />
+        </View>
       </View>
     </>
   );
@@ -158,23 +162,110 @@ export default function Stopwatch() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    marginVertical: 40
   },
 
   header: {
     fontSize: 30,
-    color: "green",
+    color: "#412CAB",
     marginBottom: 10,
   },
 
   subHeader: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: "blue",
+    marginBottom: 30,
+    color: "#000",
+    fontSize: 22,
+    fontWeight: "bold",
+    textAlign: "left",
   },
-
   timeText: {
-    fontSize: 48,
+    color: "#5442D2",
+    backgroundColor: "#CFC3EE",
+    width: 170,
+    height: 170,
+    borderRadius: 100,
+    borderColor: "#fcfdfb",
+    borderWidth: 2,
+    alignItems: "center",
+    justifyContent: "center",
   },
+  timeText2: {
+    fontSize: 38,
+    color: "#5442D2",
+  },
+  textoComum: {
+    fontWeight: "bold",
+    fontSize: 22,
+    marginVertical: 20,
+    marginHorizontal: 10,
+    textAlign: "left"
+  },
+  bordaContador: {
+    borderColor: "#5442D2",
+    borderWidth: 2,
+    borderRadius: 100,
+    width: 175,
+    height: 175,
+  },
+  sessaoBotoes: {
+    flexDirection: "row",
+    gap: 20,
+    marginVertical: 35,
+    marginHorizontal: 20,
+  },
+  botaoVazado: {
+    borderColor: "#3A2293",
+    borderWidth: 2,
+    padding: 8,
+    width: 100,
+    borderRadius: 8,
+  },
+  textoBotaoVazado: {
+    color: "#3A2293",
+    textAlign: "center"
+  },
+  botaoPreenchido: {
+    backgroundColor: "#412CAB",
+    padding: 8,
+    width: 100,
+    borderRadius: 8,
+  },
+  textoBotaoPreenchido: {
+    color: "#ffffff",
+    textAlign: "center"
+  },
+  botaoVazadoPreto: {
+    borderColor: "rgba(13, 30, 82, 0.5)",
+    borderWidth: 2,
+    padding: 8,
+    width: 100,
+    borderRadius: 8,
+  },
+  textoBotaoVazadoP: {
+    color: "#0A045A",
+    textAlign: "center"
+  },
+  botaoPadrao: {
+    backgroundColor: "#5442D2",
+    padding: 8,
+    borderRadius: 8,
+    width: 120,
+    height: 45
+  },
+  textoBotaoPadrao: {
+    color: "#fff",
+    textAlign: "center",
+    alignItems: "center",
+    fontSize: 22,
+  },
+  sessaoTituloIcon: {
+    marginHorizontal: 20,
+    marginVertical: 10,
+    flexDirection: "row",
+    gap: 100,
+    alignItems: "center"
+  },
+  sessaoCentralizar: {
+    alignItems: "center"
+  }
 });
