@@ -8,7 +8,7 @@ import {
   Vibration,
 } from "react-native";
 import { useState, useEffect } from "react";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Polyline } from "react-native-maps";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSpeedContext } from "../components/SpeedContext";
 
@@ -76,6 +76,9 @@ export default function Atividades() {
                     ref={mapViewRef}
                     style={styles.mapa}
                     scrollEnabled={false}
+                    zoomEnabled={false}
+                    rotateEnabled={false}
+                    pitchEnabled={false}
                     initialRegion={{
                       latitude: favorito.localizacao.latitude,
                       longitude: favorito.localizacao.longitude,
@@ -87,6 +90,10 @@ export default function Atividades() {
                       coordinate={favorito.localizacao}
                       title={`Local da sua corrida!`}
                       pinColor="blue"
+                    />
+                    <Polyline
+                      coordinates={[favorito.localizacao]}
+                      strokeWidth={5}
                     />
                   </MapView>
                 </View>
@@ -136,5 +143,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
 
-  texto: {},
+  texto: {
+    fontSize: 18,
+  },
 });
