@@ -12,6 +12,7 @@ import Play from "./screens/Play";
 import Configuracao from "./screens/Configuracao";
 import Login from "./screens/Login";
 import Cadastro from "./screens/Cadastro";
+import RecuperarSenha from "./screens/RecuperarSenha";
 // Acesso firebase auth
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -57,6 +58,7 @@ export default function App() {
             <Tab.Screen name="Atividades" component={Atividades} />
             <Tab.Screen name="Play" component={Play} />
             <Tab.Screen name="Perfil" component={Perfil} />
+            <Tab.Screen name="RecuperarSenha" component={RecuperarSenha} />
             <Tab.Screen name="Configuracao" component={Configuracao} />
           </>
         ) : (
@@ -74,6 +76,7 @@ export default function App() {
 
           <Tab.Screen name="Login" component={Login} />
           <Tab.Screen name="Cadastro" component={Cadastro} />
+          <Tab.Screen name="RecuperarSenha" component={RecuperarSenha} />
         </Tab.Navigator>
       </NavigationContainer>
     </SpeedProvider>
@@ -89,5 +92,5 @@ const styles = StyleSheet.create({
   tabBar: {
     backgroundColor: "#3D2498",
     height: 80,
-  }
+  },
 });
