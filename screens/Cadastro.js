@@ -9,6 +9,7 @@ import {
   Text,
   Image,
   StatusBar,
+  ScrollView,
 } from "react-native";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { FontAwesome } from "@expo/vector-icons";
@@ -16,6 +17,7 @@ import { auth } from "../firebaseConfig";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function Cadastro({ navigation }) {
   const [email, setEmail] = useState("");
@@ -144,44 +146,47 @@ export default function Cadastro({ navigation }) {
   };
 
   return (
-    <View style={estilos.container}>
-      <StatusBar barStyle="dark-content" />
-      <View style={estilos.formulario}>
-        {imagem && (
-          <Image
-            source={{ uri: imagem }}
-            style={{ width: 260, height: 260, borderRadius: 5 }}
+    <ScrollView>
+      <View style={estilos.container}>
+        <StatusBar barStyle="dark-content" />
+        <View style={estilos.formulario}>
+          {imagem && (
+            <Image
+              source={{ uri: imagem }}
+              style={{ width: 260, height: 260, borderRadius: 5 }}
+            />
+          )}
+
+          <Pressable style={estilos.botaoFoto} onPress={escolhaImagem}>
+            <Text style={estilos.textoBotaoFoto}>Escolher Foto</Text>
+          </Pressable>
+
+          <TextInput
+            placeholder="Nome"
+            style={estilos.input}
+            keyboardType="default"
+            onChangeText={(valor) => setNome(valor)}
           />
-        )}
+          <TextInput
+            placeholder="E-mail"
+            style={estilos.input}
+            keyboardType="email-address"
+            onChangeText={(valor) => setEmail(valor)}
+          />
+          <TextInput
+            placeholder="Senha"
+            style={estilos.input}
+            secureTextEntry
+            onChangeText={(valor) => setSenha(valor)}
+          />
 
-        <Pressable style={estilos.botaoFoto} onPress={escolhaImagem}>
-          <Text style={estilos.textoBotaoFoto}>Escolher Foto</Text>
-        </Pressable>
-
-        <TextInput
-          placeholder="Nome"
-          style={estilos.input}
-          keyboardType="default"
-          onChangeText={(valor) => setNome(valor)}
-        />
-        <TextInput
-          placeholder="E-mail"
-          style={estilos.input}
-          keyboardType="email-address"
-          onChangeText={(valor) => setEmail(valor)}
-        />
-        <TextInput
-          placeholder="Senha"
-          style={estilos.input}
-          secureTextEntry
-          onChangeText={(valor) => setSenha(valor)}
-        />
-
-        <Pressable style={estilos.botaoCadastro} onPress={carregarStorage}>
-          <Text style={estilos.textoBotaoCadastro}>Cadastrar</Text>
-        </Pressable>
+          <Pressable style={estilos.botaoCadastro} onPress={carregarStorage}>
+            <Text style={estilos.textoBotaoCadastro}>Cadastrar</Text>
+            <MaterialCommunityIcons name="bike-fast" size={20} color="white" />
+          </Pressable>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -192,10 +197,10 @@ const estilos = StyleSheet.create({
     justifyContent: "center",
   },
   formulario: {
-    marginTop: -10,
     marginBottom: 22,
+    marginTop: 10,
     width: "85%",
-    height: "80%",
+    flex: 2,
     backgroundColor: "rgba(255, 255, 255, 0.88)",
     borderRadius: 20,
     padding: 22,
@@ -226,6 +231,8 @@ const estilos = StyleSheet.create({
     paddingHorizontal: 50,
     borderRadius: 8,
     marginTop: 12,
+    flexDirection: "row",
+    gap: 5,
   },
   textoBotaoCadastro: {
     color: "#E6E6FA",
