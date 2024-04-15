@@ -7,7 +7,7 @@ import {
   View,
   Vibration,
 } from "react-native";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import MapView, { Marker } from "react-native-maps";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSpeedContext } from "../components/SpeedContext";
@@ -18,7 +18,7 @@ export default function Atividades() {
   // State para registrar os dados carregados no storage
   const [listaFavoritos, setListaFavoritos] = useState(data);
 
-  // Excluir TODAS corrida
+  // Excluir TODAS corrida (Depois Excluir)
   const excluirTodasCorridas = async () => {
     Alert.alert("Excluir TODAS?", "Quer mesmo excluir TODAS suas corridas?", [
       {
@@ -36,7 +36,7 @@ export default function Atividades() {
     ]); // Passado 3º parametro como um array com um objeto para texto do alert
   };
 
-  // useEffect é acionado assim que entrar na tela favoritos
+  // useEffect é acionado toda vez que o data(State vindo do Context) atualizar
   useEffect(() => {
     const carregarFavoritos = async () => {
       try {
