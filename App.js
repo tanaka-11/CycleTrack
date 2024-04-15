@@ -15,6 +15,9 @@ import Cadastro from "./screens/Cadastro";
 // Acesso firebase auth
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
+// useContext
+import { SpeedProvider } from "./components/SpeedContext";
+
 // constante iniciando a criação do navigator
 const Tab = createBottomTabNavigator();
 

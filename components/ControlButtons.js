@@ -1,23 +1,52 @@
 import React from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Alert,
+  Vibration,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
+// useContext
+import { useSpeedContext } from "./SpeedContext";
+
 export default function ControlButtons({
-  pause,
-  running,
-  stop,
+  // Funções vindo do componente PAI (StopWatch)
   pauseStopwatch,
   startStopwatch,
   resetStopwatch,
   resumeStopwatch,
   stopAll,
-  startMonitoringSpeed,
-  stopMonitoringSpeed,
-  pauseMonitoring,
-  resumeMonitoring,
+  setTime,
 }) {
+  // Funções vindo do componente Context
+  const {
+    // States
+    stop,
+    pause,
+    running,
+
+    // Set
+    setPause,
+    setRunning,
+    setStop,
+    setDistance,
+    setSpeed,
+    setSteps,
+
+    // Funções
+    startMonitoring,
+    stopMonitoring,
+    pauseMonitoring,
+    resumeMonitoring,
+    stopMonitoringAndStoreData,
+  } = useSpeedContext();
+
   // Recurso de navegação
   const navigation = useNavigation();
+
   return (
     <>
       <View style={styles.buttonContainer}>
@@ -28,7 +57,7 @@ export default function ControlButtons({
                 style={[styles.button, styles.pauseButton]}
                 onPress={() => {
                   pauseStopwatch();
-                  pauseMonitoring;
+                  pauseMonitoring();
                 }}
               >
                 <Text style={styles.buttonText}>Pausar</Text>
@@ -38,7 +67,7 @@ export default function ControlButtons({
                 style={[styles.button, styles.stopButton]}
                 onPress={() => {
                   stopAll();
-                  stopMonitoringSpeed;
+                  stopMonitoringAndStoreData();
                 }}
               >
                 <Text style={styles.buttonText}>Parar</Text>
@@ -53,7 +82,7 @@ export default function ControlButtons({
               style={[styles.button, styles.resetButton]}
               onPress={() => {
                 resetStopwatch();
-                stopMonitoringSpeed;
+                stopMonitoring();
               }}
             >
               <Text style={styles.buttonText}>Reset</Text>
@@ -63,7 +92,7 @@ export default function ControlButtons({
               style={[styles.button, styles.resumeButton]}
               onPress={() => {
                 resumeStopwatch();
-                resumeMonitoring;
+                resumeMonitoring();
               }}
             >
               <Text style={styles.buttonText}>Retomar</Text>
@@ -75,8 +104,10 @@ export default function ControlButtons({
           <Pressable
             style={[styles.button, styles.startButton]}
             onPress={() => {
+              // State para funcionar apos Salvar
+              setRunning(true);
               startStopwatch();
-              startMonitoringSpeed;
+              startMonitoring();
             }}
           >
             <Text style={styles.buttonText}>Começar</Text>
@@ -87,8 +118,34 @@ export default function ControlButtons({
           <Pressable
             style={[styles.button, styles.resumeButton]}
             onPress={() => {
-              stopAll();
-              navigation.navigate("Atividades");
+              // Redefinir os states para seus valores iniciais
+              // State do Cronometro
+              setStop(false);
+              setPause(false);
+              setRunning(false);
+              setTime({ hours: 0, minutes: 0, seconds: 0 });
+
+              // State do Acelerometro
+              setSpeed(0);
+              setDistance(0);
+              setSteps(0);
+
+              // Alerta de operação bem sucedida
+              Vibration.vibrate();
+              Alert.alert(
+                "Corrida salva!",
+                "Sua corrida foi salva com sucesso",
+                [
+                  {
+                    text: "Visualizar informações",
+                    onPress: () => navigation.navigate("Atividades"),
+                  },
+                  {
+                    text: "Okay",
+                    style: "cancel",
+                  },
+                ]
+              );
             }}
           >
             <Text style={styles.buttonText}>Salvar</Text>

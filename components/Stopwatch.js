@@ -1,29 +1,33 @@
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { useState, useRef } from "react";
-import ControlButtons from "./ControlButtons"; // Componente para os botões de controle
-import {
-  startMonitoringSpeed,
-  stopMonitoringSpeed,
-  pauseMonitoring,
-  resumeMonitoring,
-} from "./Mapa";
 
+// Componentes
+import ControlButtons from "./ControlButtons";
 import Mapa from "./Mapa";
-export default function Stopwatch({}) {
+
+// Context
+import { useSpeedContext } from "./SpeedContext";
+
+export default function Stopwatch() {
+  const {
+    // States
+    mapViewRef,
+    speed,
+    steps,
+
+    // Set
+    setSpeed,
+    setRunning,
+    setDistance,
+    setSteps,
+    setPause,
+    setStop,
+  } = useSpeedContext();
+
   // Estados para controlar o tempo do cronômetro
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
-  const [pause, setPause] = useState(false); // Estado para indicar pausa
-  const [running, setRunning] = useState(false); // Estado para indicar se o cronômetro está em execução
-  const [stop, setStop] = useState(false); // Estado para indicar se o cronômetro foi parado
   const intervalRef = useRef(null); // Referência para o intervalo do cronômetro
   const startTimeRef = useRef(0); // Referência para o tempo de início do cronômetro
-
-  // Estados para a contagem de passos e velocidade
-  const [steps, setSteps] = useState(0);
-  const [speed, setSpeed] = useState(0);
-  const [distance, setDistance] = useState(0);
-
-  const [locationSubscription, setLocationSubscription] = useState(null);
 
   // Função para iniciar o cronômetro
   const startStopwatch = () => {
@@ -45,9 +49,9 @@ export default function Stopwatch({}) {
 
     // Definir os estados apropriados
     setRunning(true);
-
     setDistance(0);
     setSteps(0);
+    setSpeed(0);
   };
 
   // Função para pausar o cronômetro
@@ -59,8 +63,7 @@ export default function Stopwatch({}) {
     setRunning(false);
     setPause(true);
     setDistance(steps);
-
-    // Pausar o monitoramento de velocidade
+    setSpeed(0);
   };
 
   // Função para resetar o cronômetro
@@ -77,8 +80,6 @@ export default function Stopwatch({}) {
     setSpeed(0);
     setSteps(0);
     setDistance(0);
-
-    // Parar o monitoramento de velocidade
   };
 
   // Função para retomar o cronômetro
@@ -102,8 +103,8 @@ export default function Stopwatch({}) {
     // Definir os estados apropriados
     setRunning(true);
     setPause(false);
-
-    // Retomar o monitoramento de velocidade
+    setDistance(steps);
+    setSpeed(speed);
   };
 
   // Função para parar o cronômetro
@@ -122,15 +123,6 @@ export default function Stopwatch({}) {
     setRunning(false);
     setPause(false);
     setStop(true);
-    setSteps(steps);
-
-    // Parar o monitoramento de velocidade
-  };
-
-  /* 1) Função teste está no PAI (Stopwatch) 
-  e queremos torná-la acessível pelo FILHO (Mapa). */
-  const teste = () => {
-    console.log("oi");
   };
 
   return (
@@ -147,36 +139,16 @@ export default function Stopwatch({}) {
         </Text>
 
         {/* Componente do mapa para exibir a localização */}
-        <Mapa
-          pause={pause}
-          running={running}
-          setRunning={setRunning}
-          setPause={setPause}
-          setSpeed={setSpeed}
-          setDistance={setDistance}
-          setSteps={setSteps}
-          setLocationSubscription={setLocationSubscription}
-          /* 2) Criamos uma prop especificamente para a função
-          PAI ficar acessível pelo FILHO, e passamos o nome da função nesta prop. */
-        />
+        <Mapa mapViewRef={mapViewRef} />
 
         {/* Componente para os botões de controle */}
         <ControlButtons
-          // States
-          running={running}
-          pause={pause}
-          stop={stop}
-          // Função do Cronometro
           pauseStopwatch={pauseStopwatch}
           startStopwatch={startStopwatch}
           resetStopwatch={resetStopwatch}
           resumeStopwatch={resumeStopwatch}
           stopAll={stopAll}
-          // Função de Speed e Steps
-          startMonitoringSpeed={startMonitoringSpeed}
-          stopMonitoringSpeed={stopMonitoringSpeed}
-          pauseMonitoring={pauseMonitoring}
-          resumeMonitoring={resumeMonitoring}
+          setTime={setTime}
         />
       </View>
     </>
