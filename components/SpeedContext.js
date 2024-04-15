@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Alert } from "react-native";
 
 // Criar o Contexto
 const SpeedContext = createContext();
@@ -24,6 +23,7 @@ export const SpeedProvider = ({ children }) => {
   const [pause, setPause] = useState();
   const [running, setRunning] = useState();
   const [stop, setStop] = useState(false);
+  const [data, setData] = useState([]);
 
   // Localização do usuário
   const [myLocation, setMyLocation] = useState();
@@ -115,7 +115,6 @@ export const SpeedProvider = ({ children }) => {
     };
 
     try {
-      console.log("Iniciando o monitoramento da velocidade");
       const newLocationSubscription = await Location.watchPositionAsync(
         {
           accuracy: Location.Accuracy.Highest,
@@ -161,10 +160,8 @@ export const SpeedProvider = ({ children }) => {
   };
 
   const pauseMonitoring = () => {
-    console.log("Pausando o monitoramento");
     setPause(true);
     if (locationSubscription) {
-      console.log("Removendo a assinatura de localização");
       locationSubscription.remove();
       setLocationSubscription(null);
     }
@@ -181,7 +178,6 @@ export const SpeedProvider = ({ children }) => {
   // Função para retomar o monitoramento
   const resumeMonitoring = async () => {
     if (!running && pause) {
-      console.log("voltando a assinatura de localização");
       setPause(false);
       await startMonitoring();
     }
@@ -189,11 +185,8 @@ export const SpeedProvider = ({ children }) => {
 
   // Função para pausar o monitoramento e armazenar os dados
   const stopMonitoringAndStoreData = () => {
-    console.log("Pausando o monitoramento e armazenando os dados");
-
     // Pausar o monitoramento
     if (locationSubscription) {
-      console.log("Removendo a assinatura de localização");
       locationSubscription.remove();
       setLocationSubscription(null);
     }
@@ -202,14 +195,6 @@ export const SpeedProvider = ({ children }) => {
     setStoredSpeed(speed);
     setStoredDistance(steps);
   };
-
-  // useEffect para registrar os valores de storedSpeed e storedDistance
-  useEffect(() => {
-    console.log("Dados atuais: ", {
-      speed: storedSpeed,
-      steps: storedDistance,
-    });
-  }, [storedSpeed, storedDistance, running]);
 
   // Função para salvarInfos
   const savedInfos = async () => {
@@ -228,7 +213,8 @@ export const SpeedProvider = ({ children }) => {
 
       // Adicionando as informações na lista
       listaDeInfos.push(infos);
-      console.log(listaDeInfos);
+      // console.log(listaDeInfos);
+      setData(listaDeInfos);
 
       // Salvando a lista de informações de volta no AsyncStorage
       await AsyncStorage.setItem("@infosSalvas", JSON.stringify(listaDeInfos));
@@ -255,6 +241,7 @@ export const SpeedProvider = ({ children }) => {
     mapViewRef,
     storedSpeed,
     storedDistance,
+    data,
 
     // Set
     setSpeed,
@@ -270,6 +257,7 @@ export const SpeedProvider = ({ children }) => {
     setInitialLocation,
     setStoredSpeed,
     setStoredDistance,
+    setData,
 
     // Funções
     startMonitoring,
