@@ -55,8 +55,6 @@ export default function Atividades() {
     carregarFavoritos();
   }, [data]);
 
-  // console.log(listaFavoritos[0].time.seconds);
-
   return (
     <View style={styles.container}>
       {listaFavoritos.length > 0 ? (
