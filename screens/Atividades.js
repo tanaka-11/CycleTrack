@@ -55,12 +55,16 @@ export default function Atividades() {
     carregarFavoritos();
   }, [data]);
 
+  // console.log(listaFavoritos[0].time.seconds);
+
   return (
     <View style={styles.container}>
       {listaFavoritos.length > 0 ? (
         <ScrollView>
           {listaFavoritos.map((favorito, index) => {
             if (favorito.localizacao) {
+              console.log("Favorito:");
+              console.log(favorito);
               return (
                 <View key={index} style={styles.viewDados}>
                   <View style={styles.viewTexto}>
@@ -68,7 +72,9 @@ export default function Atividades() {
                       Distancia: {favorito.storedDistance.toFixed(2)}
                     </Text>
                     <Text style={styles.texto}>
-                      Velocidade: {favorito.storedSpeed.toFixed(2)}
+                      Tempo: {favorito.storedTime.hours} h :{" "}
+                      {favorito.storedTime.minutes} m :{" "}
+                      {favorito.storedTime.seconds} s
                     </Text>
                   </View>
 

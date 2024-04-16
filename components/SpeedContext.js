@@ -18,6 +18,7 @@ export const useSpeedContext = () => useContext(SpeedContext);
 export const SpeedProvider = ({ children }) => {
   // States para uso geral das funções de monitoramento
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
+  console.log(time);
   const [speed, setSpeed] = useState(0);
   const [distance, setDistance] = useState(0);
   const [steps, setSteps] = useState(0);
@@ -206,6 +207,7 @@ export const SpeedProvider = ({ children }) => {
       },
       storedDistance: steps,
       storedSpeed: speed,
+      storedTime: time,
     };
 
     try {
