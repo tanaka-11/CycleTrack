@@ -21,7 +21,7 @@ import { signOut } from "firebase/auth";
 import { updateEmail, updateProfile } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-export default function Perfil() {
+export default function Perfil({ navigation }) {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [fotoPerfil, setfotoPerfil] = useState("");
@@ -133,7 +133,6 @@ export default function Perfil() {
   const logout = async () => {
     try {
       await signOut(auth);
-      navigation.replace("Login");
     } catch (error) {
       console.error(error.code);
     }
