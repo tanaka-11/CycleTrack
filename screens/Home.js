@@ -5,6 +5,7 @@ import {
   Text,
   View,
   Image,
+  StatusBar,
 } from "react-native";
 import { useSpeedContext } from "../components/SpeedContext";
 import { useEffect, useState } from "react";
@@ -81,6 +82,7 @@ export default function Home({ navigation }) {
 
   return (
     <ScrollView>
+      <StatusBar backgroundColor="#A8A0D0" />
       <View style={styles.container}>
         <View style={styles.topo}>
           <View style={styles.dadosUsuario}>

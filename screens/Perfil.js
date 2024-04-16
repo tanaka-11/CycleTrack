@@ -2,12 +2,10 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   Alert,
   StyleSheet,
   Pressable,
   Image,
-  StatusBar,
   Vibration,
 } from "react-native";
 import { useState, useEffect } from "react";
@@ -141,8 +139,6 @@ export default function Perfil({ navigation }) {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <StatusBar barStyle="dark-content" backgroundColor="#A8A0D0" />
-
         <View style={styles.containerFoto}>
           <Image
             source={{ uri: fotoPerfil || "https://via.placeholder.com/300" }}
