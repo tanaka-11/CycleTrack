@@ -1,13 +1,27 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+} from "react-native";
 import { useSpeedContext } from "../components/SpeedContext";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MapView, { Marker } from "react-native-maps";
+import { auth } from "../firebaseConfig";
 
 export default function Home() {
   const { mapViewRef, data } = useSpeedContext();
 
   const [listaFavoritos, setListaFavoritos] = useState(data);
+
+  const { email } = auth.currentUser;
+
+  const { displayName } = auth.currentUser;
+
+  const { photoURL } = auth.currentUser;
 
   useEffect(() => {
     const carregarFavoritos = async () => {
@@ -62,10 +76,24 @@ export default function Home() {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View>
-          <View>
-            <Text></Text>
-            <Text></Text>
+        <View style={styles.topo}>
+          <View style={styles.dadosUsuario}>
+            <View style={styles.infos}>
+              <Text style={styles.bemVindo}>Bem-vindo(a)</Text>
+              <Text style={styles.nomeUsuario}>{displayName} </Text>
+            </View>
+            <Pressable
+              onPress={() => navigation.navigate("Perfil")}
+              title="Perfil"
+            >
+              <Image
+                source={{ uri: photoURL || "https://via.placeholder.com/150" }}
+                style={[
+                  styles.image,
+                  { borderRadius: 85, backgroundColor: "#ad91cc" },
+                ]}
+              />
+            </Pressable>
           </View>
         </View>
 
@@ -156,34 +184,33 @@ const styles = StyleSheet.create({
   },
   //Perfil
   topo: {
-    padding: 10,
-    marginVertical: 20,
+    padding: 6,
+    marginVertical: 32,
     marginHorizontal: 5,
     borderWidth: 1,
     borderColor: "#3D2498",
     borderStyle: "dashed",
     borderRadius: 5,
   },
-  infos: {
-    marginLeft: 5,
+  dadosUsuario: {
+    flexDirection: "row",
+    gap: 80,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 6,
   },
   bemVindo: {
-    fontSize: 24,
+    fontSize: 22,
     marginVertical: 16,
     fontWeight: "500",
   },
   nomeUsuario: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "300",
   },
   image: {
     width: 64,
     height: 64,
-    marginTop: 40,
-
-    position: "absolute",
-    right: 20,
-    top: 20,
 
     borderWidth: 1,
     borderRadius: 50,
