@@ -52,9 +52,6 @@ export default function Mapa() {
     getLocation();
   }, [running]);
 
-  console.log(speed);
-  console.log(steps);
-
   return (
     <>
       <View style={styles.viewMapa}>

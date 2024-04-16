@@ -6,6 +6,7 @@ import React, {
   useRef,
 } from "react";
 import * as Location from "expo-location";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Criar o Contexto
 const SpeedContext = createContext();
@@ -16,12 +17,15 @@ export const useSpeedContext = () => useContext(SpeedContext);
 // Provedor do contexto que envolve a árvore de componentes
 export const SpeedProvider = ({ children }) => {
   // States para uso geral das funções de monitoramento
+  const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
+  console.log(time);
   const [speed, setSpeed] = useState(0);
   const [distance, setDistance] = useState(0);
   const [steps, setSteps] = useState(0);
   const [pause, setPause] = useState();
   const [running, setRunning] = useState();
   const [stop, setStop] = useState(false);
+  const [data, setData] = useState([]);
 
   // Localização do usuário
   const [myLocation, setMyLocation] = useState();
@@ -113,7 +117,6 @@ export const SpeedProvider = ({ children }) => {
     };
 
     try {
-      console.log("Iniciando o monitoramento da velocidade");
       const newLocationSubscription = await Location.watchPositionAsync(
         {
           accuracy: Location.Accuracy.Highest,
@@ -159,10 +162,8 @@ export const SpeedProvider = ({ children }) => {
   };
 
   const pauseMonitoring = () => {
-    console.log("Pausando o monitoramento");
     setPause(true);
     if (locationSubscription) {
-      console.log("Removendo a assinatura de localização");
       locationSubscription.remove();
       setLocationSubscription(null);
     }
@@ -179,7 +180,6 @@ export const SpeedProvider = ({ children }) => {
   // Função para retomar o monitoramento
   const resumeMonitoring = async () => {
     if (!running && pause) {
-      console.log("voltando a assinatura de localização");
       setPause(false);
       await startMonitoring();
     }
@@ -187,11 +187,8 @@ export const SpeedProvider = ({ children }) => {
 
   // Função para pausar o monitoramento e armazenar os dados
   const stopMonitoringAndStoreData = () => {
-    console.log("Pausando o monitoramento e armazenando os dados");
-
     // Pausar o monitoramento
     if (locationSubscription) {
-      console.log("Removendo a assinatura de localização");
       locationSubscription.remove();
       setLocationSubscription(null);
     }
@@ -201,13 +198,34 @@ export const SpeedProvider = ({ children }) => {
     setStoredDistance(steps);
   };
 
-  // useEffect para registrar os valores de storedSpeed e storedDistance
-  useEffect(() => {
-    console.log("Dados atuais: ", {
-      speed: storedSpeed,
-      steps: storedDistance,
-    });
-  }, [storedSpeed, storedDistance, running]);
+  // Função para salvarInfos
+  const savedInfos = async () => {
+    const infos = {
+      localizacao: {
+        latitude: location.latitude,
+        longitude: location.longitude,
+      },
+      storedDistance: steps,
+      storedSpeed: speed,
+      storedTime: time,
+    };
+
+    try {
+      const infosSalvas = await AsyncStorage.getItem("@infosSalvas");
+      const listaDeInfos = infosSalvas ? JSON.parse(infosSalvas) : [];
+
+      // Adicionando as informações na lista
+      listaDeInfos.push(infos);
+      // console.log(listaDeInfos);
+      setData(listaDeInfos);
+
+      // Salvando a lista de informações de volta no AsyncStorage
+      await AsyncStorage.setItem("@infosSalvas", JSON.stringify(listaDeInfos));
+    } catch (error) {
+      console.log("Erro ao salvar as informações", error.message);
+      Alert.alert("Erro ao salvar as informações", "Tente novamente");
+    }
+  };
 
   // Valor do contexto
   const value = {
@@ -226,6 +244,8 @@ export const SpeedProvider = ({ children }) => {
     mapViewRef,
     storedSpeed,
     storedDistance,
+    data,
+    time,
 
     // Set
     setSpeed,
@@ -241,6 +261,8 @@ export const SpeedProvider = ({ children }) => {
     setInitialLocation,
     setStoredSpeed,
     setStoredDistance,
+    setData,
+    setTime,
 
     // Funções
     startMonitoring,
@@ -248,6 +270,7 @@ export const SpeedProvider = ({ children }) => {
     pauseMonitoring,
     resumeMonitoring,
     stopMonitoringAndStoreData,
+    savedInfos,
     permissionLocationAndAnimated,
     getLocation,
   };

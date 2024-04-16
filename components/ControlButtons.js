@@ -42,6 +42,7 @@ export default function ControlButtons({
     pauseMonitoring,
     resumeMonitoring,
     stopMonitoringAndStoreData,
+    savedInfos,
   } = useSpeedContext();
 
   // Recurso de navegação
@@ -146,6 +147,9 @@ export default function ControlButtons({
                   },
                 ]
               );
+
+              // Função
+              savedInfos();
             }}
           >
             <Text style={styles.buttonText}>Salvar</Text>

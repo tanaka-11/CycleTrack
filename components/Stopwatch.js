@@ -14,6 +14,7 @@ export default function Stopwatch() {
     mapViewRef,
     speed,
     steps,
+    time,
 
     // Set
     setSpeed,
@@ -22,10 +23,14 @@ export default function Stopwatch() {
     setSteps,
     setPause,
     setStop,
+    setTime,
   } = useSpeedContext();
 
+  console.log("StopWatch:");
+  console.log(time);
+
   // Estados para controlar o tempo do cronômetro
-  const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
+  // const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const intervalRef = useRef(null); // Referência para o intervalo do cronômetro
   const startTimeRef = useRef(0); // Referência para o tempo de início do cronômetro
 
