@@ -26,9 +26,6 @@ export default function Stopwatch() {
     setTime,
   } = useSpeedContext();
 
-  console.log("StopWatch:");
-  console.log(time);
-
   // Estados para controlar o tempo do cronômetro
   // const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const intervalRef = useRef(null); // Referência para o intervalo do cronômetro
