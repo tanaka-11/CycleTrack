@@ -69,7 +69,7 @@ export default function Cadastro({ navigation }) {
       cadastrar(); //Cadastro dos demais dados
     } catch (error) {
       console.error(error);
-      Alert.alert("Falha ao fazer upload da imagem", error.message); // Exibe um alerta indicando que ocorreu uma falha no upload
+      Alert.alert("Falha ao fazer upload da imagem", error.message);
     }
   };
 
@@ -108,7 +108,7 @@ export default function Cadastro({ navigation }) {
         {
           style: "default",
           text: "Ir para a área logada ",
-          onPress: () => navigation.replace("AreaLogada"),
+          onPress: () => navigation.navigate("Home"),
         },
       ]);
     } catch (error) {
