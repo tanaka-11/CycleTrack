@@ -29,7 +29,7 @@ export default function Login({ navigation }) {
     try {
       setLoading(true);
       await signInWithEmailAndPassword(auth, email, senha);
-      navigation.replace("AreaLogada");
+      navigation.navigate("Home");
     } catch (error) {
       console.error(error.code);
       let mensagem;
@@ -115,10 +115,10 @@ export default function Login({ navigation }) {
 const estilos = StyleSheet.create({
   container: {
     flex: 1,
-
     alignItems: "center",
     justifyContent: "center",
   },
+
   formulario: {
     marginBottom: 22,
     marginTop: 10,
