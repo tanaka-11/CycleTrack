@@ -19,22 +19,22 @@ export default function Atividades() {
   const [listaFavoritos, setListaFavoritos] = useState(data);
 
   // Excluir TODAS corrida (Depois Excluir)
-  const excluirTodasCorridas = async () => {
-    Alert.alert("Excluir TODAS?", "Quer mesmo excluir TODAS suas corridas?", [
-      {
-        text: "Excluir",
-        onPress: async () => {
-          await AsyncStorage.removeItem("@infosSalvas");
-          setListaFavoritos([]);
-          Vibration.vibrate();
-        }, // removendo itens e atualizando o state
-      },
-      {
-        text: "Cancelar",
-        style: "cancel",
-      },
-    ]); // Passado 3º parametro como um array com um objeto para texto do alert
-  };
+  // const excluirTodasCorridas = async () => {
+  //   Alert.alert("Excluir TODAS?", "Quer mesmo excluir TODAS suas corridas?", [
+  //     {
+  //       text: "Excluir",
+  //       onPress: async () => {
+  //         await AsyncStorage.removeItem("@infosSalvas");
+  //         setListaFavoritos([]);
+  //         Vibration.vibrate();
+  //       }, // removendo itens e atualizando o state
+  //     },
+  //     {
+  //       text: "Cancelar",
+  //       style: "cancel",
+  //     },
+  //   ]); // Passado 3º parametro como um array com um objeto para texto do alert
+  // };
 
   // useEffect é acionado toda vez que o data(State vindo do Context) atualizar
   useEffect(() => {
@@ -63,8 +63,6 @@ export default function Atividades() {
         <ScrollView>
           {listaFavoritos.map((favorito, index) => {
             if (favorito.localizacao) {
-              console.log("Favorito:");
-              console.log(favorito);
               return (
                 <View key={index} style={styles.viewDados}>
                   <View style={styles.viewTexto}>
@@ -112,11 +110,12 @@ export default function Atividades() {
           Você não possui atividades.
         </Text>
       )}
-      {listaFavoritos.length > 0 && (
+
+      {/* {listaFavoritos.length > 0 && (
         <Pressable style={styles.botao} onPress={excluirTodasCorridas}>
           <Text>Apagar</Text>
         </Pressable>
-      )}
+      )} */}
     </View>
   );
 }
