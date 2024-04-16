@@ -8,3 +8,4 @@
 - `npx expo install expo-location` - Localização atual do usuario
 - `npx expo install expo-sensors` - Contagem dos passos
 - `npx expo install @react-native-async-storage/async-storage` - Salvar dados
+- `npm install react-native-gesture-handler` - Gestos

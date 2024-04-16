@@ -22,6 +22,7 @@
     "firebase": "^10.10.0",
     "react": "18.2.0",
     "react-native": "0.73.6",
+    "react-native-gesture-handler": "^2.14.0",
     "react-native-maps": "1.10.0"
   },
   "devDependencies": {
