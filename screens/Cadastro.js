@@ -10,6 +10,7 @@ import {
   Image,
   StatusBar,
   ScrollView,
+  ImageBackground,
 } from "react-native";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { FontAwesome } from "@expo/vector-icons";
@@ -18,6 +19,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Fundo from "../assets/fundo.jpg";
 
 export default function Cadastro({ navigation }) {
   const [email, setEmail] = useState("");
@@ -146,47 +148,53 @@ export default function Cadastro({ navigation }) {
   };
 
   return (
-    <ScrollView>
-      <View style={estilos.container}>
-        <StatusBar barStyle="dark-content" />
-        <View style={estilos.formulario}>
-          {imagem && (
-            <Image
-              source={{ uri: imagem }}
-              style={{ width: 260, height: 260, borderRadius: 5 }}
+    <ImageBackground source={Fundo} style={{ height: "100%" }}>
+      <ScrollView>
+        <View style={estilos.container}>
+          <StatusBar barStyle="dark-content" />
+          <View style={estilos.formulario}>
+            {imagem && (
+              <Image
+                source={{ uri: imagem }}
+                style={{ width: 260, height: 260, borderRadius: 5 }}
+              />
+            )}
+
+            <Pressable style={estilos.botaoFoto} onPress={escolhaImagem}>
+              <Text style={estilos.textoBotaoFoto}>Escolher Foto</Text>
+            </Pressable>
+
+            <TextInput
+              placeholder="Nome"
+              style={estilos.input}
+              keyboardType="default"
+              onChangeText={(valor) => setNome(valor)}
             />
-          )}
+            <TextInput
+              placeholder="E-mail"
+              style={estilos.input}
+              keyboardType="email-address"
+              onChangeText={(valor) => setEmail(valor)}
+            />
+            <TextInput
+              placeholder="Senha"
+              style={estilos.input}
+              secureTextEntry
+              onChangeText={(valor) => setSenha(valor)}
+            />
 
-          <Pressable style={estilos.botaoFoto} onPress={escolhaImagem}>
-            <Text style={estilos.textoBotaoFoto}>Escolher Foto</Text>
-          </Pressable>
-
-          <TextInput
-            placeholder="Nome"
-            style={estilos.input}
-            keyboardType="default"
-            onChangeText={(valor) => setNome(valor)}
-          />
-          <TextInput
-            placeholder="E-mail"
-            style={estilos.input}
-            keyboardType="email-address"
-            onChangeText={(valor) => setEmail(valor)}
-          />
-          <TextInput
-            placeholder="Senha"
-            style={estilos.input}
-            secureTextEntry
-            onChangeText={(valor) => setSenha(valor)}
-          />
-
-          <Pressable style={estilos.botaoCadastro} onPress={carregarStorage}>
-            <Text style={estilos.textoBotaoCadastro}>Cadastrar</Text>
-            <MaterialCommunityIcons name="bike-fast" size={20} color="white" />
-          </Pressable>
+            <Pressable style={estilos.botaoCadastro} onPress={carregarStorage}>
+              <Text style={estilos.textoBotaoCadastro}>Cadastrar</Text>
+              <MaterialCommunityIcons
+                name="bike-fast"
+                size={20}
+                color="white"
+              />
+            </Pressable>
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </ImageBackground>
   );
 }
 
@@ -201,7 +209,7 @@ const estilos = StyleSheet.create({
     marginTop: 10,
     width: "85%",
     flex: 2,
-    backgroundColor: "rgba(255, 255, 255, 0.88)",
+    backgroundColor: "rgba(255, 255, 255, 0.96)",
     borderRadius: 20,
     padding: 22,
     alignItems: "center",
@@ -232,6 +240,7 @@ const estilos = StyleSheet.create({
     borderRadius: 8,
     marginTop: 12,
     flexDirection: "row",
+    alignItems: "center",
     gap: 5,
   },
   textoBotaoCadastro: {

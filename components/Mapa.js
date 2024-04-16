@@ -52,11 +52,17 @@ export default function Mapa() {
     getLocation();
   }, [running]);
 
-  console.log(speed);
-  console.log(steps);
-
   return (
     <>
+      <View style={styles.viewDados}>
+        <Text style={styles.botaoVazado}>
+          {/* Distância percorrida: {(distance / 1000).toFixed(2)} km */}
+          Velocidade: {speed.toFixed(2)}
+        </Text>
+
+        <Text style={styles.botaoPreenchido}>Distância: {steps.toFixed(2)}</Text>
+      </View>
+
       <View style={styles.viewMapa}>
         <MapView
           style={styles.mapa}
@@ -69,15 +75,6 @@ export default function Mapa() {
           {initialLocation && <Marker coordinate={initialLocation} />}
         </MapView>
       </View>
-
-      <View style={styles.viewDados}>
-        <Text style={styles.distanceText}>
-          {/* Distância percorrida: {(distance / 1000).toFixed(2)} km */}
-          Distância percorrida: {steps.toFixed(2)}
-        </Text>
-
-        <Text style={styles.distanceText}>Velocidade: {speed.toFixed(2)}</Text>
-      </View>
     </>
   );
 }
@@ -85,7 +82,7 @@ export default function Mapa() {
 const styles = StyleSheet.create({
   // Mapa
   mapa: {
-    width: 280,
+    width: 350,
     height: 280,
   },
 
@@ -93,11 +90,72 @@ const styles = StyleSheet.create({
   viewDados: {
     flexDirection: "row",
     gap: 30,
-    marginTop: 10,
+    marginVertical: 30,
   },
 
   distanceText: {
     fontSize: 18,
     marginTop: 10,
+    borderColor: "#3A2293",
+    borderWidth: 2,
+    padding: 8,
+    borderRadius: 8,
+  },
+  botaoVazado: {
+    borderColor: "#3A2293",
+    color: "#3A2293",
+    borderWidth: 2,
+    padding: 8,
+    fontWeight: "600",
+    width: 100,
+    borderRadius: 8,
+    textAlign: "center",
+  },
+  textoBotaoVazado: {
+    color: "#3A2293",
+    textAlign: "center"
+  },
+  botaoPreenchido: {
+    backgroundColor: "#412CAB",
+    color: "#fff",
+    textAlign: "center",
+    fontWeight: "600",
+    padding: 8,
+    width: 100,
+    borderRadius: 8,
+  },
+  textoBotaoPreenchido: {
+    color: "#ffffff",
+    textAlign: "center"
+  },
+  botaoVazadoPreto: {
+    borderColor: "rgba(13, 30, 82, 0.5)",
+    borderWidth: 2,
+    padding: 8,
+    width: 100,
+    borderRadius: 8,
+  },
+  textoBotaoVazadoP: {
+    color: "#0A045A",
+    textAlign: "center"
+  },
+  botaoPadrao: {
+    backgroundColor: "#5442D2",
+    padding: 8,
+    borderRadius: 8,
+    width: 120,
+    height: 45
+  },
+  textoBotaoPadrao: {
+    color: "#fff",
+    textAlign: "center",
+    alignItems: "center",
+    fontSize: 22,
+  },
+  sessaoBotoes: {
+    flexDirection: "row",
+    gap: 20,
+    marginVertical: 35,
+    marginHorizontal: 20,
   },
 });
