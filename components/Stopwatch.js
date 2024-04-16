@@ -133,7 +133,7 @@ export default function Stopwatch() {
   return (
     <>
       <View style={styles.container}>
-        {/* <Text style={styles.subHeader}>Passe seu tempo pedalando</Text> */}
+        <Text style={styles.subHeader}>Passe seu tempo pedalando</Text>
 
         <View style={styles.sessaoCentralizar}>
           <View style={styles.bordaContador}>
@@ -185,6 +185,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "left",
   },
+
   timeText: {
     color: "#5442D2",
     backgroundColor: "#CFC3EE",
@@ -196,10 +197,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
   timeText2: {
     fontSize: 38,
     color: "#5442D2",
   },
+
   textoComum: {
     fontWeight: "bold",
     fontSize: 22,
@@ -207,6 +210,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     textAlign: "left",
   },
+
   bordaContador: {
     borderColor: "#5442D2",
     borderWidth: 2,
@@ -214,6 +218,7 @@ const styles = StyleSheet.create({
     width: 175,
     height: 175,
   },
+
   sessaoTituloIcon: {
     marginHorizontal: 20,
     marginVertical: 10,
@@ -221,6 +226,7 @@ const styles = StyleSheet.create({
     gap: 100,
     alignItems: "center",
   },
+
   sessaoCentralizar: {
     alignItems: "center",
   },
