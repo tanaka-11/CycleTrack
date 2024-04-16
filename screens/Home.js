@@ -12,7 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import MapView, { Marker } from "react-native-maps";
 import { auth } from "../firebaseConfig";
 
-export default function Home() {
+export default function Home({ navigation }) {
   const { mapViewRef, data } = useSpeedContext();
 
   const [listaFavoritos, setListaFavoritos] = useState(data);
