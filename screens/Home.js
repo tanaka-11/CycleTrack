@@ -19,9 +19,13 @@ export default function Home({ navigation }) {
   const [listaFavoritos, setListaFavoritos] = useState(data);
 
   // Perfil
-  const { email } = auth.currentUser;
-  const { displayName } = auth.currentUser;
-  const { photoURL } = auth.currentUser;
+  let displayName = "Convidado";
+  let photoURL = null;
+
+  if (auth.currentUser) {
+    displayName = auth.currentUser.displayName;
+    photoURL = auth.currentUser.photoURL;
+  }
 
   // UseEffect para carregar os dados de atividades sempre que uma nova atividade for salva
   useEffect(() => {

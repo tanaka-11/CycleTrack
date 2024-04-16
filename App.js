@@ -13,10 +13,8 @@ import Play from "./screens/Play";
 import Login from "./screens/Login";
 import Cadastro from "./screens/Cadastro";
 import RecuperarSenha from "./screens/RecuperarSenha";
-
 // Acesso firebase auth
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-
 // useContext
 import { SpeedProvider } from "./components/SpeedContext";
 
@@ -54,25 +52,36 @@ export default function App() {
   return (
     <SpeedProvider>
       <NavigationContainer>
-        {isUserLoggedIn === false && <AuthStack />}
-        {isUserLoggedIn === true && (
-          <Tab.Navigator
-            screenOptions={{
-              headerShown: false,
-              tabBarLabelStyle: { fontSize: 16, padding: 5 },
-              tabBarInactiveTintColor: "#ffffff",
-              tabBarActiveTintColor: "#dddddd",
-              tabBarActiveBackgroundColor: "#271177",
-              tabBarStyle: styles.tabBar,
-            }}
-            initialRouteName="Home"
-          >
-            <Tab.Screen name="Home" component={Home} />
-            <Tab.Screen name="Atividades" component={Atividades} />
-            <Tab.Screen name="Play" component={Play} />
-            <Tab.Screen name="Perfil" component={Perfil} />
-          </Tab.Navigator>
-        )}
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          {isUserLoggedIn ? (
+            <Stack.Screen name="MainApp">
+              {() => (
+                <Tab.Navigator
+                  screenOptions={{
+                    tabBarLabelStyle: { fontSize: 16, padding: 5 },
+                    tabBarInactiveTintColor: "#ffffff",
+                    tabBarActiveTintColor: "#dddddd",
+                    tabBarActiveBackgroundColor: "#271177",
+                    tabBarStyle: styles.tabBar,
+                    headerShown: false,
+                  }}
+                  initialRouteName="Home"
+                >
+                  <Tab.Screen name="Home" component={Home} />
+                  <Tab.Screen name="Atividades" component={Atividades} />
+                  <Tab.Screen name="Play" component={Play} />
+                  <Tab.Screen name="Perfil" component={Perfil} />
+                </Tab.Navigator>
+              )}
+            </Stack.Screen>
+          ) : (
+            <Stack.Screen name="Auth" component={AuthStack} />
+          )}
+        </Stack.Navigator>
       </NavigationContainer>
     </SpeedProvider>
   );

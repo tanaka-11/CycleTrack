@@ -137,7 +137,7 @@ export default function Cadastro({ navigation }) {
     const resultado = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [16, 9],
+      aspect: [3, 4],
       quality: 1,
     });
 

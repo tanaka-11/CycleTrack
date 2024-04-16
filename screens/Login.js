@@ -13,7 +13,6 @@ import {
 import { useState } from "react";
 import { auth } from "../firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Fundo from "../assets/fundo.jpg";
 
 export default function Login({ navigation }) {
