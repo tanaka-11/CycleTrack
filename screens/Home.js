@@ -154,7 +154,48 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  //Perfil
+  topo: {
+    padding: 10,
+    marginVertical: 20,
+    marginHorizontal: 5,
+    borderWidth: 1,
+    borderColor: "#3D2498",
+    borderStyle: "dashed",
+    borderRadius: 5,
+  },
+  infos: {
+    marginLeft: 5,
+  },
+  bemVindo: {
+    fontSize: 24,
+    marginVertical: 16,
+    fontWeight: "500",
+  },
+  nomeUsuario: {
+    fontSize: 16,
+    fontWeight: "300",
+  },
+  image: {
+    width: 64,
+    height: 64,
+    marginTop: 40,
 
+    position: "absolute",
+    right: 20,
+    top: 20,
+
+    borderWidth: 1,
+    borderRadius: 50,
+    borderColor: "#3D2498",
+  },
+  alterarPerfil: {
+    textAlign: "center",
+    color: "#3D2498",
+    fontSize: 16,
+  },
+
+  //Progresso
   progresso: {
     flexDirection: "row",
     justifyContent: "space-between",
