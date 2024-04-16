@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     borderColor: "#3A2293",
     borderWidth: 2,
     padding: 8,
-    width: 100,
+    fontSize: 16,
     borderRadius: 8,
   },
 });
