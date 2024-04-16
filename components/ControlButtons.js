@@ -171,6 +171,7 @@ const styles = StyleSheet.create({
 
   startButton: {
     backgroundColor: "#2ecc71",
+    width: 220,
     marginRight: 10,
   },
 
@@ -199,5 +200,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 16,
+    textAlign: "center",
   },
 });
