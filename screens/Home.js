@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
 
   mapa: {
     width: 400,
-    height: 350,
+    height: 380,
     marginTop: 10,
   },
 
