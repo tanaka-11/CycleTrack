@@ -18,10 +18,11 @@ export default function Home({ navigation }) {
   // State guardando objeto vindo useContext
   const [listaFavoritos, setListaFavoritos] = useState(data);
 
-  // Perfil
+  // Caso usuario nao esteja logado
   let displayName = "Convidado";
   let photoURL = null;
 
+  // Se estiver logado
   if (auth.currentUser) {
     displayName = auth.currentUser.displayName;
     photoURL = auth.currentUser.photoURL;
