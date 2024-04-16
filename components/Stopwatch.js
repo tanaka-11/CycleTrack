@@ -212,57 +212,6 @@ const styles = StyleSheet.create({
     width: 175,
     height: 175,
   },
-  sessaoBotoes: {
-    flexDirection: "row",
-    gap: 20,
-    marginVertical: 35,
-    marginHorizontal: 20,
-  },
-  botaoVazado: {
-    borderColor: "#3A2293",
-    borderWidth: 2,
-    padding: 8,
-    width: 100,
-    borderRadius: 8,
-  },
-  textoBotaoVazado: {
-    color: "#3A2293",
-    textAlign: "center"
-  },
-  botaoPreenchido: {
-    backgroundColor: "#412CAB",
-    padding: 8,
-    width: 100,
-    borderRadius: 8,
-  },
-  textoBotaoPreenchido: {
-    color: "#ffffff",
-    textAlign: "center"
-  },
-  botaoVazadoPreto: {
-    borderColor: "rgba(13, 30, 82, 0.5)",
-    borderWidth: 2,
-    padding: 8,
-    width: 100,
-    borderRadius: 8,
-  },
-  textoBotaoVazadoP: {
-    color: "#0A045A",
-    textAlign: "center"
-  },
-  botaoPadrao: {
-    backgroundColor: "#5442D2",
-    padding: 8,
-    borderRadius: 8,
-    width: 120,
-    height: 45
-  },
-  textoBotaoPadrao: {
-    color: "#fff",
-    textAlign: "center",
-    alignItems: "center",
-    fontSize: 22,
-  },
   sessaoTituloIcon: {
     marginHorizontal: 20,
     marginVertical: 10,
