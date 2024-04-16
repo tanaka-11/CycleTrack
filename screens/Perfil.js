@@ -8,16 +8,18 @@ import {
   Pressable,
   Image,
   StatusBar,
+  Vibration,
 } from "react-native";
 import { useState, useEffect } from "react";
-// Instalar dependencias
-import { auth } from "../firebaseConfig";
-import { updateEmail, updateProfile } from "firebase/auth";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ActivityIndicator, ScrollView } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 
-import { ActivityIndicator, ScrollView } from "react-native";
+// Imports Firebase
+import { auth } from "../firebaseConfig";
+import { signOut } from "firebase/auth";
+import { updateEmail, updateProfile } from "firebase/auth";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default function Perfil() {
   const [nome, setNome] = useState("");
@@ -27,6 +29,7 @@ export default function Perfil() {
   const [carregandoImagem, setCarregandoImagem] = useState(false);
   const [atualizarFoto, setAtualizarFoto] = useState(false);
 
+  // UseEffect para mostrar os dados do usuario ou vazio
   useEffect(() => {
     const carregarUsuarioAtual = async () => {
       const usuarioAtual = auth.currentUser;
@@ -40,6 +43,7 @@ export default function Perfil() {
     carregarUsuarioAtual();
   }, []);
 
+  // Função salvar perfil
   const salvarPerfil = async () => {
     try {
       const usuarioAtual = auth.currentUser;
@@ -59,8 +63,6 @@ export default function Perfil() {
 
       //  Chamando a função para Atualizar o nome do usuário
       await atualizarNome(nome);
-
-      Alert.alert("Perfil atualizado com sucesso!");
     } catch (error) {
       console.error("Erro ao atualizar perfil:", error);
       Alert.alert(
@@ -69,7 +71,7 @@ export default function Perfil() {
     }
   };
 
-  // função chamada em salvar que altera o nome
+  // Função Atualizar Nome
   const atualizarNome = async (novoNome) => {
     const usuarioAtual = auth.currentUser;
     if (!usuarioAtual) {
@@ -78,6 +80,7 @@ export default function Perfil() {
     await updateProfile(usuarioAtual, { displayName: novoNome });
   };
 
+  // Função escolha imagem
   const escolhaImagem = async () => {
     try {
       setCarregandoImagem(true); // Define o estado de carregamento como true
@@ -85,7 +88,7 @@ export default function Perfil() {
       const resultado = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        aspect: [16, 9],
+        aspect: [3, 4],
         quality: 1,
       });
 
@@ -100,6 +103,7 @@ export default function Perfil() {
     }
   };
 
+  // Função atualizar foto perfil
   const atualizarFotoPerfil = async (uid, fotoPerfil) => {
     try {
       const { uri } = await FileSystem.getInfoAsync(fotoPerfil); // Obtém o URI da imagem
@@ -113,6 +117,7 @@ export default function Perfil() {
       const storageRef = ref(storage, imageName); //CRIA uma referência no Firebase usando o nome do arquivo como o caminho para a referência.
 
       await uploadBytes(storageRef, blob); // a imagem é carregada para o Firebase Storage, faz o upload dos bytes do objeto Blob usando a referência storageRef.
+
       // Pegando url de nova foto selecionada
       const fotoURL = await getDownloadURL(storageRef);
 
@@ -121,6 +126,16 @@ export default function Perfil() {
     } catch (error) {
       console.error("Erro ao atualizar foto de perfil:", error);
       throw error;
+    }
+  };
+
+  // Logout
+  const logout = async () => {
+    try {
+      await signOut(auth);
+      navigation.replace("Login");
+    } catch (error) {
+      console.error(error.code);
     }
   };
 
@@ -165,8 +180,19 @@ export default function Perfil() {
             editable={false}
           />
         </View>
-        <Pressable style={styles.botao} onPress={salvarPerfil}>
+        <Pressable
+          style={styles.botao}
+          onPress={() => {
+            salvarPerfil();
+            Alert.alert("Perfil atualizado com sucesso!");
+            Vibration.vibrate();
+          }}
+        >
           <Text style={styles.botaoText}>Salvar Alterações</Text>
+        </Pressable>
+
+        <Pressable onPress={logout} style={styles.botaoLogout}>
+          <Text style={styles.botaoTextLogout}>Logout</Text>
         </Pressable>
       </View>
     </ScrollView>
@@ -180,13 +206,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
   containerInput: {
     marginTop: 80,
   },
+
   // containerFoto: {
   //   flexDirection: "row",
   //   alignItems: "center",
   // },
+
   input: {
     backgroundColor: "#fff",
     borderColor: "#8279BD",
@@ -198,6 +227,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     color: "#333",
   },
+
   botao: {
     borderRadius: 4,
     marginVertical: 12,
@@ -206,10 +236,26 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
+
+  botaoLogout: {
+    borderRadius: 4,
+    marginVertical: 12,
+    borderColor: "#be2414",
+    borderWidth: 2,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+
+  botaoTextLogout: {
+    fontWeight: "bold",
+    color: "#be2414",
+  },
+
   botaoText: {
     fontWeight: "bold",
     color: "#4631B4",
   },
+
   image: {
     width: 170,
     height: 170,

@@ -13,16 +13,17 @@ import MapView, { Marker } from "react-native-maps";
 import { auth } from "../firebaseConfig";
 
 export default function Home({ navigation }) {
+  // dados vindo do hook useContext
   const { mapViewRef, data } = useSpeedContext();
-
+  // State guardando objeto vindo useContext
   const [listaFavoritos, setListaFavoritos] = useState(data);
 
+  // Perfil
   const { email } = auth.currentUser;
-
   const { displayName } = auth.currentUser;
-
   const { photoURL } = auth.currentUser;
 
+  // UseEffect para carregar os dados de atividades sempre que uma nova atividade for salva
   useEffect(() => {
     const carregarFavoritos = async () => {
       try {
@@ -182,6 +183,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+
   //Perfil
   topo: {
     padding: 6,
@@ -192,6 +194,7 @@ const styles = StyleSheet.create({
     borderStyle: "dashed",
     borderRadius: 5,
   },
+
   dadosUsuario: {
     flexDirection: "row",
     gap: 80,
@@ -199,15 +202,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 6,
   },
+
   bemVindo: {
     fontSize: 22,
     marginVertical: 16,
     fontWeight: "500",
   },
+
   nomeUsuario: {
     fontSize: 14,
     fontWeight: "300",
   },
+
   image: {
     width: 64,
     height: 64,
@@ -216,6 +222,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderColor: "#3D2498",
   },
+
   alterarPerfil: {
     textAlign: "center",
     color: "#3D2498",
@@ -234,7 +241,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     margin: 10,
     gap: 20,
-    // alignItems: "flex-start",
   },
 
   titulo: {
@@ -245,12 +251,12 @@ const styles = StyleSheet.create({
 
   mapa: {
     width: 400,
-    height: 380,
+    height: 360,
     marginTop: 10,
+    marginBottom: 20,
   },
 
   viewMapa: {
-    // marginLeft: 16,
     justifyContent: "flex-start",
   },
 

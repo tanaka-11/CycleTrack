@@ -121,7 +121,7 @@ const estilos = StyleSheet.create({
 
   formulario: {
     marginBottom: 22,
-    marginTop: 10,
+    marginTop: 80,
     width: "85%",
     height: 450,
     backgroundColor: "rgba(255, 255, 255, 0.96)",
@@ -165,11 +165,13 @@ const estilos = StyleSheet.create({
     borderRadius: 8,
     marginHorizontal: 10,
   },
+
   textoBotaoEntre: {
     color: "#E6E6FA",
     fontSize: 16,
     fontWeight: "bold",
   },
+
   esqueciSenha: {
     marginVertical: 20,
     width: "100%",
@@ -177,9 +179,11 @@ const estilos = StyleSheet.create({
     justifyContent: "space-between",
     gap: 12,
   },
+
   botaoEsqueciSenha: {
     backgroundColor: "transparent",
   },
+
   textoBotaoEsqueciSenha: {
     color: "#1D93E9",
     fontSize: 16,

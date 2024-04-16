@@ -204,9 +204,10 @@ const estilos = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
   formulario: {
     marginBottom: 22,
-    marginTop: 10,
+    marginTop: 80,
     width: "85%",
     flex: 2,
     backgroundColor: "rgba(255, 255, 255, 0.96)",
@@ -220,6 +221,7 @@ const estilos = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 }, // Sombra para baixo (y = 5)
     shadowOpacity: 0.2,
   },
+
   input: {
     backgroundColor: "#fff",
     borderColor: "#3D2498",
@@ -243,6 +245,7 @@ const estilos = StyleSheet.create({
     alignItems: "center",
     gap: 5,
   },
+
   textoBotaoCadastro: {
     color: "#E6E6FA",
     fontSize: 16,
