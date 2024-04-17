@@ -18,6 +18,11 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 // useContext
 import { SpeedProvider } from "./components/SpeedContext";
 
+// Icones
+import { FontAwesome } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+
 // constante iniciando a criação do navigator
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
