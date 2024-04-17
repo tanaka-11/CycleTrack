@@ -113,13 +113,13 @@ export default function Home({ navigation }) {
             <Text style={styles.viewTitulo}>Atividade</Text>
             <Text style={styles.textoDados}>{totalIndex}</Text>
           </View>
-          <View style={styles.viewTempo}>
+          <View style={styles.viewAtividade}>
             <Text style={styles.viewTitulo}>Tempo</Text>
             <Text style={styles.textoDados}>
               {totalTime.hours} h {totalTime.minutes} m {totalTime.seconds} s
             </Text>
           </View>
-          <View style={styles.viewDistancia}>
+          <View style={styles.viewAtividade}>
             <Text style={styles.viewTitulo}>Distancia</Text>
             <Text style={styles.textoDados}>{totalDistance.toFixed(2)} m</Text>
           </View>
@@ -130,54 +130,60 @@ export default function Home({ navigation }) {
           <>
             <Text style={styles.titulo}>Sua ultima atividade</Text>
             <View style={styles.atividadeRecente}>
-              <Text style={styles.textoDados}>(Em Breve)</Text>
+              <View style={styles.viewDistanciaRecentes}>
+                <View style={styles.viewDistanciaRecentes2}>
 
-              <View style={styles.viewDistancia}>
-                <Text style={styles.viewTitulo}>Distancia</Text>
-                <Text style={styles.textoDados}>
-                  {listaFavoritos[listaFavoritos.length - 1].storedDistance} m
-                </Text>
+                  <View style={styles.viewDistancia}>
+                    <Text style={styles.viewTitulo}>Distancia</Text>
+                    <Text style={styles.textoDados}>
+                      {listaFavoritos[listaFavoritos.length - 1].storedDistance} m
+                    </Text>
+                  </View>
+
+                  <View style={styles.viewTempo}>
+                    <Text style={styles.viewTitulo}>Tempo</Text>
+                    <Text style={styles.textoDados}>
+                      {listaFavoritos[listaFavoritos.length - 1].storedTime.hours} h{" "}
+                      {listaFavoritos[listaFavoritos.length - 1].storedTime.minutes}{" "}
+                      m{" "}
+                      {listaFavoritos[listaFavoritos.length - 1].storedTime.seconds}{" "}
+                      s
+                    </Text>
+                  </View>
+                </View>
+
+
+
+                <View style={styles.viewMapa}>
+                  <MapView
+                    ref={mapViewRef}
+                    style={styles.mapa}
+                    scrollEnabled={false}
+                    zoomEnabled={false}
+                    rotateEnabled={false}
+                    pitchEnabled={false}
+                    initialRegion={{
+                      latitude:
+                        listaFavoritos[listaFavoritos.length - 1].localizacao
+                          .latitude,
+                      longitude:
+                        listaFavoritos[listaFavoritos.length - 1].localizacao
+                          .longitude,
+                      latitudeDelta: 0.005,
+                      longitudeDelta: 0.005,
+                    }}
+                  >
+                    <Marker
+                      coordinate={
+                        listaFavoritos[listaFavoritos.length - 1].localizacao
+                      }
+                      title={`Local da sua corrida!`}
+                      pinColor="blue"
+                    />
+                  </MapView>
+                </View>
+
               </View>
-
-              <View style={styles.viewTempo}>
-                <Text style={styles.viewTitulo}>Tempo</Text>
-                <Text style={styles.textoDados}>
-                  {listaFavoritos[listaFavoritos.length - 1].storedTime.hours} h{" "}
-                  {listaFavoritos[listaFavoritos.length - 1].storedTime.minutes}{" "}
-                  m{" "}
-                  {listaFavoritos[listaFavoritos.length - 1].storedTime.seconds}{" "}
-                  s
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.viewMapa}>
-              <MapView
-                ref={mapViewRef}
-                style={styles.mapa}
-                scrollEnabled={false}
-                zoomEnabled={false}
-                rotateEnabled={false}
-                pitchEnabled={false}
-                initialRegion={{
-                  latitude:
-                    listaFavoritos[listaFavoritos.length - 1].localizacao
-                      .latitude,
-                  longitude:
-                    listaFavoritos[listaFavoritos.length - 1].localizacao
-                      .longitude,
-                  latitudeDelta: 0.005,
-                  longitudeDelta: 0.005,
-                }}
-              >
-                <Marker
-                  coordinate={
-                    listaFavoritos[listaFavoritos.length - 1].localizacao
-                  }
-                  title={`Local da sua corrida!`}
-                  pinColor="blue"
-                />
-              </MapView>
             </View>
           </>
         )}
@@ -195,7 +201,7 @@ const styles = StyleSheet.create({
   topo: {
     padding: 6,
     marginVertical: 32,
-    marginHorizontal: 5,
+    marginHorizontal: 20,
     borderWidth: 1,
     borderColor: "#3D2498",
     borderStyle: "dashed",
@@ -207,17 +213,20 @@ const styles = StyleSheet.create({
     gap: 80,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 6,
+    marginVertical: 6,
+    marginHorizontal: 6,
   },
 
   bemVindo: {
     fontSize: 22,
-    marginVertical: 16,
+    marginVertical: 10,
     fontWeight: "500",
+    color: "#3A2293",
+
   },
 
   nomeUsuario: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: "300",
   },
 
@@ -243,37 +252,109 @@ const styles = StyleSheet.create({
     margin: 20,
   },
 
-  atividadeRecente: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    margin: 10,
-    gap: 20,
-  },
-
   titulo: {
-    fontSize:20,
+    fontSize: 20,
+    color: "#3A2293",
     fontWeight: "bold",
-    margin: 20,
+    marginHorizontal: 20,
+    marginVertical: 15,
   },
 
   mapa: {
-    width: 400,
-    height: 360,
-    marginTop: 10,
-    marginBottom: 20,
+    width: 300,
+    height: 250,
   },
 
   viewMapa: {
     justifyContent: "flex-start",
+    marginBottom: 40,
   },
 
-  viewTitulo: {},
+  viewTitulo: {
+    textAlign: "center",
+    color: "#3A2293",
+    fontWeight: "bold",
+  },
 
-  textoDados: {},
+  textoDados: {
+    textAlign: "center",
+  },
 
-  viewAtividade: {},
+  viewAtividade: {
+    borderColor: "#3A2293",
+    borderWidth: 2,
+    padding: 8,
+    width: 100,
+    borderRadius: 8,
+  },
 
   viewTempo: {},
 
-  viewDistancia: {},
+  viewDistancia: {
+    marginRight: 100
+  },
+
+
+  textoBotaoVazado: {
+    color: "#3A2293",
+    textAlign: "center"
+  },
+  botaoPreenchido: {
+    backgroundColor: "#412CAB",
+    padding: 8,
+    width: 100,
+    borderRadius: 8,
+  },
+  textoBotaoPreenchido: {
+    color: "#ffffff",
+    textAlign: "center"
+  },
+  botaoVazadoPreto: {
+    borderColor: "rgba(13, 30, 82, 0.5)",
+    borderWidth: 2,
+    padding: 8,
+    width: 100,
+    borderRadius: 8,
+  },
+  textoBotaoVazadoP: {
+    color: "#0A045A",
+    textAlign: "center"
+  },
+  botaoPadrao: {
+    backgroundColor: "#5442D2",
+    padding: 8,
+    borderRadius: 8,
+    flex: 1,
+    width: 120,
+    height: 45
+  },
+  textoBotaoPadrao: {
+    color: "#fff",
+    textAlign: "center",
+    alignItems: "center",
+    fontSize: 22,
+  },
+  sessaoTituloIcon: {
+    marginHorizontal: 20,
+    marginVertical: 10,
+    flexDirection: "row",
+    gap: 100,
+    alignItems: "center"
+  },
+  viewDistanciaRecentes: {
+    marginHorizontal: 20,
+    gap: 15,
+    alignItems: "center",
+    backgroundColor: "rgba(65, 44, 171, 0.15)",
+    padding: 15,
+    borderColor: "#412CAB",
+    borderRadius: 20
+  },
+  viewDistanciaRecentes2: {
+    flexDirection: "row",
+  }
+
 });
+
+
+

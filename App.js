@@ -18,6 +18,11 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 // useContext
 import { SpeedProvider } from "./components/SpeedContext";
 
+// Icones
+import { AntDesign } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+
 // constante iniciando a criação do navigator
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -71,10 +76,43 @@ export default function App() {
                   }}
                   initialRouteName="Home"
                 >
-                  <Tab.Screen name="Home" component={Home} />
-                  <Tab.Screen name="Atividades" component={Atividades} />
-                  <Tab.Screen name="Play" component={Play} />
-                  <Tab.Screen name="Perfil" component={Perfil} />
+
+                  <Tab.Screen
+                    name="Home"
+                    component={Home}
+                    options={{
+                      tabBarIcon: () => {
+                        return <Ionicons name="home-outline" size={24} color="white" />
+                      }
+                    }} />
+
+
+                  <Tab.Screen
+                    name="Atividades"
+                    component={Atividades}
+                    options={{
+                      tabBarIcon: () => {
+                        return <MaterialCommunityIcons name="clock-check-outline" size={24} color="white" />
+                      }
+                    }} />
+
+                  <Tab.Screen
+                    name="Play"
+                    component={Play}
+                    options={{
+                      tabBarIcon: () => {
+                        return <MaterialCommunityIcons name="bike" size={24} color="white" />
+                      }
+                    }} />
+
+                  <Tab.Screen
+                    name="Perfil"
+                    component={Perfil}
+                    options={{
+                      tabBarIcon: () => {
+                        return <AntDesign name="user" size={24} color="white" />
+                      }
+                    }} />
                 </Tab.Navigator>
               )}
             </Stack.Screen>
