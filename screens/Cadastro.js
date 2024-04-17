@@ -18,7 +18,7 @@ import { auth } from "../firebaseConfig";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import Fundo from "../assets/fundo.jpg";
 
 export default function Cadastro({ navigation }) {
@@ -153,6 +153,8 @@ export default function Cadastro({ navigation }) {
         <View style={estilos.container}>
           <StatusBar barStyle="dark-content" />
           <View style={estilos.formulario}>
+            <Text style={estilos.logo}>CycleTrack</Text>
+
             {imagem && (
               <Image
                 source={{ uri: imagem }}
@@ -185,11 +187,8 @@ export default function Cadastro({ navigation }) {
 
             <Pressable style={estilos.botaoCadastro} onPress={carregarStorage}>
               <Text style={estilos.textoBotaoCadastro}>Cadastrar</Text>
-              <MaterialCommunityIcons
-                name="bike-fast"
-                size={20}
-                color="white"
-              />
+
+              <MaterialIcons name="directions-bike" size={20} color="white" />
             </Pressable>
           </View>
         </View>
@@ -203,6 +202,17 @@ const estilos = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  logo: {
+    marginBottom: 25,
+
+    fontSize: 28,
+    color: "#3D2498",
+    fontWeight: "bold",
+
+    shadowColor: "grey",
+    shadowOffset: { width: 3, height: 5 }, // Sombra para baixo (y = 5)
+    shadowOpacity: 0.2,
   },
 
   formulario: {
