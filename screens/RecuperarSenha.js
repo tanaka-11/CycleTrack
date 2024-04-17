@@ -8,11 +8,12 @@ import {
   Pressable,
   Text,
 } from "react-native";
-//import { sendPasswordResetEmail } from "firebase/auth"; // Importe o método sendPasswordResetEmail corretamente
-//import { auth } from "../../firebaseConfig";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 export default function RecuperarSenha() {
   const [email, setEmail] = useState("");
+  const auth = getAuth();
 
   const recuperarSenha = async () => {
     try {
@@ -30,7 +31,8 @@ export default function RecuperarSenha() {
       <View style={styles.textos}>
         <Text style={styles.titulo}>Informe seu e-mail</Text>
         <Text style={styles.info}>
-          Iremos enviar um link de redefinição de senha para este e-mail
+          Informe o email corretamente e tentaremos enviar um link de
+          redefinição
         </Text>
       </View>
       <TextInput
@@ -51,6 +53,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#E9E4F8",
   },
   textos: {
     justifyContent: "flex-start",
