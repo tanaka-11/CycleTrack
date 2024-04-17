@@ -132,27 +132,35 @@ export default function Home({ navigation }) {
             <View style={styles.atividadeRecente}>
               <View style={styles.viewDistanciaRecentes}>
                 <View style={styles.viewDistanciaRecentes2}>
-
                   <View style={styles.viewDistancia}>
                     <Text style={styles.viewTitulo}>Distancia</Text>
                     <Text style={styles.textoDados}>
-                      {listaFavoritos[listaFavoritos.length - 1].storedDistance} m
+                      {listaFavoritos[listaFavoritos.length - 1].storedDistance}{" "}
+                      m
                     </Text>
                   </View>
 
                   <View style={styles.viewTempo}>
                     <Text style={styles.viewTitulo}>Tempo</Text>
                     <Text style={styles.textoDados}>
-                      {listaFavoritos[listaFavoritos.length - 1].storedTime.hours} h{" "}
-                      {listaFavoritos[listaFavoritos.length - 1].storedTime.minutes}{" "}
+                      {
+                        listaFavoritos[listaFavoritos.length - 1].storedTime
+                          .hours
+                      }{" "}
+                      h{" "}
+                      {
+                        listaFavoritos[listaFavoritos.length - 1].storedTime
+                          .minutes
+                      }{" "}
                       m{" "}
-                      {listaFavoritos[listaFavoritos.length - 1].storedTime.seconds}{" "}
+                      {
+                        listaFavoritos[listaFavoritos.length - 1].storedTime
+                          .seconds
+                      }{" "}
                       s
                     </Text>
                   </View>
                 </View>
-
-
 
                 <View style={styles.viewMapa}>
                   <MapView
@@ -182,7 +190,6 @@ export default function Home({ navigation }) {
                     />
                   </MapView>
                 </View>
-
               </View>
             </View>
           </>
@@ -222,7 +229,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     fontWeight: "500",
     color: "#3A2293",
-
   },
 
   nomeUsuario: {
@@ -266,7 +272,8 @@ const styles = StyleSheet.create({
   },
 
   viewMapa: {
-    justifyContent: "flex-start",
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 40,
   },
 
@@ -288,27 +295,32 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
 
-  viewTempo: {},
-
-  viewDistancia: {
-    marginRight: 100
+  viewTempo: {
+    justifyContent: "flex-start",
   },
 
+  viewDistancia: {
+    marginRight: 50,
+    marginLeft: 20,
+  },
 
   textoBotaoVazado: {
     color: "#3A2293",
-    textAlign: "center"
+    textAlign: "center",
   },
+
   botaoPreenchido: {
     backgroundColor: "#412CAB",
     padding: 8,
     width: 100,
     borderRadius: 8,
   },
+
   textoBotaoPreenchido: {
     color: "#ffffff",
-    textAlign: "center"
+    textAlign: "center",
   },
+
   botaoVazadoPreto: {
     borderColor: "rgba(13, 30, 82, 0.5)",
     borderWidth: 2,
@@ -316,31 +328,36 @@ const styles = StyleSheet.create({
     width: 100,
     borderRadius: 8,
   },
+
   textoBotaoVazadoP: {
     color: "#0A045A",
-    textAlign: "center"
+    textAlign: "center",
   },
+
   botaoPadrao: {
     backgroundColor: "#5442D2",
     padding: 8,
     borderRadius: 8,
     flex: 1,
     width: 120,
-    height: 45
+    height: 45,
   },
+
   textoBotaoPadrao: {
     color: "#fff",
     textAlign: "center",
     alignItems: "center",
     fontSize: 22,
   },
+
   sessaoTituloIcon: {
     marginHorizontal: 20,
     marginVertical: 10,
     flexDirection: "row",
     gap: 100,
-    alignItems: "center"
+    alignItems: "center",
   },
+
   viewDistanciaRecentes: {
     marginHorizontal: 20,
     gap: 15,
@@ -348,13 +365,10 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(65, 44, 171, 0.15)",
     padding: 15,
     borderColor: "#412CAB",
-    borderRadius: 20
+    borderRadius: 20,
   },
+
   viewDistanciaRecentes2: {
     flexDirection: "row",
-  }
-
+  },
 });
-
-
-
