@@ -19,7 +19,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { SpeedProvider } from "./components/SpeedContext";
 
 // Icones
-import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -82,7 +82,7 @@ export default function App() {
                     component={Home}
                     options={{
                       tabBarIcon: () => {
-                        return <Ionicons name="home" size={24} color="white" />
+                        return <Ionicons name="home-outline" size={24} color="white" />
                       }
                     }} />
 
@@ -92,7 +92,7 @@ export default function App() {
                     component={Atividades}
                     options={{
                       tabBarIcon: () => {
-                        return <MaterialCommunityIcons name="clock-check" size={24} color="white" />
+                        return <MaterialCommunityIcons name="clock-check-outline" size={24} color="white" />
                       }
                     }} />
 
@@ -101,7 +101,7 @@ export default function App() {
                     component={Play}
                     options={{
                       tabBarIcon: () => {
-                        return <Ionicons name="bicycle-sharp" size={28} color="white" />
+                        return <MaterialCommunityIcons name="bike" size={24} color="white" />
                       }
                     }} />
 
@@ -110,7 +110,7 @@ export default function App() {
                     component={Perfil}
                     options={{
                       tabBarIcon: () => {
-                        return <FontAwesome name="user" size={24} color="white" />
+                        return <AntDesign name="user" size={24} color="white" />
                       }
                     }} />
                 </Tab.Navigator>
