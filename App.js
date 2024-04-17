@@ -78,7 +78,7 @@ export default function App() {
                 >
 
                   <Tab.Screen
-                    name="Inicio"
+                    name="Home"
                     component={Home}
                     options={{
                       tabBarIcon: () => {

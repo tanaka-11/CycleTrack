@@ -57,11 +57,11 @@ export default function Mapa() {
       <View style={styles.viewDados}>
         <Text style={styles.botaoPreenchido}>
           {/* Distância percorrida: {(distance / 1000).toFixed(2)} km */}
-          Velocidade: {speed.toFixed(2)}
+          <Text style={styles.tituloBotao}>Velocidade:</Text> {speed.toFixed(2)}
         </Text>
 
         <Text style={styles.botaoPreenchido}>
-          Distância: {steps.toFixed(2)}
+        <Text style={styles.tituloBotao}>Distância:</Text> {steps.toFixed(2)}
         </Text>
       </View>
 
@@ -118,13 +118,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   botaoPreenchido: {
-    backgroundColor: "#412CAB",
-    color: "#fff",
-    textAlign: "center",
-    fontWeight: "600",
-    padding: 8,
+    borderColor: "#3A2293",
+    borderWidth: 2,
+    padding: 10,
     width: 100,
     borderRadius: 8,
+    textAlign: "center",
   },
   textoBotaoPreenchido: {
     color: "#ffffff",
@@ -160,4 +159,8 @@ const styles = StyleSheet.create({
     marginVertical: 35,
     marginHorizontal: 20,
   },
+  tituloBotao: {
+    color: "#3A2293",
+    fontWeight: "bold",
+  }
 });
