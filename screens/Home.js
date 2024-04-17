@@ -263,12 +263,11 @@ const styles = StyleSheet.create({
   mapa: {
     width: 300,
     height: 250,
-    marginHorizontal: 20,    
   },
 
   viewMapa: {
     justifyContent: "flex-start",
-    marginBottom: 20,
+    marginBottom: 40,
   },
 
   viewTitulo: {
@@ -344,7 +343,7 @@ const styles = StyleSheet.create({
   },
   viewDistanciaRecentes: {
     marginHorizontal: 20,
-    gap: 30,
+    gap: 15,
     alignItems: "center",
     backgroundColor: "rgba(65, 44, 171, 0.15)",
     padding: 15,

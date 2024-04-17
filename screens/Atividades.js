@@ -67,12 +67,19 @@ export default function Atividades() {
                 <View key={index} style={styles.viewDados}>
                   <View style={styles.viewTexto}>
                     <Text style={styles.texto}>
-                      Distancia: {favorito.storedDistance.toFixed(2)}
+                      Distancia: {" "}
+                      <Text style={styles.texto2}>
+                        {favorito.storedDistance.toFixed(2)}
+                      </Text>
                     </Text>
                     <Text style={styles.texto}>
-                      Tempo: {favorito.storedTime.hours} h :{" "}
-                      {favorito.storedTime.minutes} m :{" "}
-                      {favorito.storedTime.seconds} s
+                      Tempo: {" "}
+                      <Text style={styles.texto2}>
+                        {favorito.storedTime.hours} h :{" "}
+                        {favorito.storedTime.minutes} m :{" "}
+                        {favorito.storedTime.seconds} s
+                      </Text>
+
                     </Text>
                   </View>
 
@@ -126,6 +133,7 @@ const styles = StyleSheet.create({
   },
 
   mapa: {
+    marginVertical: 15,
     height: 300,
     width: 300,
   },
@@ -137,6 +145,9 @@ const styles = StyleSheet.create({
   },
 
   viewDados: {
+    backgroundColor: "rgba(65, 44, 171, 0.15)",
+    padding: 20,
+    borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
     margin: 20,
@@ -149,6 +160,13 @@ const styles = StyleSheet.create({
   },
 
   texto: {
-    fontSize: 18,
+    fontSize: 16,
+    color: "#3A2293",
+    fontWeight: "bold",
+  },
+  texto2: {
+    fontSize: 16,
+    color: "#000",
+    fontWeight: "400",
   },
 });
