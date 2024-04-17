@@ -71,10 +71,43 @@ export default function App() {
                   }}
                   initialRouteName="Home"
                 >
-                  <Tab.Screen name="Home" component={Home} />
-                  <Tab.Screen name="Atividades" component={Atividades} />
-                  <Tab.Screen name="Play" component={Play} />
-                  <Tab.Screen name="Perfil" component={Perfil} />
+
+                  <Tab.Screen
+                    name="Inicio"
+                    component={Home}
+                    options={{
+                      tabBarIcon: () => {
+                        return <Ionicons name="home" size={24} color="white" />
+                      }
+                    }} />
+
+
+                  <Tab.Screen
+                    name="Atividades"
+                    component={Atividades}
+                    options={{
+                      tabBarIcon: () => {
+                        return <MaterialCommunityIcons name="clock-check" size={24} color="white" />
+                      }
+                    }} />
+
+                  <Tab.Screen
+                    name="Play"
+                    component={Play}
+                    options={{
+                      tabBarIcon: () => {
+                        return <Ionicons name="bicycle-sharp" size={28} color="white" />
+                      }
+                    }} />
+
+                  <Tab.Screen
+                    name="Perfil"
+                    component={Perfil}
+                    options={{
+                      tabBarIcon: () => {
+                        return <FontAwesome name="user" size={24} color="white" />
+                      }
+                    }} />
                 </Tab.Navigator>
               )}
             </Stack.Screen>
