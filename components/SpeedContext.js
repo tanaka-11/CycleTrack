@@ -26,6 +26,9 @@ export const SpeedProvider = ({ children }) => {
   const [stop, setStop] = useState(false);
   const [data, setData] = useState([]);
 
+  // Data atual
+  const [currentDate, setCurrentDate] = useState();
+
   // Localização do usuário
   const [myLocation, setMyLocation] = useState();
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -247,17 +250,17 @@ export const SpeedProvider = ({ children }) => {
     time,
 
     // Set
-    setSpeed,
-    setRunning,
-    setDistance,
-    setSteps,
-    setPause,
-    setStop,
-    setMyLocation,
-    setCurrentLocation,
-    setLocationSubscription,
     setLocation,
+    setCurrentLocation,
     setInitialLocation,
+    setMyLocation,
+    setSpeed,
+    setSteps,
+    setDistance,
+    setStop,
+    setPause,
+    setRunning,
+    setLocationSubscription,
     setStoredSpeed,
     setStoredDistance,
     setData,
