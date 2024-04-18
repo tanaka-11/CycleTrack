@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { StyleSheet } from "react-native";
+
+// Navigator
 import { NavigationContainer } from "@react-navigation/native";
-// Importação do bottom navigator
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -13,20 +14,22 @@ import Play from "./screens/Play";
 import Login from "./screens/Login";
 import Cadastro from "./screens/Cadastro";
 import RecuperarSenha from "./screens/RecuperarSenha";
+
 // Acesso firebase auth
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 // useContext
 import { SpeedProvider } from "./components/SpeedContext";
 
 // Icones
-import { AntDesign } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 // constante iniciando a criação do navigator
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+// StackScreen
 const AuthStack = () => (
   <Stack.Navigator
     initialRouteName="Login"
@@ -76,43 +79,65 @@ export default function App() {
                   }}
                   initialRouteName="Home"
                 >
-
                   <Tab.Screen
                     name="Home"
                     component={Home}
                     options={{
                       tabBarIcon: () => {
-                        return <Ionicons name="home-outline" size={24} color="white" />
-                      }
-                    }} />
-
+                        return (
+                          <Ionicons
+                            name="home-outline"
+                            size={24}
+                            color="white"
+                          />
+                        );
+                      },
+                    }}
+                  />
 
                   <Tab.Screen
                     name="Atividades"
                     component={Atividades}
                     options={{
                       tabBarIcon: () => {
-                        return <MaterialCommunityIcons name="clock-check-outline" size={24} color="white" />
-                      }
-                    }} />
+                        return (
+                          <MaterialCommunityIcons
+                            name="clock-check-outline"
+                            size={24}
+                            color="white"
+                          />
+                        );
+                      },
+                    }}
+                  />
 
                   <Tab.Screen
                     name="Play"
                     component={Play}
                     options={{
                       tabBarIcon: () => {
-                        return <MaterialCommunityIcons name="bike" size={24} color="white" />
-                      }
-                    }} />
+                        return (
+                          <MaterialCommunityIcons
+                            name="bike"
+                            size={24}
+                            color="white"
+                          />
+                        );
+                      },
+                    }}
+                  />
 
                   <Tab.Screen
                     name="Perfil"
                     component={Perfil}
                     options={{
                       tabBarIcon: () => {
-                        return <AntDesign name="user" size={24} color="white" />
-                      }
-                    }} />
+                        return (
+                          <AntDesign name="user" size={24} color="white" />
+                        );
+                      },
+                    }}
+                  />
                 </Tab.Navigator>
               )}
             </Stack.Screen>

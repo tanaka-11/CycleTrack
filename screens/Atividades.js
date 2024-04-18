@@ -18,7 +18,7 @@ export default function Atividades() {
   // State para registrar os dados carregados no storage
   const [listaFavoritos, setListaFavoritos] = useState(data);
 
-  // Excluir TODAS corrida (Depois Excluir)
+  // Excluir TODAS corrida
   // const excluirTodasCorridas = async () => {
   //   Alert.alert("Excluir TODAS?", "Quer mesmo excluir TODAS suas corridas?", [
   //     {
@@ -55,8 +55,6 @@ export default function Atividades() {
     carregarFavoritos();
   }, [data]);
 
-  // console.log(listaFavoritos[0].time.seconds);
-
   return (
     <View style={styles.container}>
       {listaFavoritos.length > 0 ? (
@@ -67,19 +65,18 @@ export default function Atividades() {
                 <View key={index} style={styles.viewDados}>
                   <View style={styles.viewTexto}>
                     <Text style={styles.texto}>
-                      Distancia: {" "}
+                      Distancia:{" "}
                       <Text style={styles.texto2}>
                         {favorito.storedDistance.toFixed(2)}
                       </Text>
                     </Text>
                     <Text style={styles.texto}>
-                      Tempo: {" "}
+                      Tempo:{" "}
                       <Text style={styles.texto2}>
                         {favorito.storedTime.hours} h :{" "}
                         {favorito.storedTime.minutes} m :{" "}
                         {favorito.storedTime.seconds} s
                       </Text>
-
                     </Text>
                   </View>
 

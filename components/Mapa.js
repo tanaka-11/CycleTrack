@@ -1,5 +1,5 @@
 import { Alert, Platform, StyleSheet, Text, View } from "react-native";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import MapView, { Marker } from "react-native-maps";
 import { Accelerometer } from "expo-sensors";
 
@@ -61,7 +61,7 @@ export default function Mapa() {
         </Text>
 
         <Text style={styles.botaoPreenchido}>
-        <Text style={styles.tituloBotao}>Distância:</Text> {steps.toFixed(2)}
+          <Text style={styles.tituloBotao}>Distância:</Text> {steps.toFixed(2)}
         </Text>
       </View>
 
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 8,
   },
+
   botaoVazado: {
     borderColor: "#3A2293",
     color: "#3A2293",
@@ -113,10 +114,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     textAlign: "center",
   },
+
   textoBotaoVazado: {
     color: "#3A2293",
     textAlign: "center",
   },
+
   botaoPreenchido: {
     borderColor: "#3A2293",
     borderWidth: 2,
@@ -125,10 +128,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     textAlign: "center",
   },
+
   textoBotaoPreenchido: {
     color: "#ffffff",
     textAlign: "center",
   },
+
   botaoVazadoPreto: {
     borderColor: "rgba(13, 30, 82, 0.5)",
     borderWidth: 2,
@@ -136,10 +141,12 @@ const styles = StyleSheet.create({
     width: 100,
     borderRadius: 8,
   },
+
   textoBotaoVazadoP: {
     color: "#0A045A",
     textAlign: "center",
   },
+
   botaoPadrao: {
     backgroundColor: "#5442D2",
     padding: 8,
@@ -147,20 +154,23 @@ const styles = StyleSheet.create({
     width: 120,
     height: 45,
   },
+
   textoBotaoPadrao: {
     color: "#fff",
     textAlign: "center",
     alignItems: "center",
     fontSize: 22,
   },
+
   sessaoBotoes: {
     flexDirection: "row",
     gap: 20,
     marginVertical: 35,
     marginHorizontal: 20,
   },
+
   tituloBotao: {
     color: "#3A2293",
     fontWeight: "bold",
-  }
+  },
 });

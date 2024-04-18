@@ -106,7 +106,7 @@ export default function Home({ navigation }) {
         </View>
 
         {/* Progresso */}
-        <Text style={styles.titulo}>Seu progresso semanal</Text>
+        <Text style={styles.titulo}>Seu progresso</Text>
 
         <View style={styles.progresso}>
           <View style={styles.viewAtividade}>
@@ -132,6 +132,8 @@ export default function Home({ navigation }) {
             <View style={styles.atividadeRecente}>
               <View style={styles.viewDistanciaRecentes}>
                 <View style={styles.viewDistanciaRecentes2}>
+                  <Text style={styles.viewTitulo}>Data</Text>
+
                   <View style={styles.viewDistancia}>
                     <Text style={styles.viewTitulo}>Distancia</Text>
                     <Text style={styles.textoDados}>

@@ -132,6 +132,7 @@ export default function Stopwatch() {
       <View style={styles.container}>
         <Text style={styles.subHeader}>Passe seu tempo pedalando</Text>
 
+        {/* Cronometro */}
         <View style={styles.sessaoCentralizar}>
           <View style={styles.bordaContador}>
             <View style={styles.timeText}>
