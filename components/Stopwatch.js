@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import { useState, useRef } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { useRef } from "react";
 
 // Componentes
 import ControlButtons from "./ControlButtons";

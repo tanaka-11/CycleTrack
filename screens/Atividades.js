@@ -1,12 +1,4 @@
-import {
-  Alert,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  Vibration,
-} from "react-native";
+import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useState, useEffect } from "react";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -17,24 +9,6 @@ export default function Atividades() {
 
   // State para registrar os dados carregados no storage
   const [listaFavoritos, setListaFavoritos] = useState(data);
-
-  // Excluir TODAS corrida
-  // const excluirTodasCorridas = async () => {
-  //   Alert.alert("Excluir TODAS?", "Quer mesmo excluir TODAS suas corridas?", [
-  //     {
-  //       text: "Excluir",
-  //       onPress: async () => {
-  //         await AsyncStorage.removeItem("@infosSalvas");
-  //         setListaFavoritos([]);
-  //         Vibration.vibrate();
-  //       }, // removendo itens e atualizando o state
-  //     },
-  //     {
-  //       text: "Cancelar",
-  //       style: "cancel",
-  //     },
-  //   ]); // Passado 3º parametro como um array com um objeto para texto do alert
-  // };
 
   // useEffect é acionado toda vez que o data(State vindo do Context) atualizar
   useEffect(() => {
@@ -114,12 +88,6 @@ export default function Atividades() {
           Você não possui atividades.
         </Text>
       )}
-
-      {/* {listaFavoritos.length > 0 && (
-        <Pressable style={styles.botao} onPress={excluirTodasCorridas}>
-          <Text>Apagar</Text>
-        </Pressable>
-      )} */}
     </View>
   );
 }

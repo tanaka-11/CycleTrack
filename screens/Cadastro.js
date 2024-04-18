@@ -13,7 +13,6 @@ import {
   ImageBackground,
 } from "react-native";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { FontAwesome } from "@expo/vector-icons";
 import { auth } from "../firebaseConfig";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
