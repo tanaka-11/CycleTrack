@@ -132,7 +132,12 @@ export default function Home({ navigation }) {
             <View style={styles.atividadeRecente}>
               <View style={styles.viewDistanciaRecentes}>
                 <View style={styles.viewDistanciaRecentes2}>
-                  <Text style={styles.viewTitulo}>Data</Text>
+                  <View style={styles.viewData}>
+                    <Text style={styles.viewTitulo}>Data</Text>
+                    <Text style={styles.textoDados}>
+                      {listaFavoritos[listaFavoritos.length - 1].currentDate}
+                    </Text>
+                  </View>
 
                   <View style={styles.viewDistancia}>
                     <Text style={styles.viewTitulo}>Distancia</Text>

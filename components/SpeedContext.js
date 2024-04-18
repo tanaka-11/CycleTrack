@@ -26,8 +26,9 @@ export const SpeedProvider = ({ children }) => {
   const [stop, setStop] = useState(false);
   const [data, setData] = useState([]);
 
-  // Data atual
+  // Data atual e hora
   const [currentDate, setCurrentDate] = useState();
+  const [currentTime, setCurrentTime] = useState();
 
   // Localização do usuário
   const [myLocation, setMyLocation] = useState();
@@ -202,6 +203,17 @@ export const SpeedProvider = ({ children }) => {
 
   // Função para salvarInfos
   const savedInfos = async () => {
+    // Capturando Data atual e a formatando
+    const date = new Date();
+    const dateOptions = { year: "numeric", month: "2-digit", day: "2-digit" };
+    const timeOptions = {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    };
+    const formattedDate = date.toLocaleString("pt-BR", dateOptions); // Formatação da data
+    const formattedTime = date.toLocaleString("pt-BR", timeOptions); // Formatação da hora
+
     const infos = {
       localizacao: {
         latitude: location.latitude,
@@ -210,6 +222,8 @@ export const SpeedProvider = ({ children }) => {
       storedDistance: steps,
       storedSpeed: speed,
       storedTime: time,
+      currentDate: formattedDate,
+      currentTime: formattedTime,
     };
 
     try {
@@ -248,6 +262,8 @@ export const SpeedProvider = ({ children }) => {
     storedDistance,
     data,
     time,
+    currentDate,
+    currentTime,
 
     // Set
     setLocation,
@@ -265,6 +281,8 @@ export const SpeedProvider = ({ children }) => {
     setStoredDistance,
     setData,
     setTime,
+    setCurrentDate,
+    setCurrentTime,
 
     // Funções
     startMonitoring,
