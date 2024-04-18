@@ -56,11 +56,11 @@ export default function Mapa() {
     <>
       <View style={styles.viewDados}>
         <Text style={styles.botaoPreenchido}>
-          {/* Distância percorrida: {(distance / 1000).toFixed(2)} km */}
           <Text style={styles.tituloBotao}>Velocidade:</Text> {speed.toFixed(2)}
         </Text>
 
         <Text style={styles.botaoPreenchido}>
+          {/* Distância percorrida: {(distance / 1000).toFixed(2)} km */}
           <Text style={styles.tituloBotao}>Distância:</Text> {steps.toFixed(2)}
         </Text>
       </View>

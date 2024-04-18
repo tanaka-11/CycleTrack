@@ -55,6 +55,7 @@ export default function Atividades() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.titulo}>Suas Atividades</Text>
       {listaFavoritos.length > 0 ? (
         <ScrollView>
           {listaFavoritos.reverse().map((favorito, index) => {
@@ -128,6 +129,14 @@ export default function Atividades() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+
+  titulo: {
+    margin: 20,
+    color: "#000",
+    fontSize: 22,
+    fontWeight: "bold",
+    textAlign: "left",
   },
 
   mapa: {
