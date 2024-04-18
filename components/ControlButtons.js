@@ -116,44 +116,65 @@ export default function ControlButtons({
         )}
 
         {stop && (
-          <Pressable
-            style={[styles.button, styles.resumeButton]}
-            onPress={() => {
-              // Redefinir os states para seus valores iniciais
-              // State do Cronometro
-              setStop(false);
-              setPause(false);
-              setRunning(false);
-              setTime({ hours: 0, minutes: 0, seconds: 0 });
+          <>
+            <Pressable
+              style={[styles.button, styles.resetButton]}
+              onPress={() => {
+                // Redefinir os states para seus valores iniciais
+                // State do Cronometro
+                setStop(false);
+                setPause(false);
+                setRunning(false);
+                setTime({ hours: 0, minutes: 0, seconds: 0 });
 
-              // State do Acelerometro
-              setSpeed(0);
-              setDistance(0);
-              setSteps(0);
+                // State do Acelerometro
+                setSpeed(0);
+                setDistance(0);
+                setSteps(0);
+              }}
+            >
+              <Text style={styles.buttonText}>Reset</Text>
+            </Pressable>
 
-              // Alerta de operação bem sucedida
-              Vibration.vibrate();
-              Alert.alert(
-                "Corrida salva!",
-                "Sua corrida foi salva com sucesso",
-                [
-                  {
-                    text: "Visualizar informações",
-                    onPress: () => navigation.navigate("Atividades"),
-                  },
-                  {
-                    text: "Okay",
-                    style: "cancel",
-                  },
-                ]
-              );
+            <Pressable
+              style={[styles.button, styles.resumeButton]}
+              onPress={() => {
+                // Redefinir os states para seus valores iniciais
+                // State do Cronometro
+                setStop(false);
+                setPause(false);
+                setRunning(false);
+                setTime({ hours: 0, minutes: 0, seconds: 0 });
 
-              // Função
-              savedInfos();
-            }}
-          >
-            <Text style={styles.buttonText}>Salvar</Text>
-          </Pressable>
+                // State do Acelerometro
+                setSpeed(0);
+                setDistance(0);
+                setSteps(0);
+
+                // Alerta de operação bem sucedida
+                Vibration.vibrate();
+                Alert.alert(
+                  "Corrida salva!",
+                  "Sua corrida foi salva com sucesso",
+                  [
+                    {
+                      text: "Visualizar informações",
+                      onPress: () => navigation.navigate("Atividades"),
+                    },
+                    {
+                      text: "Okay",
+                      style: "cancel",
+                    },
+                  ]
+                );
+
+                // Função
+                savedInfos();
+              }}
+            >
+              <Text style={styles.buttonText}>Salvar</Text>
+            </Pressable>
+          </>
         )}
       </View>
     </>
