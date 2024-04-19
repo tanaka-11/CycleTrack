@@ -307,8 +307,8 @@ const styles = StyleSheet.create({
   },
 
   viewDistancia: {
-    marginRight: 50,
-    marginLeft: 20,
+    marginRight: 40,
+    marginLeft: 40,
   },
 
   textoBotaoVazado: {
