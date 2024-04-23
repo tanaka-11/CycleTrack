@@ -14,6 +14,7 @@ import Play from "./screens/Play";
 import Login from "./screens/Login";
 import Cadastro from "./screens/Cadastro";
 import RecuperarSenha from "./screens/RecuperarSenha";
+import Detalhes from "./screens/Detalhes";
 
 // Acesso firebase auth
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -29,7 +30,7 @@ import { Ionicons } from "@expo/vector-icons";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-// StackScreen
+// StackScreen de Login
 const AuthStack = () => (
   <Stack.Navigator
     initialRouteName="Login"
@@ -40,6 +41,18 @@ const AuthStack = () => (
     <Stack.Screen name="Login" component={Login} />
     <Stack.Screen name="Cadastro" component={Cadastro} />
     <Stack.Screen name="RecuperarSenha" component={RecuperarSenha} />
+  </Stack.Navigator>
+);
+
+const AtividadesStack = () => (
+  <Stack.Navigator
+    initialRouteName="Atividades"
+    screenOptions={{
+      headerShown: false,
+    }}
+  >
+    <Stack.Screen name="AtividadesDetalhes" component={Atividades} />
+    <Stack.Screen name="Detalhes" component={Detalhes} />
   </Stack.Navigator>
 );
 
@@ -97,7 +110,7 @@ export default function App() {
 
                   <Tab.Screen
                     name="Atividades"
-                    component={Atividades}
+                    component={AtividadesStack}
                     options={{
                       tabBarIcon: () => {
                         return (
