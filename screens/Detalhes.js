@@ -1,10 +1,15 @@
-import { Button, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+
 import { useRoute } from "@react-navigation/native";
 
 // Importações Dependencias
+import ViewShot from "react-native-view-shot";
+import * as Sharing from "expo-sharing";
 import MapView, { Marker } from "react-native-maps";
 import { useSpeedContext } from "../components/SpeedContext";
 import { auth } from "../firebaseConfig";
+import { useRef } from "react";
 
 export default function Detalhes() {
   // Recurso de navegação
@@ -26,96 +31,130 @@ export default function Detalhes() {
     photoURL = auth.currentUser.photoURL;
   }
 
-  // Objeto com os dados
-  console.log("Tela Detalhes");
-  console.log(atividade);
+  // Referencia para a função handleShare (Compartilhar)
+  const viewRef = useRef();
+
+  // State para a função handleShare
+  const [isSharing, setIsSharing] = useState(false);
+
+  // Função para tirar print e compartilhar a imagem
+  const handleShare = async () => {
+    if (isSharing || !viewRef.current) {
+      // Se já estiver compartilhando ou a referência da visualização não estiver disponível, simplesmente retorne
+      return;
+    }
+
+    try {
+      setIsSharing(true); // Inicia o compartilhamento
+      const uri = await viewRef.current.capture();
+      await Sharing.shareAsync(uri);
+    } catch (error) {
+      console.error("Erro ao capturar e compartilhar: ", error);
+    } finally {
+      setIsSharing(false); // Termina o compartilhamento
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.topo}>
-        <View style={styles.dadosUsuario}>
-          <Image
-            source={{ uri: photoURL || "https://via.placeholder.com/150" }}
-            style={[
-              styles.image,
-              { borderRadius: 85, backgroundColor: "#ad91cc" },
-            ]}
-          />
-          <View style={styles.infos}>
-            <Text style={styles.nomeUsuario}>{displayName} </Text>
-            <Text style={styles.data}>
-              {atividade.currentDate} as {atividade.currentTime}
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      <View>
-        <View style={styles.viewMapa}>
-          <MapView
-            ref={mapViewRef}
-            style={styles.mapa}
-            scrollEnabled={false}
-            zoomEnabled={false}
-            rotateEnabled={false}
-            pitchEnabled={false}
-            initialRegion={{
-              latitude: atividade.localizacao.latitude,
-              longitude: atividade.localizacao.longitude,
-              latitudeDelta: 0.005,
-              longitudeDelta: 0.005,
-            }}
-          >
-            <Marker
-              coordinate={atividade.localizacao}
-              title={`Local da sua corrida!`}
-              pinColor="blue"
+      <ViewShot
+        ref={viewRef}
+        options={{ format: "jpg", quality: 0.9 }}
+        style={styles.viewPrint}
+      >
+        <View style={styles.topo}>
+          <View style={styles.dadosUsuario}>
+            <Image
+              source={{ uri: photoURL || "https://via.placeholder.com/150" }}
+              style={[
+                styles.image,
+                { borderRadius: 85, backgroundColor: "#ad91cc" },
+              ]}
             />
-          </MapView>
-        </View>
-
-        <View style={styles.viewDados}>
-          <View style={styles.viewItem}>
-            <Text style={styles.tituloTexto}>Distância</Text>
-            <Text style={styles.corpoTexto}>
-              {atividade.storedDistance.toFixed(2)}
-            </Text>
-          </View>
-
-          <View style={styles.viewItem}>
-            <Text style={styles.tituloTexto}>Tempo</Text>
-            <Text style={styles.corpoTexto}>
-              {atividade.storedTime.hours} h : {atividade.storedTime.minutes} m
-              : {atividade.storedTime.seconds} s
-            </Text>
-          </View>
-
-          <View style={styles.viewItem}>
-            <Text style={styles.tituloTexto}>Velocidade Média</Text>
-            <Text style={styles.corpoTexto}>
-              {atividade.storedSpeed.toFixed(2)}
-            </Text>
-          </View>
-
-          <View style={styles.viewItem}>
-            <Text style={styles.tituloTexto}>Velocidade Máxima:</Text>
-            <Text style={styles.corpoTexto}>
-              {atividade.storedSpeed.toFixed(2)}
-            </Text>
+            <View style={styles.infos}>
+              <Text style={styles.nomeUsuario}>{displayName} </Text>
+              <Text style={styles.data}>
+                {atividade.currentDate} as {atividade.currentTime}
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
 
-      <View style={styles.viewBotao}>
-        <Pressable style={styles.botaoVazado}>
-          <Text style={styles.textoBotaoVazado}>Compartilhar</Text>
-        </Pressable>
-      </View>
+        <View>
+          <View style={styles.viewMapa}>
+            <MapView
+              ref={mapViewRef}
+              style={styles.mapa}
+              scrollEnabled={false}
+              zoomEnabled={false}
+              rotateEnabled={false}
+              pitchEnabled={false}
+              initialRegion={{
+                latitude: atividade.localizacao.latitude,
+                longitude: atividade.localizacao.longitude,
+                latitudeDelta: 0.005,
+                longitudeDelta: 0.005,
+              }}
+            >
+              <Marker
+                coordinate={atividade.localizacao}
+                title={`Local da sua corrida!`}
+                pinColor="blue"
+              />
+            </MapView>
+          </View>
+
+          <View style={styles.viewDados}>
+            <View style={styles.viewItem}>
+              <Text style={styles.tituloTexto}>Distância</Text>
+              <Text style={styles.corpoTexto}>
+                {atividade.storedDistance.toFixed(2)}
+              </Text>
+            </View>
+
+            <View style={styles.viewItem}>
+              <Text style={styles.tituloTexto}>Tempo</Text>
+              <Text style={styles.corpoTexto}>
+                {atividade.storedTime.hours} h : {atividade.storedTime.minutes}{" "}
+                m : {atividade.storedTime.seconds} s
+              </Text>
+            </View>
+
+            <View style={styles.viewItem}>
+              <Text style={styles.tituloTexto}>Velocidade Média</Text>
+              <Text style={styles.corpoTexto}>
+                {atividade.storedSpeed.toFixed(2)}
+              </Text>
+            </View>
+
+            <View style={styles.viewItem}>
+              <Text style={styles.tituloTexto}>Velocidade Máxima:</Text>
+              <Text style={styles.corpoTexto}>
+                {atividade.storedSpeed.toFixed(2)}
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {!isSharing && (
+          <View style={styles.viewBotao}>
+            <Pressable style={styles.botaoVazado} onPress={handleShare}>
+              <Text style={styles.textoBotaoVazado}>Compartilhar</Text>
+            </Pressable>
+          </View>
+        )}
+      </ViewShot>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+
+  viewPrint: {
+    backgroundColor: "white",
+    flex: 1,
+  },
 
   //Perfil
   topo: {
