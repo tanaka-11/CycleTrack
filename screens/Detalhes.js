@@ -57,6 +57,7 @@ export default function Detalhes() {
 
   return (
     <View style={styles.container}>
+      {/* Area de Print  */}
       <ViewShot
         ref={viewRef}
         options={{ format: "jpg", quality: 0.9 }}
@@ -144,6 +145,7 @@ export default function Detalhes() {
           </View>
         )}
       </ViewShot>
+      {/* Fim area de print */}
     </View>
   );
 }
