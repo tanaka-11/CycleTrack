@@ -71,7 +71,6 @@ export default function Cadastro({ navigation }) {
   const cadastrar = async () => {
     if (!email || !senha || !nome || !imagem) {
       Alert.alert("Atenção", "Preecha todos os campos");
-      setLoadingCadastro(false); // Termina o carregamento se os campos não estiverem preenchidos
       return;
     }
 
@@ -89,6 +88,16 @@ export default function Cadastro({ navigation }) {
         await updateProfile(auth.currentUser, {
           displayName: nome,
           photoURL: downloadURL,
+        });
+
+        // Força uma atualização das informações do usuário
+        const user = auth.currentUser;
+        await user.reload();
+
+        // Navega para a tela inicial após o cadastro
+        navigation.navigate("Home", {
+          displayName: user.displayName,
+          photoURL: user.photoURL,
         });
       }
 
@@ -177,7 +186,9 @@ export default function Cadastro({ navigation }) {
               {loadingStorage ? (
                 <ActivityIndicator animating={loadingStorage} color="#fff" />
               ) : (
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View
+                  style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
+                >
                   <Text style={estilos.textoBotaoCadastro}>Cadastrar</Text>
                   <MaterialIcons
                     name="directions-bike"
