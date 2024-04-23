@@ -209,7 +209,6 @@ export const SpeedProvider = ({ children }) => {
     const timeOptions = {
       hour: "2-digit",
       minute: "2-digit",
-      second: "2-digit",
     };
     const formattedDate = date.toLocaleString("pt-BR", dateOptions); // Formatação da data
     const formattedTime = date.toLocaleString("pt-BR", timeOptions); // Formatação da hora
