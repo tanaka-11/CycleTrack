@@ -10,7 +10,7 @@ import {
 import { useSpeedContext } from "../components/SpeedContext";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Polyline } from "react-native-maps";
 import { auth } from "../firebaseConfig";
 
 export default function Home({ navigation }) {
@@ -192,8 +192,26 @@ export default function Home({ navigation }) {
                       coordinate={
                         listaFavoritos[listaFavoritos.length - 1].localizacao
                       }
-                      title={`Local da sua corrida!`}
                       pinColor="blue"
+                      title={`Local inicial da sua corrida`}
+                    />
+
+                    <Marker
+                      coordinate={
+                        listaFavoritos[listaFavoritos.length - 1]
+                          .localizacaoFinal
+                      }
+                      pinColor="red"
+                      title={`Local final da sua corrida`}
+                    />
+
+                    <Polyline
+                      coordinates={[
+                        listaFavoritos[listaFavoritos.length - 1].localizacao,
+                        listaFavoritos[listaFavoritos.length - 1]
+                          .localizacaoFinal,
+                      ]}
+                      strokeWidth={5}
                     />
                   </MapView>
                 </View>

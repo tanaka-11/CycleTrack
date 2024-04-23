@@ -35,6 +35,7 @@ export const SpeedProvider = ({ children }) => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [location, setLocation] = useState();
   const [initialLocation, setInitialLocation] = useState();
+  const [finalLocation, setFinalLocation] = useState(null);
 
   // Monitoramento da distancia e velocidade
   const [locationSubscription, setLocationSubscription] = useState();
@@ -140,6 +141,8 @@ export const SpeedProvider = ({ children }) => {
             );
             setDistance(newDistance);
           }
+          // Atualize a localização final
+          setFinalLocation(position.coords);
         }
       );
 
@@ -218,6 +221,7 @@ export const SpeedProvider = ({ children }) => {
         latitude: location.latitude,
         longitude: location.longitude,
       },
+      localizacaoFinal: finalLocation,
       storedDistance: steps,
       storedSpeed: speed,
       storedTime: time,
@@ -248,6 +252,7 @@ export const SpeedProvider = ({ children }) => {
     location,
     currentLocation,
     initialLocation,
+    finalLocation,
     myLocation,
     speed,
     steps,
@@ -268,6 +273,7 @@ export const SpeedProvider = ({ children }) => {
     setLocation,
     setCurrentLocation,
     setInitialLocation,
+    setFinalLocation,
     setMyLocation,
     setSpeed,
     setSteps,

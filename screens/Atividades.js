@@ -24,21 +24,21 @@ export default function Atividades() {
   const navigation = useNavigation();
 
   // Excluir TODAS corrida
-  // const excluirTodasCorridas = async () => {
-  //   Alert.alert("Excluir TODAS?", "Quer mesmo excluir TODAS suas corridas?", [
-  //     {
-  //       text: "Excluir",
-  //       onPress: async () => {
-  //         await AsyncStorage.removeItem("@infosSalvas");
-  //         setListaFavoritos([]);
-  //       }, // removendo itens e atualizando o state
-  //     },
-  //     {
-  //       text: "Cancelar",
-  //       style: "cancel",
-  //     },
-  //   ]); // Passado 3º parametro como um array com um objeto para texto do alert
-  // };
+  const excluirTodasCorridas = async () => {
+    Alert.alert("Excluir TODAS?", "Quer mesmo excluir TODAS suas corridas?", [
+      {
+        text: "Excluir",
+        onPress: async () => {
+          await AsyncStorage.removeItem("@infosSalvas");
+          setListaFavoritos([]);
+        }, // removendo itens e atualizando o state
+      },
+      {
+        text: "Cancelar",
+        style: "cancel",
+      },
+    ]); // Passado 3º parametro como um array com um objeto para texto do alert
+  };
 
   // useEffect é acionado toda vez que o data(State vindo do Context) atualizar
   useEffect(() => {
@@ -109,11 +109,21 @@ export default function Atividades() {
                       >
                         <Marker
                           coordinate={favorito.localizacao}
-                          title={`Local da sua corrida!`}
                           pinColor="blue"
+                          title={`Local inicial da sua corrida`}
                         />
+
+                        <Marker
+                          coordinate={favorito.localizacaoFinal}
+                          pinColor="red"
+                          title={`Local final da sua corrida`}
+                        />
+
                         <Polyline
-                          coordinates={[favorito.localizacao]}
+                          coordinates={[
+                            favorito.localizacao,
+                            favorito.localizacaoFinal,
+                          ]}
                           strokeWidth={5}
                         />
                       </MapView>
@@ -130,11 +140,11 @@ export default function Atividades() {
         </Text>
       )}
 
-      {/* {listaFavoritos.length > 0 && (
+      {listaFavoritos.length > 0 && (
         <Pressable style={styles.botao} onPress={excluirTodasCorridas}>
           <Text>Apagar</Text>
         </Pressable>
-      )} */}
+      )}
     </View>
   );
 }

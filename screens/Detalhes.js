@@ -6,7 +6,7 @@ import { useRoute } from "@react-navigation/native";
 // Importações Dependencias
 import ViewShot from "react-native-view-shot";
 import * as Sharing from "expo-sharing";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Polyline } from "react-native-maps";
 import { useSpeedContext } from "../components/SpeedContext";
 import { auth } from "../firebaseConfig";
 import { useRef } from "react";
@@ -99,8 +99,22 @@ export default function Detalhes() {
             >
               <Marker
                 coordinate={atividade.localizacao}
-                title={`Local da sua corrida!`}
                 pinColor="blue"
+                title={`Local inicial da sua corrida`}
+              />
+
+              <Marker
+                coordinate={atividade.localizacaoFinal}
+                pinColor="red"
+                title={`Local final da sua corrida`}
+              />
+
+              <Polyline
+                coordinates={[
+                  atividade.localizacao,
+                  atividade.localizacaoFinal,
+                ]}
+                strokeWidth={5}
               />
             </MapView>
           </View>
