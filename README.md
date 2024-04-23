@@ -29,3 +29,5 @@ Ficamos felizes com o resultado e esperamos contribuir ainda mais para a comunid
 - `npx expo install expo-sensors` - Contagem dos passos
 - `npx expo install @react-native-async-storage/async-storage` - Salvar dados
 - `npm install react-native-gesture-handler` - Gestos
+- `npm install react-native-view-shot` - Captura de Tela
+- `npx expo install expo-sharing` - Compartilhamento
