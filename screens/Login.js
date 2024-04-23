@@ -60,6 +60,7 @@ export default function Login({ navigation }) {
                 placeholder="E-mail"
                 style={estilos.input}
               />
+
               <TextInput
                 onChangeText={(valor) => setSenha(valor)}
                 placeholder="Senha"
@@ -75,28 +76,23 @@ export default function Login({ navigation }) {
                 )}
               </Pressable>
 
-              <Pressable
-                style={estilos.botaoEsqueciSenha}
-                onPress={() => navigation.navigate("RecuperarSenha")}
-              >
-                <View style={estilos.esqueciSenha}>
-                  <Pressable
-                    style={estilos.botaoCriarConta}
-                    onPress={() => navigation.navigate("Cadastro")}
-                  >
-                    <Text style={estilos.textoCriarConta}>Criar Conta</Text>
-                  </Pressable>
+              <View style={estilos.esqueciSenha}>
+                <Pressable
+                  style={estilos.botaoCriarConta}
+                  onPress={() => navigation.navigate("Cadastro")}
+                >
+                  <Text style={estilos.textoCriarConta}>Criar Conta</Text>
+                </Pressable>
 
-                  <Pressable
-                    style={estilos.botaoEsqueciSenha}
-                    onPress={() => navigation.navigate("RecuperarSenha")}
-                  >
-                    <Text style={estilos.textoBotaoEsqueciSenha}>
-                      Recuperar Senha
-                    </Text>
-                  </Pressable>
-                </View>
-              </Pressable>
+                <Pressable
+                  style={estilos.botaoEsqueciSenha}
+                  onPress={() => navigation.navigate("RecuperarSenha")}
+                >
+                  <Text style={estilos.textoBotaoEsqueciSenha}>
+                    Recuperar Senha
+                  </Text>
+                </Pressable>
+              </View>
             </View>
           </View>
         </ScrollView>
