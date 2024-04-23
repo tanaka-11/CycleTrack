@@ -4,18 +4,24 @@ import {
   StyleSheet,
   Text,
   View,
-  Pressable,
+  Pressable, // Não apagar, botão para poder apagar atividades
 } from "react-native";
 import { useState, useEffect } from "react";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSpeedContext } from "../components/SpeedContext";
 
+// Recursos de navegação
+import { useNavigation } from "@react-navigation/native";
+
 export default function Atividades() {
   const { mapViewRef, data } = useSpeedContext();
 
   // State para registrar os dados carregados no storage
   const [listaFavoritos, setListaFavoritos] = useState(data);
+
+  // Recursos de navegação
+  const navigation = useNavigation();
 
   // Excluir TODAS corrida
   // const excluirTodasCorridas = async () => {
@@ -61,52 +67,59 @@ export default function Atividades() {
           {listaFavoritos.reverse().map((favorito, index) => {
             if (favorito.localizacao) {
               return (
-                <View key={index} style={styles.viewDados}>
-                  <View style={styles.viewTexto}>
-                    <Text style={styles.texto}>
-                      Distancia:{" "}
-                      <Text style={styles.texto2}>
-                        {favorito.storedDistance.toFixed(2)}
+                <Pressable
+                  key={index}
+                  onPress={() =>
+                    navigation.navigate("Detalhes", { atividade: favorito })
+                  }
+                >
+                  <View key={index} style={styles.viewDados}>
+                    <View style={styles.viewTexto}>
+                      <Text style={styles.texto}>
+                        Distancia:{" "}
+                        <Text style={styles.texto2}>
+                          {favorito.storedDistance.toFixed(2)}
+                        </Text>
                       </Text>
-                    </Text>
 
-                    <Text style={styles.texto}>
-                      Tempo:{" "}
-                      <Text style={styles.texto2}>
-                        {favorito.storedTime.hours} h :{" "}
-                        {favorito.storedTime.minutes} m :{" "}
-                        {favorito.storedTime.seconds} s
+                      <Text style={styles.texto}>
+                        Tempo:{" "}
+                        <Text style={styles.texto2}>
+                          {favorito.storedTime.hours} h :{" "}
+                          {favorito.storedTime.minutes} m :{" "}
+                          {favorito.storedTime.seconds} s
+                        </Text>
                       </Text>
-                    </Text>
-                  </View>
+                    </View>
 
-                  <View style={styles.viewMapa}>
-                    <MapView
-                      ref={mapViewRef}
-                      style={styles.mapa}
-                      scrollEnabled={false}
-                      zoomEnabled={false}
-                      rotateEnabled={false}
-                      pitchEnabled={false}
-                      initialRegion={{
-                        latitude: favorito.localizacao.latitude,
-                        longitude: favorito.localizacao.longitude,
-                        latitudeDelta: 0.005,
-                        longitudeDelta: 0.005,
-                      }}
-                    >
-                      <Marker
-                        coordinate={favorito.localizacao}
-                        title={`Local da sua corrida!`}
-                        pinColor="blue"
-                      />
-                      <Polyline
-                        coordinates={[favorito.localizacao]}
-                        strokeWidth={5}
-                      />
-                    </MapView>
+                    <View style={styles.viewMapa}>
+                      <MapView
+                        ref={mapViewRef}
+                        style={styles.mapa}
+                        scrollEnabled={false}
+                        zoomEnabled={false}
+                        rotateEnabled={false}
+                        pitchEnabled={false}
+                        initialRegion={{
+                          latitude: favorito.localizacao.latitude,
+                          longitude: favorito.localizacao.longitude,
+                          latitudeDelta: 0.005,
+                          longitudeDelta: 0.005,
+                        }}
+                      >
+                        <Marker
+                          coordinate={favorito.localizacao}
+                          title={`Local da sua corrida!`}
+                          pinColor="blue"
+                        />
+                        <Polyline
+                          coordinates={[favorito.localizacao]}
+                          strokeWidth={5}
+                        />
+                      </MapView>
+                    </View>
                   </View>
-                </View>
+                </Pressable>
               );
             }
           })}
