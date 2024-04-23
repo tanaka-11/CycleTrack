@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Alert,
-  Button,
   StyleSheet,
   TextInput,
   View,
@@ -11,6 +10,7 @@ import {
   StatusBar,
   ScrollView,
   ImageBackground,
+  ActivityIndicator,
 } from "react-native";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../firebaseConfig";
@@ -21,30 +21,23 @@ import { MaterialIcons } from "@expo/vector-icons";
 import Fundo from "../assets/fundo.jpg";
 
 export default function Cadastro({ navigation }) {
+  // Campos do Formulario
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [nome, setNome] = useState("");
 
+  // Campo de imagem
   const [imagem, setImagem] = useState(null);
   const [downloadURL, setDownloadURL] = useState(null);
   const storage = getStorage();
 
-  const [status, requestPermission] = ImagePicker.useCameraPermissions();
-
-  // useEffect(() => {
-  //   async function verificaPermissoes() {
-  // CameraStatus guardando a requisição da permissão de camera
-  // const cameraStatus = await ImagePicker.requestCameraPermissionsAsync();
-
-  // Requisição da permissão recebendo o cameraStatus com o parametro de ter permitido
-  //     requestPermission(cameraStatus === "granted");
-  //   }
-
-  //   verificaPermissoes();
-  // }, []);
+  // State de Loading
+  const [loadingImagem, setLoadingImagem] = useState(false);
+  const [loadingStorage, setLoadingStorage] = useState(false);
 
   // Função para fazer upload da imagem para o Firebase Storage e depois enviar pela função Cadastrar
   const carregarStorage = async () => {
+    setLoadingStorage(true); // Inicia o carregamento
     try {
       if (imagem) {
         const { uri } = await FileSystem.getInfoAsync(imagem); // Obtém o URI da imagem
@@ -69,6 +62,8 @@ export default function Cadastro({ navigation }) {
     } catch (error) {
       console.error(error);
       Alert.alert("Falha ao fazer upload da imagem", error.message);
+    } finally {
+      setLoadingStorage(false); // Termina o carregamento
     }
   };
 
@@ -76,6 +71,7 @@ export default function Cadastro({ navigation }) {
   const cadastrar = async () => {
     if (!email || !senha || !nome || !imagem) {
       Alert.alert("Atenção", "Preecha todos os campos");
+      setLoadingCadastro(false); // Termina o carregamento se os campos não estiverem preenchidos
       return;
     }
 
@@ -86,7 +82,7 @@ export default function Cadastro({ navigation }) {
         senha
       );
 
-      // Foto e nome do current userr
+      // Foto e nome do current user
       if (contaUsuario.user) {
         // Fazer upload no firestore
         // Atualize o perfil do usuário com o nome e a URL da imagem
@@ -96,22 +92,8 @@ export default function Cadastro({ navigation }) {
         });
       }
 
-      Alert.alert("Cadastro", " Seu cadastro foi concluido com sucesso!", [
-        {
-          style: "cancel",
-          text: "Ficar aqui mesmo",
-          onPress: () => {
-            return;
-          },
-        },
-        {
-          style: "default",
-          text: "Ir para a área logada ",
-          onPress: () => navigation.navigate("Home"),
-        },
-      ]);
+      Alert.alert("Cadastro", " Seu cadastro foi concluido com sucesso!");
     } catch (error) {
-      console.error(error.code);
       let mensagem;
       switch (error.code) {
         case "auth/email-already-in-use":
@@ -131,19 +113,22 @@ export default function Cadastro({ navigation }) {
     }
   };
 
+  // Função para escolher imagem de perfil
   const escolhaImagem = async () => {
+    setLoadingImagem(true); // Inicia o carregamento
     // Resultado guardando a biblioteca de fotos
     const resultado = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [3, 4],
-      quality: 1,
+      quality: 0.9,
     });
 
     // Se o resultado não for cancelado
     if (!resultado.canceled) {
       setImagem(resultado.assets[0].uri);
     }
+    setLoadingImagem(false); // Termina o carregamento
   };
 
   return (
@@ -162,7 +147,11 @@ export default function Cadastro({ navigation }) {
             )}
 
             <Pressable style={estilos.botaoFoto} onPress={escolhaImagem}>
-              <Text style={estilos.textoBotaoFoto}>Escolher Foto</Text>
+              {loadingImagem ? (
+                <ActivityIndicator animating={loadingImagem} color="#3D2498" />
+              ) : (
+                <Text style={estilos.textoBotaoFoto}>Escolher Foto</Text>
+              )}
             </Pressable>
 
             <TextInput
@@ -185,9 +174,18 @@ export default function Cadastro({ navigation }) {
             />
 
             <Pressable style={estilos.botaoCadastro} onPress={carregarStorage}>
-              <Text style={estilos.textoBotaoCadastro}>Cadastrar</Text>
-
-              <MaterialIcons name="directions-bike" size={20} color="white" />
+              {loadingStorage ? (
+                <ActivityIndicator animating={loadingStorage} color="#fff" />
+              ) : (
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Text style={estilos.textoBotaoCadastro}>Cadastrar</Text>
+                  <MaterialIcons
+                    name="directions-bike"
+                    size={20}
+                    color="white"
+                  />
+                </View>
+              )}
             </Pressable>
           </View>
         </View>

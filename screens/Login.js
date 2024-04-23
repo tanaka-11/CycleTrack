@@ -29,7 +29,6 @@ export default function Login({ navigation }) {
       await signInWithEmailAndPassword(auth, email, senha);
       navigation.navigate("Home");
     } catch (error) {
-      console.error(error.code);
       let mensagem;
       switch (error.code) {
         case "auth/invalid-credential":
@@ -55,13 +54,6 @@ export default function Login({ navigation }) {
           <View style={estilos.container}>
             <View style={estilos.formulario}>
               <Text style={estilos.logo}>CycleTrack</Text>
-
-              <ActivityIndicator
-                animating={loading}
-                size="large"
-                color="#3D2498"
-              />
-
               <TextInput
                 keyboardType="email-address"
                 onChangeText={(valor) => setEmail(valor)}
@@ -76,7 +68,11 @@ export default function Login({ navigation }) {
               />
 
               <Pressable onPress={login} style={estilos.botaoEntre}>
-                <Text style={estilos.textoBotaoEntre}>Entrar</Text>
+                {loading ? (
+                  <ActivityIndicator animating={loading} color="#fff" />
+                ) : (
+                  <Text style={estilos.textoBotaoEntre}>Entrar</Text>
+                )}
               </Pressable>
 
               <Pressable
@@ -85,13 +81,12 @@ export default function Login({ navigation }) {
               >
                 <View style={estilos.esqueciSenha}>
                   <Pressable
-                    style={estilos.botaoEsqueciSenha}
+                    style={estilos.botaoCriarConta}
                     onPress={() => navigation.navigate("Cadastro")}
                   >
-                    <Text style={estilos.textoBotaoEsqueciSenha}>
-                      Criar Conta
-                    </Text>
+                    <Text style={estilos.textoCriarConta}>Criar Conta</Text>
                   </Pressable>
+
                   <Pressable
                     style={estilos.botaoEsqueciSenha}
                     onPress={() => navigation.navigate("RecuperarSenha")}
@@ -132,6 +127,7 @@ const estilos = StyleSheet.create({
     shadowOffset: { width: 2, height: 4 }, // Sombra para baixo (y = 5)
     shadowOpacity: 0.2,
   },
+
   logo: {
     marginBottom: 25,
     marginTop: -20,
@@ -183,7 +179,16 @@ const estilos = StyleSheet.create({
   },
 
   textoBotaoEsqueciSenha: {
-    color: "#1D93E9",
+    color: "#8b0000",
+    fontSize: 16,
+  },
+
+  botaoCriarConta: {
+    backgroundColor: "transparent",
+  },
+
+  textoCriarConta: {
+    color: "#3D2498",
     fontSize: 16,
   },
 });

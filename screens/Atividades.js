@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Pressable, // Não apagar, botão para poder apagar atividades
+  ActivityIndicator,
+  Pressable,
 } from "react-native";
 import { useState, useEffect } from "react";
 import MapView, { Marker, Polyline } from "react-native-maps";
@@ -15,6 +16,10 @@ import { useSpeedContext } from "../components/SpeedContext";
 import { useNavigation } from "@react-navigation/native";
 
 export default function Atividades() {
+  // State para loading
+  const [loading, setLoading] = useState(false);
+
+  // Dados vindo do useContext
   const { mapViewRef, data } = useSpeedContext();
 
   // State para registrar os dados carregados no storage
@@ -23,26 +28,10 @@ export default function Atividades() {
   // Recursos de navegação
   const navigation = useNavigation();
 
-  // Excluir TODAS corrida
-  // const excluirTodasCorridas = async () => {
-  //   Alert.alert("Excluir TODAS?", "Quer mesmo excluir TODAS suas corridas?", [
-  //     {
-  //       text: "Excluir",
-  //       onPress: async () => {
-  //         await AsyncStorage.removeItem("@infosSalvas");
-  //         setListaFavoritos([]);
-  //       }, // removendo itens e atualizando o state
-  //     },
-  //     {
-  //       text: "Cancelar",
-  //       style: "cancel",
-  //     },
-  //   ]); // Passado 3º parametro como um array com um objeto para texto do alert
-  // };
-
   // useEffect é acionado toda vez que o data(State vindo do Context) atualizar
   useEffect(() => {
     const carregarFavoritos = async () => {
+      setLoading(true);
       try {
         // Recuperando os dados em formato string do asyncstorage atraves do "getItem"
         const dados = await AsyncStorage.getItem("@infosSalvas");
@@ -54,6 +43,8 @@ export default function Atividades() {
       } catch (error) {
         console.error("Erro ao carregar os dados: " + error);
         Alert.alert("Erro", "Erro ao carregar dados.");
+      } finally {
+        setLoading(false);
       }
     };
     carregarFavoritos();
@@ -62,7 +53,10 @@ export default function Atividades() {
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>Suas Atividades</Text>
-      {listaFavoritos.length > 0 ? (
+
+      {loading ? (
+        <ActivityIndicator animating={loading} size="large" color="#3D2498" />
+      ) : listaFavoritos.length > 0 ? (
         <ScrollView>
           {listaFavoritos.reverse().map((favorito, index) => {
             if (favorito.localizacao) {
@@ -139,12 +133,6 @@ export default function Atividades() {
           Você não possui atividades.
         </Text>
       )}
-
-      {/* {listaFavoritos.length > 0 && (
-        <Pressable style={styles.botao} onPress={excluirTodasCorridas}>
-          <Text>Apagar</Text>
-        </Pressable>
-      )} */}
     </View>
   );
 }

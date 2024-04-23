@@ -76,7 +76,7 @@ export default function Home({ navigation }) {
   );
 
   // Index
-  let totalIndex = listaFavoritos.reduce((total, favorito, index) => {
+  let totalIndex = listaFavoritos.reduce((index) => {
     return (total = index + 1);
   }, 0);
 
