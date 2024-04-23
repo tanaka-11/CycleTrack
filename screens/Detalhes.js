@@ -54,7 +54,6 @@ export default function Detalhes() {
       setIsSharing(false); // Termina o compartilhamento
     }
   };
-
   return (
     <View style={styles.container}>
       {/* Area de Print  */}
@@ -138,14 +137,14 @@ export default function Detalhes() {
             <View style={styles.viewItem}>
               <Text style={styles.tituloTexto}>Velocidade Média</Text>
               <Text style={styles.corpoTexto}>
-                {atividade.storedSpeed.toFixed(2)}
+                {atividade.averageSpeed.toFixed(2)}
               </Text>
             </View>
 
             <View style={styles.viewItem}>
               <Text style={styles.tituloTexto}>Velocidade Máxima:</Text>
               <Text style={styles.corpoTexto}>
-                {atividade.storedSpeed.toFixed(2)}
+                {atividade.maxSpeed.toFixed(2)}
               </Text>
             </View>
           </View>

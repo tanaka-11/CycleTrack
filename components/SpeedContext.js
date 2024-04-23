@@ -41,6 +41,9 @@ export const SpeedProvider = ({ children }) => {
   const [locationSubscription, setLocationSubscription] = useState();
   const [storedSpeed, setStoredSpeed] = useState(0);
   const [storedDistance, setStoredDistance] = useState(0);
+  const [maxSpeed, setMaxSpeed] = useState(0);
+  const [speedSum, setSpeedSum] = useState(0);
+  const [speedCount, setSpeedCount] = useState(0);
 
   // Definir mapViewRef dentro da função SpeedProvider
   const mapViewRef = useRef();
@@ -130,7 +133,16 @@ export const SpeedProvider = ({ children }) => {
         },
 
         (position) => {
-          setSpeed(position.coords.speed || 0);
+          const currentSpeed = position.coords.speed || 0;
+          setSpeed(currentSpeed);
+
+          // Atualize a velocidade máxima
+          setMaxSpeed((prevMaxSpeed) => Math.max(prevMaxSpeed, currentSpeed));
+
+          // Atualize a soma total das velocidades e a contagem
+          setSpeedSum((prevSpeedSum) => prevSpeedSum + currentSpeed);
+          setSpeedCount((prevSpeedCount) => prevSpeedCount + 1);
+
           // Calcule a distância aqui e atualize o estado 'distance'
           if (myLocation) {
             const newDistance = calculateDistance(
@@ -142,7 +154,10 @@ export const SpeedProvider = ({ children }) => {
             setDistance(newDistance);
           }
           // Atualize a localização final
-          setFinalLocation(position.coords);
+          setFinalLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
         }
       );
 
@@ -224,6 +239,8 @@ export const SpeedProvider = ({ children }) => {
       localizacaoFinal: finalLocation,
       storedDistance: steps,
       storedSpeed: speed,
+      averageSpeed: speedSum / speedCount,
+      maxSpeed: maxSpeed,
       storedTime: time,
       currentDate: formattedDate,
       currentTime: formattedTime,
