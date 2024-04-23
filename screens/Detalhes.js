@@ -54,6 +54,7 @@ export default function Detalhes() {
       setIsSharing(false); // Termina o compartilhamento
     }
   };
+
   return (
     <View style={styles.container}>
       {/* Area de Print  */}
