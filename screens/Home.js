@@ -9,6 +9,9 @@ import {
 } from "react-native";
 import { useSpeedContext } from "../components/SpeedContext";
 import { useEffect, useState } from "react";
+import { useRoute } from "@react-navigation/native";
+
+// Dependencias
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { auth } from "../firebaseConfig";
@@ -19,16 +22,26 @@ export default function Home({ navigation }) {
   // State guardando objeto vindo useContext
   const [listaFavoritos, setListaFavoritos] = useState(data);
 
+  // Recuro de navegação
+  const route = useRoute();
+
   // Caso usuario nao esteja logado
   let displayName = "Convidado";
   let photoURL = null;
 
-  // Se estiver logado
-  if (auth.currentUser) {
+  if (route.params) {
+    // Se houver parâmetros de rota, use-os
+    displayName = route.params.displayName;
+    photoURL = route.params.photoURL;
+  } else if (auth.currentUser) {
+    // Se não houver parâmetros de rota, mas o usuário estiver logado, use os dados do usuário
     displayName = auth.currentUser.displayName;
     photoURL = auth.currentUser.photoURL;
+  } else {
+    // Se não houver parâmetros de rota e o usuário não estiver logado, use os valores padrão
+    displayName;
+    photoURL;
   }
-
   // UseEffect para carregar os dados de atividades sempre que uma nova atividade for salva
   useEffect(() => {
     const carregarFavoritos = async () => {
