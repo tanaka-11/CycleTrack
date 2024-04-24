@@ -42,21 +42,28 @@ export default function Home({ navigation }) {
     displayName;
     photoURL;
   }
+
   // UseEffect para carregar os dados de atividades sempre que uma nova atividade for salva
   useEffect(() => {
     const carregarFavoritos = async () => {
       try {
-        // Recuperando os dados no async
-        const dados = await AsyncStorage.getItem("@infosSalvas");
+        // Identificador de Usuario
+        const userUID = auth.currentUser.uid;
+        const userKey = "@infosSalvas" + userUID;
 
-        // Conversão em objetos guardado no State
+        // Recuperando os dados em formato string do asyncstorage atraves do "getItem"
+        const dados = await AsyncStorage.getItem(userKey);
+
+        // Convertendo dados em objeto com JSON.parse e os guardando no state
         if (dados) {
           setListaFavoritos(JSON.parse(dados));
         }
       } catch (error) {
-        console.error("Error", "Erro ao carregar dados.");
+        console.error("Erro ao carregar os dados: " + error);
+        Alert.alert("Erro", "Erro ao carregar os dados");
       }
     };
+
     carregarFavoritos();
   }, [data]);
 
@@ -92,6 +99,9 @@ export default function Home({ navigation }) {
   let totalIndex = listaFavoritos.reduce((index) => {
     return (total = index + 1);
   }, 0);
+
+  console.log("Home");
+  console.log(listaFavoritos);
 
   return (
     <ScrollView>
