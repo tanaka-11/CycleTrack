@@ -147,17 +147,20 @@ export default function Perfil({ navigation }) {
               { borderRadius: 85, backgroundColor: "gray" },
             ]}
           />
-          {carregandoImagem && (
-            <ActivityIndicator
-              size="large"
-              color="#3D2498"
-              style={styles.loadingIndicator}
-            />
-          )}
+
           <Pressable onPress={escolhaImagem} style={styles.botao}>
-            <Text style={styles.botaoText}>Selecionar foto de perfil</Text>
+            {carregandoImagem ? (
+              <ActivityIndicator
+                // size="large"
+                color="#3D2498"
+                style={styles.loadingIndicator}
+              />
+            ) : (
+              <Text style={styles.botaoText}>Selecionar foto de perfil</Text>
+            )}
           </Pressable>
         </View>
+
         <View style={styles.containerInput}>
           <TextInput
             style={styles.input}
@@ -165,6 +168,7 @@ export default function Perfil({ navigation }) {
             onChangeText={setNome}
             placeholder="Nome"
           />
+
           <TextInput
             style={[
               styles.input,
@@ -175,6 +179,7 @@ export default function Perfil({ navigation }) {
             editable={false}
           />
         </View>
+
         <Pressable
           style={styles.botao}
           onPress={() => {
@@ -186,7 +191,13 @@ export default function Perfil({ navigation }) {
           <Text style={styles.botaoText}>Salvar Alterações</Text>
         </Pressable>
 
-        <Pressable onPress={logout} style={styles.botaoLogout}>
+        <Pressable
+          onPress={() => {
+            logout();
+            Vibration.vibrate(200);
+          }}
+          style={styles.botaoLogout}
+        >
           <Text style={styles.botaoTextLogout}>Logout</Text>
         </Pressable>
       </View>
@@ -197,19 +208,17 @@ export default function Perfil({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     alignItems: "center",
     justifyContent: "center",
   },
 
   containerInput: {
-    marginTop: 80,
+    marginTop: 60,
   },
 
-  // containerFoto: {
-  //   flexDirection: "row",
-  //   alignItems: "center",
-  // },
+  containerFoto: {
+    alignItems: "center",
+  },
 
   input: {
     backgroundColor: "#fff",
