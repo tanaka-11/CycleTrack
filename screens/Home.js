@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 
 // Dependencias
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { auth } from "../firebaseConfig";
 import { getDatabase, ref, onValue } from "firebase/database";

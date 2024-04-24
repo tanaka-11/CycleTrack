@@ -113,7 +113,10 @@ export default function Cadastro({ navigation }) {
         });
       }
 
-      Alert.alert("Cadastro", " Seu cadastro foi concluido com sucesso!");
+      Alert.alert(
+        "Cadastro",
+        " Seu cadastro foi concluido com sucesso. Hora de começar pedalar!"
+      );
     } catch (error) {
       let mensagem;
       switch (error.code) {
