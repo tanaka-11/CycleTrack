@@ -10,6 +10,7 @@ const firebaseConfig = {
   storageBucket: "cycletrack-ts.appspot.com",
   messagingSenderId: "619328327967",
   appId: "1:619328327967:web:0d0856de25bbe25003202a",
+  databaseURL: "https://cycletrack-ts-default-rtdb.firebaseio.com/",
 };
 
 const app = initializeApp(firebaseConfig);
