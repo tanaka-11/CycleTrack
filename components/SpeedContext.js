@@ -10,7 +10,6 @@ import * as Location from "expo-location";
 // Recursos de Storage
 import { getDatabase, ref, push } from "firebase/database";
 import { auth } from "../firebaseConfig";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Criar o Contexto
 const SpeedContext = createContext();
