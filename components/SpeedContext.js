@@ -5,12 +5,12 @@ import React, {
   useEffect,
   useRef,
 } from "react";
+import * as TaskManager from "expo-task-manager";
 import * as Location from "expo-location";
 
 // Recursos de Storage
 import { getDatabase, ref, push } from "firebase/database";
 import { auth } from "../firebaseConfig";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Criar o Contexto
 const SpeedContext = createContext();
@@ -20,6 +20,22 @@ export const useSpeedContext = () => useContext(SpeedContext);
 
 // Provedor do contexto que envolve a árvore de componentes
 export const SpeedProvider = ({ children }) => {
+  // Const para funcionar o background location
+  const BACKGROUND_LOCATION_TASK = "background-location-task";
+
+  // Suporte para tarefas serem executadas em segundo plano
+  TaskManager.defineTask(
+    BACKGROUND_LOCATION_TASK,
+    ({ data: { locations }, error }) => {
+      if (error) {
+        // check `error.message` for more details.
+        return;
+      }
+      console.log("Received new locations", locations);
+      // Seu código para lidar com a localização em segundo plano vai aqui.
+    }
+  );
+
   // States para uso geral das funções de monitoramento
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const [speed, setSpeed] = useState(0);
@@ -171,16 +187,30 @@ export const SpeedProvider = ({ children }) => {
       }
 
       setLocationSubscription(newLocationSubscription);
+
+      // Background Location
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status === "granted") {
+        await Location.startLocationUpdatesAsync(BACKGROUND_LOCATION_TASK, {
+          accuracy: Location.Accuracy.Highest,
+          timeInterval: 1000,
+          distanceInterval: 0,
+          activityType: Location.ActivityType.Fitness,
+          showsBackgroundLocationIndicator: true,
+          foregroundService: {
+            notificationTitle: "Usando sua localização",
+            notificationBody: "Para monitorar sua velocidade e distância",
+          },
+        });
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
   // Função para parar o monitoramento
-  const stopMonitoring = () => {
-    if (locationSubscription) {
-      locationSubscription.remove();
-    }
+  const stopMonitoring = async () => {
+    await Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
     setSpeed(0);
     setSteps(0);
     setDistance(0);
