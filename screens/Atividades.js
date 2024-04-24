@@ -55,34 +55,9 @@ export default function Atividades() {
     carregarFavoritos();
   }, [data]);
 
-  // Excluir TODAS corrida
-  const excluirTodasCorridas = async () => {
-    Alert.alert("Excluir TODAS?", "Quer mesmo excluir TODAS suas corridas?", [
-      {
-        text: "Excluir",
-        onPress: async () => {
-          const userUID = auth.currentUser.uid;
-          const userKey = "@infosSalvas" + userUID;
-          await AsyncStorage.removeItem(userKey);
-          setListaFavoritos([]);
-        }, // removendo itens e atualizando o state
-      },
-      {
-        text: "Cancelar",
-        style: "cancel",
-      },
-    ]); // Passado 3º parametro como um array com um objeto para texto do alert
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>Suas Atividades</Text>
-
-      {listaFavoritos.length > 0 && (
-        <Pressable style={styles.botao} onPress={excluirTodasCorridas}>
-          <Text>Apagar</Text>
-        </Pressable>
-      )}
 
       {loading ? (
         <ActivityIndicator animating={loading} size="large" color="#3D2498" />
