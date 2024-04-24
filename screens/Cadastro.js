@@ -115,7 +115,7 @@ export default function Cadastro({ navigation }) {
 
       Alert.alert(
         "Cadastro",
-        " Seu cadastro foi concluido com sucesso. Hora de começar pedalar!"
+        "Seu cadastro foi concluido com sucesso. Hora de começar pedalar!"
       );
     } catch (error) {
       let mensagem;
