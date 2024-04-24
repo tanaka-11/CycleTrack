@@ -69,16 +69,16 @@ export default function Atividades() {
                 >
                   <View key={index} style={styles.viewDados}>
                     <View style={styles.viewTexto}>
-                      <Text style={styles.texto}>
+                      <Text style={styles.textoTitulo}>
                         Distancia:{" "}
-                        <Text style={styles.texto2}>
+                        <Text style={styles.textoCorpo}>
                           {favorito.storedDistance.toFixed(2)}
                         </Text>
                       </Text>
 
-                      <Text style={styles.texto}>
+                      <Text style={styles.textoTitulo}>
                         Tempo:{" "}
-                        <Text style={styles.texto2}>
+                        <Text style={styles.textoCorpo}>
                           {favorito.storedTime.hours} h :{" "}
                           {favorito.storedTime.minutes} m :{" "}
                           {favorito.storedTime.seconds} s
@@ -180,13 +180,13 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
 
-  texto: {
+  textoTitulo: {
     fontSize: 16,
     color: "#3A2293",
     fontWeight: "bold",
   },
 
-  texto2: {
+  textoCorpo: {
     fontSize: 16,
     color: "#000",
     fontWeight: "400",
