@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Alert,
   StyleSheet,
@@ -12,11 +11,20 @@ import {
   ImageBackground,
   ActivityIndicator,
 } from "react-native";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { useState } from "react";
+
+// Firebase
+import {
+  createUserWithEmailAndPassword,
+  signOut,
+  updateProfile,
+} from "firebase/auth";
 import { auth } from "../firebaseConfig";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
+// Dependencias
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { MaterialIcons } from "@expo/vector-icons";
 import Fundo from "../assets/fundo.jpg";
 
@@ -24,6 +32,7 @@ export default function Cadastro({ navigation }) {
   // Campos do Formulario
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [senhaVisivel, setSenhaVisivel] = useState(false);
   const [nome, setNome] = useState("");
 
   // Campo de imagem
@@ -75,6 +84,9 @@ export default function Cadastro({ navigation }) {
     }
 
     try {
+      // Fazendo logout se caso tiver alguma conta anterior
+      await signOut(auth);
+
       const contaUsuario = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -169,18 +181,29 @@ export default function Cadastro({ navigation }) {
               keyboardType="default"
               onChangeText={(valor) => setNome(valor)}
             />
+
             <TextInput
               placeholder="E-mail"
               style={estilos.input}
               keyboardType="email-address"
               onChangeText={(valor) => setEmail(valor)}
             />
-            <TextInput
-              placeholder="Senha"
-              style={estilos.input}
-              secureTextEntry
-              onChangeText={(valor) => setSenha(valor)}
-            />
+
+            <View style={estilos.viewSenha}>
+              <TextInput
+                onChangeText={(valor) => setSenha(valor)}
+                placeholder="Senha"
+                style={estilos.input}
+                secureTextEntry={!senhaVisivel}
+              />
+              <MaterialIcons
+                name={senhaVisivel ? "visibility-off" : "visibility"}
+                size={20}
+                color={"#3D2498"}
+                onPress={() => setSenhaVisivel(!senhaVisivel)}
+                style={estilos.icon}
+              />
+            </View>
 
             <Pressable style={estilos.botaoCadastro} onPress={carregarStorage}>
               {loadingStorage ? (
@@ -251,6 +274,18 @@ const estilos = StyleSheet.create({
     width: "100%",
     marginBottom: 16,
     color: "#333",
+  },
+
+  viewSenha: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+  },
+
+  icon: {
+    position: "absolute",
+    right: 16,
+    top: 20,
   },
 
   botaoCadastro: {

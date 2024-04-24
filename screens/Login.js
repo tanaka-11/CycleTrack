@@ -9,6 +9,7 @@ import {
   ScrollView,
   ImageBackground,
 } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import Fundo from "../assets/fundo.jpg";
 import { useEffect, useState } from "react";
 
@@ -20,6 +21,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [senhaVisivel, setSenhaVisivel] = useState(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
 
@@ -91,12 +93,21 @@ export default function Login({ navigation }) {
                 style={estilos.input}
               />
 
-              <TextInput
-                onChangeText={(valor) => setSenha(valor)}
-                placeholder="Senha"
-                style={estilos.input}
-                secureTextEntry
-              />
+              <View style={estilos.viewSenha}>
+                <TextInput
+                  onChangeText={(valor) => setSenha(valor)}
+                  placeholder="Senha"
+                  style={estilos.input}
+                  secureTextEntry={!senhaVisivel}
+                />
+                <MaterialIcons
+                  name={senhaVisivel ? "visibility-off" : "visibility"}
+                  size={20}
+                  color={"#3D2498"}
+                  onPress={() => setSenhaVisivel(!senhaVisivel)}
+                  style={estilos.icon}
+                />
+              </View>
 
               <Pressable onPress={login} style={estilos.botaoEntre}>
                 {loading ? (
@@ -176,6 +187,18 @@ const estilos = StyleSheet.create({
     width: "100%",
     marginBottom: 16,
     color: "#333",
+  },
+
+  viewSenha: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+  },
+
+  icon: {
+    position: "absolute",
+    right: 16,
+    top: 20,
   },
 
   botaoEntre: {
