@@ -1,6 +1,6 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
-
+import React, { useState, useRef } from "react";
+// Importação de Navegação
 import { useRoute } from "@react-navigation/native";
 
 // Importações Dependencias
@@ -9,13 +9,12 @@ import * as Sharing from "expo-sharing";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { useSpeedContext } from "../components/SpeedContext";
 import { auth } from "../firebaseConfig";
-import { useRef } from "react";
 
 export default function Detalhes() {
   // Recurso de navegação
   const route = useRoute();
 
-  // Dados da atividade
+  // Dados da atividade vindo da tela "Atividades"
   const { atividade } = route.params;
 
   // Referencia do Mapa
