@@ -100,9 +100,6 @@ export default function Home({ navigation }) {
     return (total = index + 1);
   }, 0);
 
-  console.log("Home");
-  console.log(listaFavoritos);
-
   return (
     <ScrollView>
       <StatusBar backgroundColor="#A8A0D0" />
