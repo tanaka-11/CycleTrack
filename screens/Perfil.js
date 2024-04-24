@@ -7,19 +7,22 @@ import {
   Pressable,
   Image,
   Vibration,
+  ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { useState, useEffect } from "react";
-import { ActivityIndicator, ScrollView } from "react-native";
+
+// Dependencias
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 
-// Imports Firebase
+// Firebase
 import { auth } from "../firebaseConfig";
 import { signOut } from "firebase/auth";
 import { updateEmail, updateProfile } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-export default function Perfil({ navigation }) {
+export default function Perfil() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [fotoPerfil, setfotoPerfil] = useState("");
@@ -102,7 +105,7 @@ export default function Perfil({ navigation }) {
   };
 
   // Função atualizar foto perfil
-  const atualizarFotoPerfil = async (uid, fotoPerfil) => {
+  const atualizarFotoPerfil = async (fotoPerfil) => {
     try {
       const { uri } = await FileSystem.getInfoAsync(fotoPerfil); // Obtém o URI da imagem
 
@@ -127,7 +130,6 @@ export default function Perfil({ navigation }) {
     }
   };
 
-  // Logout
   const logout = async () => {
     try {
       await signOut(auth);

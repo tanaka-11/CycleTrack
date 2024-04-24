@@ -9,15 +9,21 @@ import {
   ScrollView,
   ImageBackground,
 } from "react-native";
-import { useState } from "react";
+import { MaterialIcons } from "@expo/vector-icons";
+import Fundo from "../assets/fundo.jpg";
+import { useEffect, useState } from "react";
+
+// Importações de Storage e Autenticação
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { auth } from "../firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import Fundo from "../assets/fundo.jpg";
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [senhaVisivel, setSenhaVisivel] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [data, setData] = useState(null);
 
   const login = async () => {
     if (!email || !senha) {
@@ -47,6 +53,32 @@ export default function Login({ navigation }) {
     }
   };
 
+  // Função para carregar dados
+  const loadData = async () => {
+    try {
+      const userUID = auth.currentUser.uid;
+      const userKey = "@infosSalvas:" + userUID;
+      const infosSalvas = await AsyncStorage.getItem(userKey);
+      const listaDeInfos = infosSalvas ? JSON.parse(infosSalvas) : [];
+      setData(listaDeInfos);
+    } catch (error) {
+      console.log("Erro ao carregar as informações", error.message);
+      Alert.alert("Erro ao carregar as informações", "Tente novamente");
+    }
+  };
+
+  // useEffect controlando os dados do usuario logado
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        loadData(); // Carregar dados quando o usuário é definido
+      }
+    });
+
+    // Limpar a inscrição ao desmontar
+    return () => unsubscribe();
+  }, []);
+
   return (
     <>
       <ImageBackground source={Fundo} style={{ height: "100%" }}>
@@ -61,12 +93,21 @@ export default function Login({ navigation }) {
                 style={estilos.input}
               />
 
-              <TextInput
-                onChangeText={(valor) => setSenha(valor)}
-                placeholder="Senha"
-                style={estilos.input}
-                secureTextEntry
-              />
+              <View style={estilos.viewSenha}>
+                <TextInput
+                  onChangeText={(valor) => setSenha(valor)}
+                  placeholder="Senha"
+                  style={estilos.input}
+                  secureTextEntry={!senhaVisivel}
+                />
+                <MaterialIcons
+                  name={senhaVisivel ? "visibility-off" : "visibility"}
+                  size={20}
+                  color={"#3D2498"}
+                  onPress={() => setSenhaVisivel(!senhaVisivel)}
+                  style={estilos.icon}
+                />
+              </View>
 
               <Pressable onPress={login} style={estilos.botaoEntre}>
                 {loading ? (
@@ -146,6 +187,18 @@ const estilos = StyleSheet.create({
     width: "100%",
     marginBottom: 16,
     color: "#333",
+  },
+
+  viewSenha: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+  },
+
+  icon: {
+    position: "absolute",
+    right: 16,
+    top: 20,
   },
 
   botaoEntre: {

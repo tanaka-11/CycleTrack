@@ -8,9 +8,12 @@ import {
   Pressable,
 } from "react-native";
 import { useState, useEffect } from "react";
+import { useSpeedContext } from "../components/SpeedContext";
+
+// Dependecias
 import MapView, { Marker, Polyline } from "react-native-maps";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useSpeedContext } from "../components/SpeedContext";
+import { auth } from "../firebaseConfig";
 
 // Recursos de navegação
 import { useNavigation } from "@react-navigation/native";
@@ -31,10 +34,13 @@ export default function Atividades() {
   // useEffect é acionado toda vez que o data(State vindo do Context) atualizar
   useEffect(() => {
     const carregarFavoritos = async () => {
-      setLoading(true);
       try {
+        // Identificador de Usuario
+        const userUID = auth.currentUser.uid;
+        const userKey = "@infosSalvas" + userUID;
+
         // Recuperando os dados em formato string do asyncstorage atraves do "getItem"
-        const dados = await AsyncStorage.getItem("@infosSalvas");
+        const dados = await AsyncStorage.getItem(userKey);
 
         // Convertendo dados em objeto com JSON.parse e os guardando no state
         if (dados) {
@@ -42,11 +48,10 @@ export default function Atividades() {
         }
       } catch (error) {
         console.error("Erro ao carregar os dados: " + error);
-        Alert.alert("Erro", "Erro ao carregar dados.");
-      } finally {
-        setLoading(false);
+        Alert.alert("Erro", "Erro ao carregar os dados");
       }
     };
+
     carregarFavoritos();
   }, [data]);
 
