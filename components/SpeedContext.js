@@ -252,7 +252,6 @@ export const SpeedProvider = ({ children }) => {
 
       // Adicionando as informações na lista
       listaDeInfos.push(infos);
-      // console.log(listaDeInfos);
       setData(listaDeInfos);
 
       // Salvando a lista de informações de volta no AsyncStorage
