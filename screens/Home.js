@@ -15,6 +15,7 @@ import { useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { auth } from "../firebaseConfig";
+import { getDatabase, ref, onValue } from "firebase/database";
 
 export default function Home({ navigation }) {
   // dados vindo do hook useContext
@@ -49,15 +50,20 @@ export default function Home({ navigation }) {
       try {
         // Identificador de Usuario
         const userUID = auth.currentUser.uid;
-        const userKey = "@infosSalvas" + userUID;
 
-        // Recuperando os dados em formato string do asyncstorage atraves do "getItem"
-        const dados = await AsyncStorage.getItem(userKey);
+        // Referência para o local no banco de dados onde você salvou suas informações
+        const db = getDatabase();
+        const dbRef = ref(db, "infosSalvas/" + userUID);
 
-        // Convertendo dados em objeto com JSON.parse e os guardando no state
-        if (dados) {
-          setListaFavoritos(JSON.parse(dados));
-        }
+        // Ouvindo as alterações nos dados
+        onValue(dbRef, (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            // Convertendo os dados em uma lista e guardando no state
+            const listaFavoritos = Object.values(data);
+            setListaFavoritos(listaFavoritos);
+          }
+        });
       } catch (error) {
         console.error("Erro ao carregar os dados: " + error);
         Alert.alert("Erro", "Erro ao carregar os dados");

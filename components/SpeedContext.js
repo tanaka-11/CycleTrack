@@ -8,6 +8,7 @@ import React, {
 import * as Location from "expo-location";
 
 // Recursos de Storage
+import { getDatabase, ref, push } from "firebase/database";
 import { auth } from "../firebaseConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -251,19 +252,15 @@ export const SpeedProvider = ({ children }) => {
 
     // Identificador de Usuario
     const userUID = auth.currentUser.uid;
-    const userKey = "@infosSalvas" + userUID;
 
     try {
-      const infosSalvas = await AsyncStorage.getItem(userKey);
-      const listaDeInfos = infosSalvas ? JSON.parse(infosSalvas) : [];
+      // Obtenha uma referência para o banco de dados
+      const db = getDatabase();
+      // Referência para o local no banco de dados onde você deseja salvar suas informações
+      const dbRef = ref(db, "infosSalvas/" + userUID);
 
-      // Adicionando as informações na lista
-      listaDeInfos.push(infos);
-
-      // Salvando a lista de informações de volta no AsyncStorage
-      await AsyncStorage.setItem(userKey, JSON.stringify(listaDeInfos));
-
-      setData(listaDeInfos);
+      // Adicionando as informações no Realtime Database
+      await push(dbRef, infos);
     } catch (error) {
       console.log("Erro ao salvar as informações", error.message);
       Alert.alert("Erro ao salvar as informações", "Tente novamente");
