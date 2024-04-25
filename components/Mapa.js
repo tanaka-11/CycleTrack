@@ -1,7 +1,8 @@
-import { Platform, StyleSheet, Text, View } from "react-native";
-import { useEffect, useCallback } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { useEffect } from "react";
+
+// Dependecias
 import MapView, { Marker } from "react-native-maps";
-import { Accelerometer } from "expo-sensors";
 
 // useContext
 import { useSpeedContext } from "./SpeedContext";
@@ -13,39 +14,12 @@ export default function Mapa() {
     initialLocation,
     mapViewRef,
     speed,
-    steps,
     running,
-
-    // Set
-    setSteps,
+    distance,
 
     // Funções
     getLocation,
   } = useSpeedContext();
-
-  // Função do acelerometro
-  const handleAccelerometerData = useCallback(
-    (accelerometerData) => {
-      const { x, y, z } = accelerometerData;
-      const magnitude = Math.sqrt(x * x + y * y + z * z);
-      const THRESHOLD = 1.2;
-      if (magnitude > THRESHOLD) {
-        setSteps((prevSteps) => prevSteps + 1);
-      }
-    },
-    [setSteps]
-  );
-
-  // useEffect do acelerometro
-  useEffect(() => {
-    if (running) {
-      if (Platform.OS === "android" || Platform.OS === "ios") {
-        Accelerometer.setUpdateInterval(1000);
-      }
-      const subscription = Accelerometer.addListener(handleAccelerometerData);
-      return () => subscription.remove();
-    }
-  }, [running, setSteps, handleAccelerometerData]);
 
   // useEffect do getLocation
   useEffect(() => {
@@ -60,8 +34,8 @@ export default function Mapa() {
         </Text>
 
         <Text style={styles.botaoPreenchido}>
-          {/* Distância percorrida: {(distance / 1000).toFixed(2)} km */}
-          <Text style={styles.tituloBotao}>Distância:</Text> {steps.toFixed(2)}
+          <Text style={styles.tituloBotao}>Distância:</Text>{" "}
+          {(distance / 1000).toFixed(2)} km
         </Text>
       </View>
 
@@ -84,8 +58,14 @@ export default function Mapa() {
 const styles = StyleSheet.create({
   // Mapa
   mapa: {
-    width: 350,
+    width: 400,
     height: 280,
+  },
+
+  viewMapa: {
+    borderColor: "#3A2293",
+    borderWidth: 2,
+    borderRadius: 3,
   },
 
   // Dados

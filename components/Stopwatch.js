@@ -12,15 +12,10 @@ export default function Stopwatch() {
   const {
     // States
     mapViewRef,
-    speed,
-    steps,
     time,
 
     // Set
-    setSpeed,
     setRunning,
-    setDistance,
-    setSteps,
     setPause,
     setStop,
     setTime,
@@ -50,9 +45,6 @@ export default function Stopwatch() {
 
     // Definir os estados apropriados
     setRunning(true);
-    setDistance(0);
-    setSteps(0);
-    setSpeed(0);
   };
 
   // Função para pausar o cronômetro
@@ -63,8 +55,6 @@ export default function Stopwatch() {
     // Atualizar os estados
     setRunning(false);
     setPause(true);
-    setDistance(steps);
-    setSpeed(0);
   };
 
   // Função para resetar o cronômetro
@@ -78,9 +68,6 @@ export default function Stopwatch() {
     // Resetar os estados
     setRunning(false);
     setPause(false);
-    setSpeed(0);
-    setSteps(0);
-    setDistance(0);
   };
 
   // Função para retomar o cronômetro
@@ -104,8 +91,6 @@ export default function Stopwatch() {
     // Definir os estados apropriados
     setRunning(true);
     setPause(false);
-    setDistance(steps);
-    setSpeed(speed);
   };
 
   // Função para parar o cronômetro
@@ -166,25 +151,23 @@ export default function Stopwatch() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 40,
   },
 
   header: {
     fontSize: 30,
     color: "#412CAB",
-    marginBottom: 10,
   },
 
   subHeader: {
-    marginBottom: 30,
-    color: "#000",
+    marginTop: 8,
+    marginBottom: 20,
+    color: "#3A2293",
     fontSize: 22,
     fontWeight: "bold",
-    textAlign: "left",
+    textAlign: "center",
   },
 
   timeText: {
-    color: "#5442D2",
     backgroundColor: "#CFC3EE",
     width: 170,
     height: 170,
@@ -197,7 +180,7 @@ const styles = StyleSheet.create({
 
   timeText2: {
     fontSize: 38,
-    color: "#5442D2",
+    color: "#3A2293",
   },
 
   textoComum: {

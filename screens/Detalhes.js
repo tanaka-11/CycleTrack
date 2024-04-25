@@ -74,7 +74,7 @@ export default function Detalhes() {
             <View style={styles.infos}>
               <Text style={styles.nomeUsuario}>{displayName} </Text>
               <Text style={styles.data}>
-                {atividade.currentDate} as {atividade.currentTime}
+                {atividade.currentDate} às {atividade.currentTime}
               </Text>
             </View>
           </View>
@@ -122,7 +122,7 @@ export default function Detalhes() {
             <View style={styles.viewItem}>
               <Text style={styles.tituloTexto}>Distância</Text>
               <Text style={styles.corpoTexto}>
-                {atividade.storedDistance.toFixed(2)}
+                {atividade.storedDistance.toFixed(2)} km
               </Text>
             </View>
 
@@ -137,14 +137,14 @@ export default function Detalhes() {
             <View style={styles.viewItem}>
               <Text style={styles.tituloTexto}>Velocidade Média</Text>
               <Text style={styles.corpoTexto}>
-                {atividade.averageSpeed.toFixed(2)}
+                {atividade.averageSpeed.toFixed(2)} km/s
               </Text>
             </View>
 
             <View style={styles.viewItem}>
               <Text style={styles.tituloTexto}>Velocidade Máxima:</Text>
               <Text style={styles.corpoTexto}>
-                {atividade.maxSpeed.toFixed(2)}
+                {atividade.maxSpeed.toFixed(2)} km/s
               </Text>
             </View>
           </View>
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   // Mapa
   mapa: {
     height: 350,
-    width: 350,
+    width: 400,
   },
 
   viewMapa: {
@@ -214,6 +214,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 20,
     marginTop: 8,
+    borderColor: "#3A2293",
+    borderWidth: 2,
   },
 
   // Dados Velocidade/Distancia

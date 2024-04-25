@@ -5,10 +5,13 @@ import React, {
   useEffect,
   useRef,
 } from "react";
+import { Alert } from "react-native";
 import * as Location from "expo-location";
+import * as TaskManager from "expo-task-manager";
 
 // Recursos de Storage
 import { getDatabase, ref, push } from "firebase/database";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { auth } from "../firebaseConfig";
 
 // Criar o Contexto
@@ -17,13 +20,36 @@ const SpeedContext = createContext();
 // Exportar um hook customizado para acessar o contexto
 export const useSpeedContext = () => useContext(SpeedContext);
 
+// Nome da tarefa de localização em segundo plano
+const BACKGROUND_LOCATION_TASK = "background-location-task";
+
+// Definir a tarefa de localização em segundo plano
+TaskManager.defineTask(
+  BACKGROUND_LOCATION_TASK,
+  async ({ data: { locations }, error }) => {
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    // Armazene a localização em AsyncStorage
+    try {
+      await AsyncStorage.setItem(
+        "@localLocationData",
+        JSON.stringify(locations[0].coords)
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+
 // Provedor do contexto que envolve a árvore de componentes
 export const SpeedProvider = ({ children }) => {
   // States para uso geral das funções de monitoramento
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const [speed, setSpeed] = useState(0);
   const [distance, setDistance] = useState(0);
-  const [steps, setSteps] = useState(0);
   const [pause, setPause] = useState();
   const [running, setRunning] = useState();
   const [stop, setStop] = useState(false);
@@ -154,7 +180,7 @@ export const SpeedProvider = ({ children }) => {
               position.coords.latitude,
               position.coords.longitude
             );
-            setDistance(newDistance);
+            setDistance((prevDistance) => prevDistance + newDistance);
           }
           // Atualize a localização final
           setFinalLocation({
@@ -173,19 +199,41 @@ export const SpeedProvider = ({ children }) => {
     } catch (error) {
       console.error(error);
     }
+
+    // Iniciando monitoramento da localização em segundo plano
+    try {
+      await Location.startLocationUpdatesAsync(BACKGROUND_LOCATION_TASK, {
+        accuracy: Location.Accuracy.Highest,
+        timeInterval: 1000,
+        distanceInterval: 0,
+        activityType: Location.ActivityType.Fitness,
+        showsBackgroundLocationIndicator: true,
+        foregroundService: {
+          notificationTitle: "Monitoramento de localização",
+          notificationBody: "Estamos monitorando sua distância e velocidade.",
+          notificationColor: "#3A2293",
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // Função para parar o monitoramento
-  const stopMonitoring = () => {
-    if (locationSubscription) {
-      locationSubscription.remove();
-    }
+  const stopMonitoring = async () => {
+    await Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
     setSpeed(0);
-    setSteps(0);
+  };
+
+  // Função para resetar o monitoramento
+  const resetMonitoring = async () => {
+    await Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
+    setSpeed(0);
     setDistance(0);
   };
 
-  const pauseMonitoring = () => {
+  // Função parar pausar o monitoramento
+  const pauseMonitoring = async () => {
     setPause(true);
     if (locationSubscription) {
       locationSubscription.remove();
@@ -196,7 +244,6 @@ export const SpeedProvider = ({ children }) => {
   // useEffect do pause
   useEffect(() => {
     if (pause && !running) {
-      setDistance(steps);
       setSpeed(0);
     }
   }, [pause, running]);
@@ -219,7 +266,7 @@ export const SpeedProvider = ({ children }) => {
 
     // Armazenar os dados atuais
     setStoredSpeed(speed);
-    setStoredDistance(steps);
+    setStoredDistance(distance);
   };
 
   // Função para salvarInfos
@@ -240,7 +287,7 @@ export const SpeedProvider = ({ children }) => {
         longitude: location.longitude,
       },
       localizacaoFinal: finalLocation,
-      storedDistance: steps,
+      storedDistance: distance / 1000,
       storedSpeed: speed,
       averageSpeed: speedSum / speedCount,
       maxSpeed: maxSpeed,
@@ -248,6 +295,16 @@ export const SpeedProvider = ({ children }) => {
       currentDate: formattedDate,
       currentTime: formattedTime,
     };
+
+    // Recupere a localização do AsyncStorage
+    try {
+      const value = await AsyncStorage.getItem("@localLocationData");
+      if (value !== null) {
+        infos.localizacaoEmSegundoPlano = JSON.parse(value);
+      }
+    } catch (error) {
+      console.error(error);
+    }
 
     // Identificador de Usuario
     const userUID = auth.currentUser.uid;
@@ -275,7 +332,7 @@ export const SpeedProvider = ({ children }) => {
     finalLocation,
     myLocation,
     speed,
-    steps,
+
     distance,
     stop,
     pause,
@@ -296,7 +353,6 @@ export const SpeedProvider = ({ children }) => {
     setFinalLocation,
     setMyLocation,
     setSpeed,
-    setSteps,
     setDistance,
     setStop,
     setPause,
@@ -314,6 +370,7 @@ export const SpeedProvider = ({ children }) => {
     stopMonitoring,
     pauseMonitoring,
     resumeMonitoring,
+    resetMonitoring,
     stopMonitoringAndStoreData,
     savedInfos,
     permissionLocationAndAnimated,

@@ -82,7 +82,7 @@ export default function Atividades() {
                       <Text style={styles.textoTitulo}>
                         Distancia:{" "}
                         <Text style={styles.textoCorpo}>
-                          {favorito.storedDistance.toFixed(2)}
+                          {favorito.storedDistance.toFixed(2)} km
                         </Text>
                       </Text>
 
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
 
   titulo: {
     margin: 20,
-    color: "#000",
+    color: "#3A2293",
     fontSize: 22,
     fontWeight: "bold",
     textAlign: "left",
@@ -181,7 +181,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(65, 44, 171, 0.15)",
     padding: 20,
     borderRadius: 20,
-
+    borderColor: "#412CAB",
+    borderWidth: 1,
     margin: 20,
   },
 

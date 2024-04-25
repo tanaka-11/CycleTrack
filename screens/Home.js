@@ -146,7 +146,9 @@ export default function Home({ navigation }) {
           </View>
           <View style={styles.viewAtividade}>
             <Text style={styles.viewTitulo}>Distancia</Text>
-            <Text style={styles.textoDados}>{totalDistance.toFixed(2)} m</Text>
+            <Text style={styles.textoDados}>
+              {(totalDistance / 1000).toFixed(2)} km
+            </Text>
           </View>
         </View>
 
@@ -167,8 +169,10 @@ export default function Home({ navigation }) {
                   <View style={styles.viewDistancia}>
                     <Text style={styles.viewTitulo}>Distancia</Text>
                     <Text style={styles.textoDados}>
-                      {listaFavoritos[listaFavoritos.length - 1].storedDistance}{" "}
-                      m
+                      {listaFavoritos[
+                        listaFavoritos.length - 1
+                      ].storedDistance.toFixed(2)}{" "}
+                      km
                     </Text>
                   </View>
 
@@ -259,7 +263,7 @@ const styles = StyleSheet.create({
     padding: 6,
     marginVertical: 32,
     marginHorizontal: 20,
-    borderWidth: 1,
+    borderWidth: 1.4,
     borderColor: "#3D2498",
     borderStyle: "dashed",
     borderRadius: 5,
@@ -276,13 +280,13 @@ const styles = StyleSheet.create({
 
   bemVindo: {
     fontSize: 22,
-    marginVertical: 10,
+    marginVertical: 2,
     fontWeight: "500",
     color: "#3A2293",
   },
 
   nomeUsuario: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "300",
   },
 
@@ -317,14 +321,14 @@ const styles = StyleSheet.create({
   },
 
   mapa: {
-    width: 300,
-    height: 250,
+    width: 400,
+    height: 300,
   },
 
   viewMapa: {
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 40,
+    marginBottom: 30,
   },
 
   viewTitulo: {
@@ -409,13 +413,14 @@ const styles = StyleSheet.create({
   },
 
   viewDistanciaRecentes: {
-    marginHorizontal: 20,
+    marginBottom: 16,
+    width: "100%",
     gap: 15,
     alignItems: "center",
     backgroundColor: "rgba(65, 44, 171, 0.15)",
-    padding: 15,
+    padding: 16,
     borderColor: "#412CAB",
-    borderRadius: 20,
+    borderWidth: 2,
   },
 
   viewDistanciaRecentes2: {
