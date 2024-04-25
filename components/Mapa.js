@@ -1,9 +1,8 @@
-import { Platform, StyleSheet, Text, View } from "react-native";
-import { useEffect, useCallback } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { useEffect } from "react";
 
 // Dependecias
 import MapView, { Marker } from "react-native-maps";
-import { Accelerometer } from "expo-sensors";
 
 // useContext
 import { useSpeedContext } from "./SpeedContext";
@@ -15,46 +14,23 @@ export default function Mapa() {
     initialLocation,
     mapViewRef,
     speed,
-    steps,
     running,
-
-    // Set
-    setSteps,
+    distance,
 
     // Funções
     getLocation,
   } = useSpeedContext();
-
-  // Função do acelerometro
-  const handleAccelerometerData = useCallback(
-    (accelerometerData) => {
-      const { x, y, z } = accelerometerData;
-      const magnitude = Math.sqrt(x * x + y * y + z * z);
-      const THRESHOLD = 1.2;
-      if (magnitude > THRESHOLD) {
-        setSteps((prevSteps) => prevSteps + 1);
-      }
-    },
-    [setSteps]
-  );
-
-  // useEffect do acelerometro
-  useEffect(() => {
-    if (running) {
-      if (Platform.OS === "android" || Platform.OS === "ios") {
-        Accelerometer.setUpdateInterval(1000);
-      }
-      const subscription = Accelerometer.addListener(handleAccelerometerData);
-      return () => subscription.remove();
-    }
-  }, [running, setSteps, handleAccelerometerData]);
 
   // useEffect do getLocation
   useEffect(() => {
     getLocation();
   }, [running]);
 
-  console.log(steps);
+  console.log("distancia");
+  console.log(distance);
+  console.log("-----------");
+  console.log("velocidade");
+  console.log(speed);
 
   return (
     <>
@@ -65,7 +41,7 @@ export default function Mapa() {
 
         <Text style={styles.botaoPreenchido}>
           <Text style={styles.tituloBotao}>Distância:</Text>{" "}
-          {(steps / 1000).toFixed(2)} km
+          {(distance / 1000).toFixed(2)} km
         </Text>
       </View>
 

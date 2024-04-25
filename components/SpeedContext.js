@@ -50,7 +50,6 @@ export const SpeedProvider = ({ children }) => {
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
   const [speed, setSpeed] = useState(0);
   const [distance, setDistance] = useState(0);
-  const [steps, setSteps] = useState(0);
   const [pause, setPause] = useState();
   const [running, setRunning] = useState();
   const [stop, setStop] = useState(false);
@@ -181,7 +180,7 @@ export const SpeedProvider = ({ children }) => {
               position.coords.latitude,
               position.coords.longitude
             );
-            setDistance(newDistance);
+            setDistance((prevDistance) => prevDistance + newDistance);
           }
           // Atualize a localização final
           setFinalLocation({
@@ -224,8 +223,6 @@ export const SpeedProvider = ({ children }) => {
   const stopMonitoring = async () => {
     await Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
     setSpeed(0);
-    setSteps(0);
-    setDistance(0);
   };
 
   const pauseMonitoring = async () => {
@@ -239,7 +236,6 @@ export const SpeedProvider = ({ children }) => {
   // useEffect do pause
   useEffect(() => {
     if (pause && !running) {
-      setDistance(steps);
       setSpeed(0);
     }
   }, [pause, running]);
@@ -262,7 +258,7 @@ export const SpeedProvider = ({ children }) => {
 
     // Armazenar os dados atuais
     setStoredSpeed(speed);
-    setStoredDistance(steps);
+    setStoredDistance(distance);
   };
 
   // Função para salvarInfos
@@ -283,7 +279,7 @@ export const SpeedProvider = ({ children }) => {
         longitude: location.longitude,
       },
       localizacaoFinal: finalLocation,
-      storedDistance: steps,
+      storedDistance: distance / 1000,
       storedSpeed: speed,
       averageSpeed: speedSum / speedCount,
       maxSpeed: maxSpeed,
@@ -328,7 +324,7 @@ export const SpeedProvider = ({ children }) => {
     finalLocation,
     myLocation,
     speed,
-    steps,
+
     distance,
     stop,
     pause,
@@ -349,7 +345,7 @@ export const SpeedProvider = ({ children }) => {
     setFinalLocation,
     setMyLocation,
     setSpeed,
-    setSteps,
+
     setDistance,
     setStop,
     setPause,

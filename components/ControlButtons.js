@@ -34,7 +34,6 @@ export default function ControlButtons({
     setStop,
     setDistance,
     setSpeed,
-    setSteps,
 
     // Funções
     startMonitoring,
@@ -130,7 +129,6 @@ export default function ControlButtons({
                 // State do Acelerometro
                 setSpeed(0);
                 setDistance(0);
-                setSteps(0);
               }}
             >
               <Text style={styles.buttonText}>Reset</Text>
@@ -146,10 +144,9 @@ export default function ControlButtons({
                 setRunning(false);
                 setTime({ hours: 0, minutes: 0, seconds: 0 });
 
-                // State do Acelerometro
+                // State da Localização
                 setSpeed(0);
                 setDistance(0);
-                setSteps(0);
 
                 // Alerta de operação bem sucedida
                 Vibration.vibrate();
