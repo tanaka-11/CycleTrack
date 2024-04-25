@@ -12,7 +12,7 @@ import * as TaskManager from "expo-task-manager";
 // Recursos de Storage
 import { getDatabase, ref, push } from "firebase/database";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { auth } from "../firebaseConfig";
+import { auth } from "../firebaseConfig.js";
 
 // Criar o Contexto
 const SpeedContext = createContext();

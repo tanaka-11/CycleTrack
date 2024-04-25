@@ -17,7 +17,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 
 // Firebase
-import { auth } from "../firebaseConfig";
+import { auth } from "../firebaseConfig.js";
 import { signOut } from "firebase/auth";
 import { updateEmail, updateProfile } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
