@@ -25,11 +25,13 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#3A2293"
       },
-      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_BACKGROUND_LOCATION"],
-      "foregroundService": {
-        "notificationTitle": "Usando sua localização",
-        "notificationBody": "Para monitorar sua velocidade e distância"
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_BACKGROUND_LOCATION"]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "10a6294f-c502-4c3c-a42d-39a77a76529e"
       }
-    }
+    },
+    "owner": "tanaka-11"
   }
 }
