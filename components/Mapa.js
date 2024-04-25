@@ -1,5 +1,7 @@
 import { Platform, StyleSheet, Text, View } from "react-native";
 import { useEffect, useCallback } from "react";
+
+// Dependecias
 import MapView, { Marker } from "react-native-maps";
 import { Accelerometer } from "expo-sensors";
 
