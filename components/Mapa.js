@@ -54,6 +54,8 @@ export default function Mapa() {
     getLocation();
   }, [running]);
 
+  console.log(steps);
+
   return (
     <>
       <View style={styles.viewDados}>
@@ -62,8 +64,8 @@ export default function Mapa() {
         </Text>
 
         <Text style={styles.botaoPreenchido}>
-          {/* Distância percorrida: {(distance / 1000).toFixed(2)} km */}
-          <Text style={styles.tituloBotao}>Distância:</Text> {steps.toFixed(2)}
+          <Text style={styles.tituloBotao}>Distância:</Text>{" "}
+          {(steps / 1000).toFixed(2)} km
         </Text>
       </View>
 

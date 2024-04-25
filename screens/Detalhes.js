@@ -74,7 +74,7 @@ export default function Detalhes() {
             <View style={styles.infos}>
               <Text style={styles.nomeUsuario}>{displayName} </Text>
               <Text style={styles.data}>
-                {atividade.currentDate} as {atividade.currentTime}
+                {atividade.currentDate} às {atividade.currentTime}
               </Text>
             </View>
           </View>
@@ -122,7 +122,7 @@ export default function Detalhes() {
             <View style={styles.viewItem}>
               <Text style={styles.tituloTexto}>Distância</Text>
               <Text style={styles.corpoTexto}>
-                {atividade.storedDistance.toFixed(2)}
+                {(atividade.storedDistance / 1000).toFixed(2)} km
               </Text>
             </View>
 
