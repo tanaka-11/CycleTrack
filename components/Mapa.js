@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
     width: 100,
     borderRadius: 8,
     textAlign: "center",
+    backgroundColor: "rgba(65, 44, 171, 0.12)",
   },
 
   textoBotaoPreenchido: {

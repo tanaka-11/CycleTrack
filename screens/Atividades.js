@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   viewDados: {
     backgroundColor: "rgba(65, 44, 171, 0.15)",
     padding: 20,
-    borderRadius: 20,
+    borderRadius: 6,
     borderColor: "#412CAB",
     borderWidth: 1,
     margin: 20,

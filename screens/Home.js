@@ -13,7 +13,7 @@ import { useRoute } from "@react-navigation/native";
 
 // Dependencias
 import MapView, { Marker, Polyline } from "react-native-maps";
-import { auth } from "../firebaseConfig";
+import { auth } from "../firebaseConfig.js";
 import { getDatabase, ref, onValue } from "firebase/database";
 
 export default function Home({ navigation }) {
@@ -155,7 +155,9 @@ export default function Home({ navigation }) {
         {/* Atividade */}
         {listaFavoritos.length > 0 && (
           <>
-            <Text style={styles.titulo}>Sua ultima atividade</Text>
+            <Text style={styles.tituloUltimaAtividade}>
+              Sua ultima atividade
+            </Text>
             <View style={styles.atividadeRecente}>
               <View style={styles.viewDistanciaRecentes}>
                 <View style={styles.viewDistanciaRecentes2}>
@@ -267,6 +269,7 @@ const styles = StyleSheet.create({
     borderColor: "#3D2498",
     borderStyle: "dashed",
     borderRadius: 5,
+    backgroundColor: "rgba(65, 44, 171, 0.15)",
   },
 
   dadosUsuario: {
@@ -310,6 +313,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     margin: 20,
+    marginBottom: 34,
   },
 
   titulo: {
@@ -318,6 +322,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginHorizontal: 20,
     marginVertical: 15,
+  },
+
+  tituloUltimaAtividade: {
+    fontSize: 20,
+    color: "#3A2293",
+    fontWeight: "bold",
+    marginHorizontal: 20,
+    marginVertical: 15,
+    textAlign: "center",
   },
 
   mapa: {
@@ -347,6 +360,7 @@ const styles = StyleSheet.create({
     padding: 8,
     width: 100,
     borderRadius: 8,
+    backgroundColor: "rgba(65, 44, 171, 0.08)",
   },
 
   viewTempo: {
@@ -414,13 +428,12 @@ const styles = StyleSheet.create({
 
   viewDistanciaRecentes: {
     marginBottom: 16,
-    width: "100%",
     gap: 15,
     alignItems: "center",
     backgroundColor: "rgba(65, 44, 171, 0.15)",
     padding: 16,
     borderColor: "#412CAB",
-    borderWidth: 2,
+    borderWidth: 1.3,
   },
 
   viewDistanciaRecentes2: {

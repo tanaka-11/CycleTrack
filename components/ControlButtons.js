@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   },
 
   resetButton: {
-    backgroundColor: "#4b371c",
+    backgroundColor: "#3A2293",
     marginRight: 10,
   },
 

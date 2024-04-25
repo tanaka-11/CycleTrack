@@ -208,6 +208,11 @@ export const SpeedProvider = ({ children }) => {
         distanceInterval: 0,
         activityType: Location.ActivityType.Fitness,
         showsBackgroundLocationIndicator: true,
+        foregroundService: {
+          notificationTitle: "Monitoramento de localização",
+          notificationBody: "Estamos monitorando sua distância e velocidade.",
+          notificationColor: "#3A2293",
+        },
       });
     } catch (error) {
       console.error(error);

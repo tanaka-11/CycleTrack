@@ -12,7 +12,11 @@
       "developmentClient": true,
       "android": {
         "buildType": "apk",
-        "gradleCommand": ":app:assembleRelease"
+        "gradleCommand": ":app:assembleRelease",
+        "foregroundService": {
+          "notificationTitle": "Usando sua localização",
+          "notificationBody": "Para monitorar sua velocidade e distância"
+        }
       },
       "env": {
         "EXPO_PUBLIC_NOME_ENV": "10a6294f-c502-4c3c-a42d-39a77a76529e"

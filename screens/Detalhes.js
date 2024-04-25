@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
   image: {
     width: 64,
     height: 64,
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderRadius: 50,
     borderColor: "#3D2498",
   },
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 8,
     borderColor: "#3A2293",
-    borderWidth: 2,
+    borderWidth: 2.5,
   },
 
   // Dados Velocidade/Distancia
