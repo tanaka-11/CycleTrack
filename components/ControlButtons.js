@@ -61,7 +61,7 @@ export default function ControlButtons({
                   pauseMonitoring();
                 }}
               >
-                <Text style={styles.buttonText}>Pausar</Text>
+                <Text style={styles.buttonTextPause}>Pausar</Text>
               </Pressable>
 
               <Pressable
@@ -71,7 +71,7 @@ export default function ControlButtons({
                   stopMonitoringAndStoreData();
                 }}
               >
-                <Text style={styles.buttonText}>Parar</Text>
+                <Text style={styles.buttonTextStop}>Parar</Text>
               </Pressable>
             </View>
           </>
@@ -86,7 +86,7 @@ export default function ControlButtons({
                 stopMonitoring();
               }}
             >
-              <Text style={styles.buttonText}>Reset</Text>
+              <Text style={styles.buttonTextReset}>Reset</Text>
             </Pressable>
 
             <Pressable
@@ -96,7 +96,7 @@ export default function ControlButtons({
                 resumeMonitoring();
               }}
             >
-              <Text style={styles.buttonText}>Retomar</Text>
+              <Text style={styles.buttonTextResume}>Retomar</Text>
             </Pressable>
           </>
         )}
@@ -111,7 +111,7 @@ export default function ControlButtons({
               startMonitoring();
             }}
           >
-            <Text style={styles.buttonText}>Começar</Text>
+            <Text style={styles.buttonTextStart}>Começar</Text>
           </Pressable>
         )}
 
@@ -135,7 +135,7 @@ export default function ControlButtons({
                 resetMonitoring();
               }}
             >
-              <Text style={styles.buttonText}>Reset</Text>
+              <Text style={styles.buttonTextReset}>Reset</Text>
             </Pressable>
 
             <Pressable
@@ -173,7 +173,7 @@ export default function ControlButtons({
                 savedInfos();
               }}
             >
-              <Text style={styles.buttonText}>Salvar</Text>
+              <Text style={styles.buttonTextResume}>Salvar</Text>
             </Pressable>
           </>
         )}
@@ -196,36 +196,74 @@ const styles = StyleSheet.create({
   },
 
   startButton: {
-    backgroundColor: "#2ecc71",
-    width: 220,
-    marginRight: 10,
+    backgroundColor: "rgba(46,204,113,0.13)",
+    borderColor: "#2ecc71",
+    borderWidth: 2,
+    width: 240,
+  },
+
+  buttonTextStart: {
+    color: "#2ecc90",
+    fontSize: 16,
+    textAlign: "center",
+    fontWeight: "bold",
   },
 
   resetButton: {
-    backgroundColor: "#3A2293",
+    backgroundColor: "rgba(58,34,147,0.13)",
+    borderColor: "#3A2293",
+    borderWidth: 2,
     marginRight: 10,
   },
 
+  buttonTextReset: {
+    color: "#3A2293",
+    fontSize: 16,
+    textAlign: "center",
+    fontWeight: "bold",
+  },
+
   pauseButton: {
-    backgroundColor: "#f39c12",
+    backgroundColor: "rgba(243,156,18,0.13)",
+    borderColor: "#f39c12",
+    borderWidth: 2,
+  },
+
+  buttonTextPause: {
+    color: "#f39c12",
+    fontSize: 16,
+    textAlign: "center",
+    fontWeight: "bold",
   },
 
   stopButton: {
-    backgroundColor: "#e74c3c",
+    backgroundColor: "rgba(231,76,60,0.13)",
+    borderColor: "#e74c3c",
+    borderWidth: 2,
+  },
+
+  buttonTextStop: {
+    color: "#e74c3c",
+    fontSize: 16,
+    textAlign: "center",
+    fontWeight: "bold",
   },
 
   resumeButton: {
-    backgroundColor: "#3498db",
+    backgroundColor: "rgba(52,152,219,0.13)",
+    borderColor: "#3498db",
+    borderWidth: 2,
+  },
+
+  buttonTextResume: {
+    color: "#3498db",
+    fontSize: 16,
+    textAlign: "center",
+    fontWeight: "bold",
   },
 
   stopButtons: {
     flexDirection: "row",
     gap: 30,
-  },
-
-  buttonText: {
-    color: "white",
-    fontSize: 16,
-    textAlign: "center",
   },
 });
