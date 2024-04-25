@@ -153,7 +153,6 @@ export default function Perfil() {
           <Pressable onPress={escolhaImagem} style={styles.botao}>
             {carregandoImagem ? (
               <ActivityIndicator
-                // size="large"
                 color="#3D2498"
                 style={styles.loadingIndicator}
               />
@@ -231,25 +230,28 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     width: 310,
     marginBottom: 16,
-    color: "#333",
+    color: "#3A2293",
+    fontWeight: "bold",
   },
 
   botao: {
-    borderRadius: 4,
+    borderRadius: 6,
     marginVertical: 12,
     borderColor: "#4631B4",
     borderWidth: 2,
     paddingVertical: 10,
     paddingHorizontal: 20,
+    backgroundColor: "rgba(58,34,147,0.06)",
   },
 
   botaoLogout: {
-    borderRadius: 4,
+    borderRadius: 6,
     marginVertical: 12,
     borderColor: "#be2414",
     borderWidth: 2,
     paddingVertical: 10,
     paddingHorizontal: 20,
+    backgroundColor: "rgba(190,36,20,0.06)",
   },
 
   botaoTextLogout: {
@@ -269,9 +271,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignSelf: "center",
 
-    borderWidth: 4,
+    borderWidth: 2,
     borderRadius: 50,
-    borderColor: "#EBE6F6",
+    borderColor: "#4631B4",
 
     shadowColor: "black",
     shadowOffset: { width: 0, height: 4 }, // Sombra para baixo (y = 5)
