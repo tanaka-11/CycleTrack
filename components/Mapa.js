@@ -26,6 +26,12 @@ export default function Mapa() {
     getLocation();
   }, [running]);
 
+  console.log("distancia");
+  console.log(distance);
+  console.log("-----------");
+  console.log("velocidade");
+  console.log(speed);
+
   return (
     <>
       <View style={styles.viewDados}>
@@ -35,7 +41,7 @@ export default function Mapa() {
 
         <Text style={styles.botaoPreenchido}>
           <Text style={styles.tituloBotao}>Distância:</Text>{" "}
-          {(distance / 1000).toFixed(2)} km
+          {(distance / 1000).toFixed(4)} km
         </Text>
       </View>
 

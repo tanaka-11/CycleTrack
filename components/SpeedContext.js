@@ -225,6 +225,14 @@ export const SpeedProvider = ({ children }) => {
     setSpeed(0);
   };
 
+  // Função para parar o monitoramento
+  const resetMonitoring = async () => {
+    await Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
+    setSpeed(0);
+    setDistance(0);
+  };
+
+  // Função parar pausar o monitoramento
   const pauseMonitoring = async () => {
     setPause(true);
     if (locationSubscription) {
@@ -345,7 +353,6 @@ export const SpeedProvider = ({ children }) => {
     setFinalLocation,
     setMyLocation,
     setSpeed,
-
     setDistance,
     setStop,
     setPause,
@@ -363,6 +370,7 @@ export const SpeedProvider = ({ children }) => {
     stopMonitoring,
     pauseMonitoring,
     resumeMonitoring,
+    resetMonitoring,
     stopMonitoringAndStoreData,
     savedInfos,
     permissionLocationAndAnimated,

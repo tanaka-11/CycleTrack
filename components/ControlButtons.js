@@ -40,6 +40,7 @@ export default function ControlButtons({
     stopMonitoring,
     pauseMonitoring,
     resumeMonitoring,
+    resetMonitoring,
     stopMonitoringAndStoreData,
     savedInfos,
   } = useSpeedContext();
@@ -126,9 +127,12 @@ export default function ControlButtons({
                 setRunning(false);
                 setTime({ hours: 0, minutes: 0, seconds: 0 });
 
-                // State do Acelerometro
+                // State da Localização
                 setSpeed(0);
                 setDistance(0);
+
+                // Função
+                resetMonitoring();
               }}
             >
               <Text style={styles.buttonText}>Reset</Text>
