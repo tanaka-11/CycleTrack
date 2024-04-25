@@ -229,7 +229,6 @@ export const SpeedProvider = ({ children }) => {
   };
 
   const pauseMonitoring = async () => {
-    await Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
     setPause(true);
     if (locationSubscription) {
       locationSubscription.remove();
