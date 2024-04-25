@@ -5,10 +5,13 @@ import React, {
   useEffect,
   useRef,
 } from "react";
+import { Alert } from "react-native";
 import * as Location from "expo-location";
+import * as TaskManager from "expo-task-manager";
 
 // Recursos de Storage
 import { getDatabase, ref, push } from "firebase/database";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { auth } from "../firebaseConfig";
 
 // Criar o Contexto
@@ -16,6 +19,31 @@ const SpeedContext = createContext();
 
 // Exportar um hook customizado para acessar o contexto
 export const useSpeedContext = () => useContext(SpeedContext);
+
+// Nome da tarefa de localização em segundo plano
+const BACKGROUND_LOCATION_TASK = "background-location-task";
+
+// Definir a tarefa de localização em segundo plano
+TaskManager.defineTask(
+  BACKGROUND_LOCATION_TASK,
+  async ({ data: { locations }, error }) => {
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    // Armazene a localização em AsyncStorage
+    try {
+      await AsyncStorage.setItem(
+        "@localLocationData",
+        JSON.stringify(locations[0].coords)
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
+);
+
 // Provedor do contexto que envolve a árvore de componentes
 export const SpeedProvider = ({ children }) => {
   // States para uso geral das funções de monitoramento
@@ -172,6 +200,24 @@ export const SpeedProvider = ({ children }) => {
     } catch (error) {
       console.error(error);
     }
+
+    // Iniciando monitoramento da localização em segundo plano
+    try {
+      await Location.startLocationUpdatesAsync(BACKGROUND_LOCATION_TASK, {
+        accuracy: Location.Accuracy.Highest,
+        timeInterval: 1000,
+        distanceInterval: 0,
+        activityType: Location.ActivityType.Fitness,
+        showsBackgroundLocationIndicator: true,
+        foregroundService: {
+          notificationTitle: "Monitoramento de localização",
+          notificationBody: "Estamos monitorando sua distância e velocidade.",
+          notificationColor: "#3A2293",
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // Função para parar o monitoramento
@@ -182,7 +228,8 @@ export const SpeedProvider = ({ children }) => {
     setDistance(0);
   };
 
-  const pauseMonitoring = () => {
+  const pauseMonitoring = async () => {
+    await Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
     setPause(true);
     if (locationSubscription) {
       locationSubscription.remove();
@@ -245,6 +292,16 @@ export const SpeedProvider = ({ children }) => {
       currentDate: formattedDate,
       currentTime: formattedTime,
     };
+
+    // Recupere a localização do AsyncStorage
+    try {
+      const value = await AsyncStorage.getItem("@localLocationData");
+      if (value !== null) {
+        infos.localizacaoEmSegundoPlano = JSON.parse(value);
+      }
+    } catch (error) {
+      console.error(error);
+    }
 
     // Identificador de Usuario
     const userUID = auth.currentUser.uid;
