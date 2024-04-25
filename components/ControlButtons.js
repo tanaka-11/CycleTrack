@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   },
 
   buttonTextStart: {
-    color: "#2ecc90",
+    color: "green",
     fontSize: 16,
     textAlign: "center",
     fontWeight: "bold",

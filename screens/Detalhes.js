@@ -252,6 +252,7 @@ const styles = StyleSheet.create({
   },
 
   botaoVazado: {
+    backgroundColor: "rgba(58,34,147,0.06)",
     borderColor: "#3A2293",
     borderWidth: 2,
     padding: 8,
