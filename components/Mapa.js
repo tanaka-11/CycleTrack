@@ -88,8 +88,14 @@ export default function Mapa() {
 const styles = StyleSheet.create({
   // Mapa
   mapa: {
-    width: 350,
+    width: 400,
     height: 280,
+  },
+
+  viewMapa: {
+    borderColor: "#3A2293",
+    borderWidth: 2,
+    borderRadius: 3,
   },
 
   // Dados

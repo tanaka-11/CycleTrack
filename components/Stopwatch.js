@@ -166,25 +166,23 @@ export default function Stopwatch() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 40,
   },
 
   header: {
     fontSize: 30,
     color: "#412CAB",
-    marginBottom: 10,
   },
 
   subHeader: {
-    marginBottom: 30,
-    color: "#000",
+    marginTop: 8,
+    marginBottom: 20,
+    color: "#3A2293",
     fontSize: 22,
     fontWeight: "bold",
-    textAlign: "left",
+    textAlign: "center",
   },
 
   timeText: {
-    color: "#5442D2",
     backgroundColor: "#CFC3EE",
     width: 170,
     height: 170,
@@ -197,7 +195,7 @@ const styles = StyleSheet.create({
 
   timeText2: {
     fontSize: 38,
-    color: "#5442D2",
+    color: "#3A2293",
   },
 
   textoComum: {
