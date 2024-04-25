@@ -26,7 +26,8 @@
     "react-native": "0.73.6",
     "react-native-gesture-handler": "^2.14.0",
     "react-native-maps": "1.10.0",
-    "react-native-view-shot": "^3.8.0"
+    "react-native-view-shot": "^3.8.0",
+    "expo-dev-client": "~3.3.11"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
