@@ -225,7 +225,7 @@ export const SpeedProvider = ({ children }) => {
     setSpeed(0);
   };
 
-  // Função para parar o monitoramento
+  // Função para resetar o monitoramento
   const resetMonitoring = async () => {
     await Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
     setSpeed(0);

@@ -27,7 +27,6 @@ Ficamos felizes com o resultado e esperamos contribuir ainda mais para a comunid
 - `npx expo install react-native-maps` - Mapa
 - `npx expo install expo-location` - Localização atual do usuario
 - `npx expo install expo-task-manager` - Suporte para tarefas serem executadas em segundo plano.
-- `npx expo install expo-sensors` - Contagem dos passos
 - `npx expo install @react-native-async-storage/async-storage` - Salvar dados
 - `npm install react-native-gesture-handler` - Gestos
 - `npm install react-native-view-shot` - Captura de Tela
