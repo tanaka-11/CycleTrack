@@ -26,6 +26,10 @@
         "backgroundColor": "#3A2293"
       },
       "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_BACKGROUND_LOCATION"],
+      "foregroundService": {
+        "notificationTitle": "Usando sua localização",
+        "notificationBody": "Para monitorar sua velocidade e distância"
+      },
       "package": "com.tanaka11.cycletrack"
     },
     "extra": {
