@@ -7,13 +7,14 @@ import {
   Image,
   StatusBar,
 } from "react-native";
-import { useSpeedContext } from "../components/SpeedContext";
 import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 
+import auth from "../firebaseConfig.js";
+import { useSpeedContext } from "../components/SpeedContext";
+
 // Dependencias
 import MapView, { Marker, Polyline } from "react-native-maps";
-import auth from "../firebaseConfig.js";
 import { getDatabase, ref, onValue } from "firebase/database";
 
 export default function Home({ navigation }) {
