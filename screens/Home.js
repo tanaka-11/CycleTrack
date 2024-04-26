@@ -298,7 +298,6 @@ const styles = StyleSheet.create({
     height: 64,
 
     borderWidth: 1,
-    borderRadius: 50,
     borderColor: "#3D2498",
   },
 
