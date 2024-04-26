@@ -30,7 +30,12 @@
     "react-native-view-shot": "^3.8.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@babel/plugin-transform-runtime": "^7.24.3",
+    "@eslint/js": "^9.1.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.1",
+    "globals": "^15.0.0"
   },
   "private": true
 }
