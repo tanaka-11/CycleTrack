@@ -11,11 +11,11 @@ import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 
 import { useSpeedContext } from "../components/SpeedContext";
-import authenticaton from "../firebaseConfig.js";
 
 // Dependencias
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { getDatabase, ref, onValue } from "firebase/database";
+import authenticaton from "../firebaseConfig.js";
 
 export default function Home({ navigation }) {
   // dados vindo do hook useContext
