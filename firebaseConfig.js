@@ -16,8 +16,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Inicializando o serviço de autenticação do Firebase com persistência de autenticação
-const auth = initializeAuth(app, {
+const authenticaton = initializeAuth(app, {
   persistence: getReactNativePersistence(AsyncStorage),
 });
 
-export default auth;
+export default authenticaton;

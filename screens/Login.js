@@ -14,7 +14,7 @@ import Fundo from "../assets/fundo.jpg";
 import { useEffect, useState } from "react";
 
 // Importações de Storage e Autenticação
-import auth from "../firebaseConfig.js";
+import authenticaton from "../firebaseConfig.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
@@ -32,7 +32,7 @@ export default function Login({ navigation }) {
     }
     try {
       setLoading(true);
-      await signInWithEmailAndPassword(auth, email, senha);
+      await signInWithEmailAndPassword(authenticaton, email, senha);
       navigation.navigate("Home");
     } catch (error) {
       let mensagem;
@@ -56,7 +56,7 @@ export default function Login({ navigation }) {
   // Função para carregar dados
   const loadData = async () => {
     try {
-      const userUID = auth.currentUser.uid;
+      const userUID = authenticaton.currentUser.uid;
       const userKey = "@infosSalvas:" + userUID;
       const infosSalvas = await AsyncStorage.getItem(userKey);
       const listaDeInfos = infosSalvas ? JSON.parse(infosSalvas) : [];
@@ -69,7 +69,7 @@ export default function Login({ navigation }) {
 
   // useEffect controlando os dados do usuario logado
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = authenticaton.onAuthStateChanged((user) => {
       if (user) {
         loadData(); // Carregar dados quando o usuário é definido
       }

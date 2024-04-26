@@ -14,12 +14,8 @@ import {
 import { useState } from "react";
 
 // Firebase
-import {
-  createUserWithEmailAndPassword,
-  signOut,
-  updateProfile,
-} from "firebase/auth";
-import auth from "../firebaseConfig.js";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import authenticaton from "../firebaseConfig.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 // Dependencias
@@ -84,11 +80,8 @@ export default function Cadastro({ navigation }) {
     }
 
     try {
-      // Fazendo logout se caso tiver alguma conta anterior
-      await signOut(auth);
-
       const contaUsuario = await createUserWithEmailAndPassword(
-        auth,
+        authenticaton,
         email,
         senha
       );
@@ -97,13 +90,13 @@ export default function Cadastro({ navigation }) {
       if (contaUsuario.user) {
         // Fazer upload no firestore
         // Atualize o perfil do usuário com o nome e a URL da imagem
-        await updateProfile(auth.currentUser, {
+        await updateProfile(authenticaton.currentUser, {
           displayName: nome,
           photoURL: downloadURL,
         });
 
         // Força uma atualização das informações do usuário
-        const user = auth.currentUser;
+        const user = authenticaton.currentUser;
         await user.reload();
 
         // Navega para a tela inicial após o cadastro
