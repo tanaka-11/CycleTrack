@@ -13,9 +13,6 @@
       "android": {
         "buildType": "apk",
         "gradleCommand": ":app:assembleRelease"
-      },
-      "env": {
-        "EXPO_PUBLIC_NOME_ENV": "10a6294f-c502-4c3c-a42d-39a77a76529e"
       }
     },
     "production": {}
