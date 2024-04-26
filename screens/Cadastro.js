@@ -19,7 +19,7 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { auth } from "../firebaseConfig.js";
+import auth from "../firebaseConfig.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 // Dependencias

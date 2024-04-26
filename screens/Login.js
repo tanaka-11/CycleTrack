@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 
 // Importações de Storage e Autenticação
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { auth } from "../firebaseConfig.js";
+import auth from "../firebaseConfig.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function Login({ navigation }) {

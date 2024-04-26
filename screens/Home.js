@@ -13,7 +13,7 @@ import { useRoute } from "@react-navigation/native";
 
 // Dependencias
 import MapView, { Marker, Polyline } from "react-native-maps";
-import { auth } from "../firebaseConfig.js";
+import auth from "../firebaseConfig.js";
 import { getDatabase, ref, onValue } from "firebase/database";
 
 export default function Home({ navigation }) {

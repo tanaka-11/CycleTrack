@@ -8,7 +8,7 @@ import ViewShot from "react-native-view-shot";
 import * as Sharing from "expo-sharing";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { useSpeedContext } from "../components/SpeedContext";
-import { auth } from "../firebaseConfig.js";
+import auth from "../firebaseConfig.js";
 
 export default function Detalhes() {
   // Recurso de navegação
