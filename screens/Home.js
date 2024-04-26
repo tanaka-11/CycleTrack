@@ -10,8 +10,8 @@ import {
 import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 
-import auth from "../firebaseConfig.js";
 import { useSpeedContext } from "../components/SpeedContext";
+import auth from "../firebaseConfig.js";
 
 // Dependencias
 import MapView, { Marker, Polyline } from "react-native-maps";
