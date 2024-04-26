@@ -201,21 +201,26 @@ export const SpeedProvider = ({ children }) => {
     }
 
     // Iniciando monitoramento da localização em segundo plano
-    try {
-      await Location.startLocationUpdatesAsync(BACKGROUND_LOCATION_TASK, {
-        accuracy: Location.Accuracy.Highest,
-        timeInterval: 1000,
-        distanceInterval: 0,
-        activityType: Location.ActivityType.Fitness,
-        showsBackgroundLocationIndicator: true,
-        foregroundService: {
-          notificationTitle: "Monitoramento de localização",
-          notificationBody: "Estamos monitorando sua distância e velocidade.",
-          notificationColor: "#3A2293",
-        },
-      });
-    } catch (error) {
-      console.error(error);
+    const { status } = await Location.requestBackgroundPermissionsAsync();
+    if (status === "granted") {
+      try {
+        await Location.startLocationUpdatesAsync(BACKGROUND_LOCATION_TASK, {
+          accuracy: Location.Accuracy.Highest,
+          timeInterval: 1000,
+          distanceInterval: 0,
+          activityType: Location.ActivityType.Fitness,
+          showsBackgroundLocationIndicator: true,
+          foregroundService: {
+            notificationTitle: "Monitoramento de localização",
+            notificationBody: "Estamos monitorando sua distância e velocidade.",
+            notificationColor: "#3A2293",
+          },
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      Alert.alert("Permissão negada");
     }
   };
 
