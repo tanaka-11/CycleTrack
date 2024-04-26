@@ -12,7 +12,7 @@ import * as TaskManager from "expo-task-manager";
 // Recursos de Storage
 import { getDatabase, ref, push } from "firebase/database";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import authenticaton from "../firebaseConfig.js";
+import auth from "../firebaseConfig.js";
 
 // Criar o Contexto
 const SpeedContext = createContext();
@@ -307,7 +307,7 @@ export const SpeedProvider = ({ children }) => {
     }
 
     // Identificador de Usuario
-    const userUID = authenticaton.currentUser.uid;
+    const userUID = auth.currentUser.uid;
 
     try {
       // Obtenha uma referência para o banco de dados

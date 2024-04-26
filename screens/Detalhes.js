@@ -4,7 +4,7 @@ import React, { useState, useRef } from "react";
 import { useRoute } from "@react-navigation/native";
 
 // Importações Dependencias
-import authenticaton from "../firebaseConfig.js";
+import auth from "../firebaseConfig.js";
 import ViewShot from "react-native-view-shot";
 import * as Sharing from "expo-sharing";
 import MapView, { Marker, Polyline } from "react-native-maps";
@@ -25,9 +25,9 @@ export default function Detalhes() {
   let photoURL = null;
 
   // Condicional caso usuario estiver logado
-  if (authenticaton.currentUser) {
-    displayName = authenticaton.currentUser.displayName;
-    photoURL = authenticaton.currentUser.photoURL;
+  if (auth.currentUser) {
+    displayName = auth.currentUser.displayName;
+    photoURL = auth.currentUser.photoURL;
   }
 
   // Referencia para a função handleShare (Compartilhar)

@@ -17,7 +17,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 
 // Firebase
-import authenticaton from "../firebaseConfig.js";
+import auth from "../firebaseConfig.js";
 import { updateEmail, updateProfile, signOut } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
@@ -32,7 +32,7 @@ export default function Perfil() {
   // UseEffect para mostrar os dados do usuario ou vazio
   useEffect(() => {
     const carregarUsuarioAtual = async () => {
-      const usuarioAtual = authenticaton.currentUser;
+      const usuarioAtual = auth.currentUser;
       if (usuarioAtual) {
         setNome(usuarioAtual.displayName || "");
         setEmail(usuarioAtual.email || "");
@@ -46,8 +46,8 @@ export default function Perfil() {
   // Função salvar perfil
   const salvarPerfil = async () => {
     try {
-      const usuarioAtual = authenticaton.currentUser;
-      const uid = authenticaton.currentUser.uid;
+      const usuarioAtual = auth.currentUser;
+      const uid = auth.currentUser.uid;
 
       if (!usuarioAtual) {
         throw new Error("Usuário não autenticado.");
@@ -73,7 +73,7 @@ export default function Perfil() {
 
   // Função Atualizar Nome
   const atualizarNome = async (novoNome) => {
-    const usuarioAtual = authenticaton.currentUser;
+    const usuarioAtual = auth.currentUser;
     if (!usuarioAtual) {
       throw new Error("Usuário não autenticado.");
     }
@@ -122,7 +122,7 @@ export default function Perfil() {
       const fotoURL = await getDownloadURL(storageRef);
 
       // Atualizar o nome do usuário com parametro que será state fotoUrl
-      await updateProfile(authenticaton.currentUser, { photoURL: fotoURL });
+      await updateProfile(auth.currentUser, { photoURL: fotoURL });
     } catch (error) {
       console.error("Erro ao atualizar foto de perfil:", error);
       throw error;
@@ -131,7 +131,7 @@ export default function Perfil() {
 
   const logout = async () => {
     try {
-      await signOut(authenticaton);
+      await signOut(auth);
     } catch (error) {
       console.error(error.code);
     }

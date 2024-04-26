@@ -12,7 +12,7 @@ import { useSpeedContext } from "../components/SpeedContext";
 
 // Dependecias
 import MapView, { Marker, Polyline } from "react-native-maps";
-import authenticaton from "../firebaseConfig.js";
+import auth from "../firebaseConfig.js";
 import { getDatabase, ref, onValue } from "firebase/database";
 
 // Recursos de navegação
@@ -36,7 +36,7 @@ export default function Atividades() {
     const carregarFavoritos = async () => {
       try {
         // Identificador de Usuario
-        const userUID = authenticaton.currentUser.uid;
+        const userUID = auth.currentUser.uid;
 
         // Referência para o local no banco de dados onde você salvou suas informações
         const db = getDatabase();

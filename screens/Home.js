@@ -9,13 +9,12 @@ import {
 } from "react-native";
 import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
-
 import { useSpeedContext } from "../components/SpeedContext";
 
 // Dependencias
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { getDatabase, ref, onValue } from "firebase/database";
-import authenticaton from "../firebaseConfig.js";
+import auth from "../firebaseConfig.js";
 
 export default function Home({ navigation }) {
   // dados vindo do hook useContext
@@ -34,10 +33,10 @@ export default function Home({ navigation }) {
     // Se houver parâmetros de rota, use-os
     displayName = route.params.displayName;
     photoURL = route.params.photoURL;
-  } else if (authenticaton.currentUser) {
+  } else if (auth.currentUser) {
     // Se não houver parâmetros de rota, mas o usuário estiver logado, use os dados do usuário
-    displayName = authenticaton.currentUser.displayName;
-    photoURL = authenticaton.currentUser.photoURL;
+    displayName = auth.currentUser.displayName;
+    photoURL = auth.currentUser.photoURL;
   } else {
     // Se não houver parâmetros de rota e o usuário não estiver logado, use os valores padrão
     displayName;
@@ -49,7 +48,7 @@ export default function Home({ navigation }) {
     const carregarFavoritos = async () => {
       try {
         // Identificador de Usuario
-        const userUID = authenticaton.currentUser.uid;
+        const userUID = auth.currentUser.uid;
 
         // Referência para o local no banco de dados onde você salvou suas informações
         const db = getDatabase();
