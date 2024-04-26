@@ -7,7 +7,6 @@ module.exports = function (api) {
         "@babel/plugin-transform-runtime",
         {
           globals: {
-            // Adicione as variáveis globais aqui
             setImmediate: true,
             setTimeout: true,
             clearTimeout: true,
