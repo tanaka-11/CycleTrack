@@ -14,7 +14,7 @@ import { useSpeedContext } from "../components/SpeedContext";
 // Dependencias
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { getDatabase, ref, onValue } from "firebase/database";
-import auth from "../firebaseConfig.js";
+import auth from "../firebase.config.js";
 
 export default function Home({ navigation }) {
   // dados vindo do hook useContext

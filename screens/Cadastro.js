@@ -15,7 +15,7 @@ import { useState } from "react";
 
 // Firebase
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import auth from "../firebaseConfig.js";
+import auth from "../firebase.config.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 // Dependencias

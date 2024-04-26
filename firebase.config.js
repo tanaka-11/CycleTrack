@@ -1,9 +1,5 @@
 import { initializeApp } from "firebase/app";
-import {
-  initializeAuth,
-  getReactNativePersistence,
-  onAuthStateChanged,
-} from "firebase/auth";
+import { initializeAuth, getReactNativePersistence } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Configurações firebase
@@ -19,15 +15,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-// Inicializando o serviço de autenticação do Firebase
-const auth = initializeAuth(app);
-
-// Verificar o estado de autenticação do usuário
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // Se o usuário estiver logado, defina a persistência
-    auth.setPersistence(getReactNativePersistence(AsyncStorage));
-  }
+// Inicializando o serviço de autenticação do Firebase com persistência de autenticação
+const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(AsyncStorage),
 });
 
 export default auth;

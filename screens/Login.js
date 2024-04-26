@@ -14,7 +14,7 @@ import Fundo from "../assets/fundo.jpg";
 import { useEffect, useState } from "react";
 
 // Importações de Storage e Autenticação
-import auth from "../firebaseConfig.js";
+import auth from "../firebase.config.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { signInWithEmailAndPassword } from "firebase/auth";
 

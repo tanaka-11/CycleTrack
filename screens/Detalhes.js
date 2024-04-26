@@ -4,7 +4,7 @@ import React, { useState, useRef } from "react";
 import { useRoute } from "@react-navigation/native";
 
 // Importações Dependencias
-import auth from "../firebaseConfig.js";
+import auth from "../firebase.config.js";
 import ViewShot from "react-native-view-shot";
 import * as Sharing from "expo-sharing";
 import MapView, { Marker, Polyline } from "react-native-maps";

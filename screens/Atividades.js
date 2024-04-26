@@ -12,7 +12,7 @@ import { useSpeedContext } from "../components/SpeedContext";
 
 // Dependecias
 import MapView, { Marker, Polyline } from "react-native-maps";
-import auth from "../firebaseConfig.js";
+import auth from "../firebase.config.js";
 import { getDatabase, ref, onValue } from "firebase/database";
 
 // Recursos de navegação
