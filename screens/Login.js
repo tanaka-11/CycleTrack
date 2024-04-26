@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Fundo from "../assets/fundo.jpg";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // Importações de Storage e Autenticação
 import auth from "../firebase.config.js";
