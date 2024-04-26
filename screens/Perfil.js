@@ -271,7 +271,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
 
     borderWidth: 2,
-    borderRadius: 50,
     borderColor: "#4631B4",
 
     shadowColor: "black",
