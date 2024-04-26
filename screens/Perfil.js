@@ -266,12 +266,10 @@ const styles = StyleSheet.create({
   image: {
     width: 170,
     height: 170,
-    borderRadius: 50,
     marginTop: 20,
     alignSelf: "center",
 
     borderWidth: 2,
-    borderRadius: 50,
     borderColor: "#4631B4",
 
     shadowColor: "black",
