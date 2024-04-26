@@ -34,6 +34,7 @@ export default function Atividades() {
   // useEffect é acionado toda vez que o data(State vindo do Context) atualizar
   useEffect(() => {
     const carregarFavoritos = async () => {
+      setLoading(true);
       try {
         // Identificador de Usuario
         const userUID = auth.currentUser.uid;
@@ -51,6 +52,7 @@ export default function Atividades() {
             setListaFavoritos(listaFavoritos);
           }
         });
+        setLoading(false);
       } catch (error) {
         console.error("Erro ao carregar os dados: " + error);
         Alert.alert("Erro", "Erro ao carregar os dados");
