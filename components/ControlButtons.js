@@ -171,6 +171,7 @@ export default function ControlButtons({
 
                 // Função
                 savedInfos();
+                resetMonitoring();
               }}
             >
               <Text style={styles.buttonTextResume}>Salvar</Text>
