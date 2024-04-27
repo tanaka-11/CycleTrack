@@ -10,11 +10,11 @@ A ideia para o CycleTrack surgiu da necessidade de um aplicativo que não fosse 
 
 O CycleTrack é capaz de:
 
-- Computar distância 📏
-- Medir velocidade em tempo real ⏱️
-- Localizar o usuário no mapa 📍
-- Calcular o tempo decorrido na atividade ⏳
-- Autenticar usuários via Firebase 🔒
+- Computar distância
+- Medir velocidade em tempo real
+- Localizar o usuário no mapa
+- Calcular o tempo decorrido na atividade
+- Autenticar usuários via Firebase
 
 ## Como Contribuir 🤝
 
