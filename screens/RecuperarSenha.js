@@ -11,6 +11,28 @@ import {
 import { sendPasswordResetEmail } from "firebase/auth";
 import { getAuth } from "firebase/auth";
 
+// Função para validar o email
+const validateEmail = (email) => {
+  if (!email) {
+    Alert.alert("Atenção", "Preencha o campo de e-mail");
+    return false;
+  }
+  return true;
+};
+
+// Função para recuperar a senha
+const recuperarSenha = async (auth, email) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+    Alert.alert(
+      "Recuperação de Senha",
+      "Um link para redefinir sua senha foi enviado para o seu e-mail. Por favor, verifique sua caixa de entrada e siga as instruções para criar uma nova senha."
+    );
+  } catch (error) {
+    Alert.alert("Erro", "Ocorreu um erro ao recuperar a senha.");
+  }
+};
+
 export default function RecuperarSenha() {
   const [email, setEmail] = useState("");
   const auth = getAuth();
@@ -18,17 +40,15 @@ export default function RecuperarSenha() {
   // State de Loading
   const [loadingRecuperar, setLoadingRecuperar] = useState(false);
 
-  const recuperarSenha = async () => {
-    setLoadingRecuperar(true);
-    try {
-      await sendPasswordResetEmail(auth, email);
-      Alert.alert("Recuperar senha", "Verifique seu e-mail.");
-      setEmail(null);
-    } catch (error) {
-      Alert.alert("Erro", "Ocorreu um erro ao recuperar a senha.");
-    } finally {
-      setLoadingRecuperar(false);
+  const handleRecuperarSenha = async () => {
+    if (!validateEmail(email)) {
+      return;
     }
+
+    setLoadingRecuperar(true);
+    await recuperarSenha(auth, email);
+    setEmail(null);
+    setLoadingRecuperar(false);
   };
 
   return (
@@ -48,7 +68,7 @@ export default function RecuperarSenha() {
         style={styles.input}
       />
 
-      <Pressable onPress={recuperarSenha} style={styles.botao}>
+      <Pressable onPress={handleRecuperarSenha} style={styles.botao}>
         {loadingRecuperar ? (
           <ActivityIndicator animating={loadingRecuperar} color="#fff" />
         ) : (
