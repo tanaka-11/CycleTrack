@@ -40,39 +40,92 @@ export default function Cadastro({ navigation }) {
   const [loadingImagem, setLoadingImagem] = useState(false);
   const [loadingStorage, setLoadingStorage] = useState(false);
 
-  // Função para fazer upload da imagem para o Firebase Storage e depois enviar pela função Cadastrar
+  // Função para obter o blob da imagem
+  const getImageBlob = async (imagem) => {
+    const { uri } = await FileSystem.getInfoAsync(imagem);
+    const response = await fetch(uri);
+
+    if (!response.ok) {
+      throw new Error("Não foi possível obter a imagem.");
+    }
+
+    return await response.blob();
+  };
+
+  // Função para fazer upload da imagem para o firebase storage
+  const uploadImageToStorage = async (blob, imageName) => {
+    const storageRef = ref(storage, imageName);
+    await uploadBytes(storageRef, blob);
+
+    return await getDownloadURL(storageRef);
+  };
+
+  // Função para carregarStorage
   const carregarStorage = async () => {
     setLoadingStorage(true); // Inicia o carregamento
+
     try {
       if (imagem) {
-        const { uri } = await FileSystem.getInfoAsync(imagem); // Obtém o URI da imagem
-        const response = await fetch(uri); // Realiza uma requisição para obter a imagem
-
-        const blob = await response.blob();
+        const blob = await getImageBlob(imagem);
         const imageName = imagem.substring(imagem.lastIndexOf("/") + 1);
+        const imagemURL = await uploadImageToStorage(blob, imageName);
 
-        if (!response.ok) {
-          throw new Error("Falha ao obter a imagem");
-        }
-
-        const storageRef = ref(storage, imageName); // Cria uma referência para o local de armazenamento da imagem
-        await uploadBytes(storageRef, blob);
-
-        //downloadURL = recebe a url criada para imagem
-        const imagemURL = await getDownloadURL(storageRef);
         setDownloadURL(imagemURL);
       }
 
       cadastrar(); //Cadastro dos demais dados
     } catch (error) {
       console.error(error);
-      Alert.alert("Falha ao fazer upload da imagem", error.message);
+      Alert.alert("Falha ao fazer upload da imagem");
     } finally {
       setLoadingStorage(false); // Termina o carregamento
     }
   };
 
-  // Dados inseridos no input, carregados pelo state e enviados pela função cadastrar
+  // Função para criar um usuário
+  const createUser = async (email, senha) => {
+    const contaUsuario = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      senha
+    );
+    if (!contaUsuario.user) {
+      throw new Error("Não foi possível criar o usuário.");
+    }
+    return contaUsuario.user;
+  };
+
+  // Função para atualizar o perfil do usuário
+  const updateUserProfile = async (user, nome, downloadURL) => {
+    await updateProfile(user, {
+      displayName: nome,
+      photoURL: downloadURL,
+    });
+    await user.reload();
+  };
+
+  // Função para lidar com erros
+  const handleError = (error) => {
+    let mensagem;
+    switch (error.code) {
+      case "auth/email-already-in-use":
+        mensagem = "Este e-mail já está sendo usado por outra conta.";
+        break;
+      case "auth/weak-password":
+        mensagem = "Por favor, escolha uma senha mais forte.";
+        break;
+      case "auth/invalid-email":
+        mensagem = "Por favor, insira um endereço de e-mail válido.";
+        break;
+      default:
+        mensagem =
+          "Desculpe, algo deu errado. Por favor, tente novamente mais tarde.";
+        break;
+    }
+    Alert.alert("Ops!", mensagem);
+  };
+
+  // Função para cadastrar
   const cadastrar = async () => {
     if (!email || !senha || !nome || !imagem) {
       Alert.alert("Atenção", "Preecha todos os campos");
@@ -80,53 +133,18 @@ export default function Cadastro({ navigation }) {
     }
 
     try {
-      const contaUsuario = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        senha
-      );
-
-      // Foto e nome do current user
-      if (contaUsuario.user) {
-        // Fazer upload no firestore
-        // Atualize o perfil do usuário com o nome e a URL da imagem
-        await updateProfile(auth.currentUser, {
-          displayName: nome,
-          photoURL: downloadURL,
-        });
-
-        // Força uma atualização das informações do usuário
-        const user = auth.currentUser;
-        await user.reload();
-
-        // Navega para a tela inicial após o cadastro
-        navigation.navigate("Home", {
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-        });
-      }
-
+      const user = await createUser(email, senha);
+      await updateUserProfile(user, nome, downloadURL);
+      navigation.navigate("Home", {
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+      });
       Alert.alert(
         "Cadastro",
-        "Seu cadastro foi concluido com sucesso. Hora de começar pedalar!"
+        "Seu cadastro foi concluido com sucesso! Hora de começar pedalar!"
       );
     } catch (error) {
-      let mensagem;
-      switch (error.code) {
-        case "auth/email-already-in-use":
-          mensagem = "Email já existente!";
-          break;
-        case "auth/weak-password":
-          mensagem = "Senha fraca!";
-          break;
-        case "auth/invalid-email":
-          mensagem = "Endereço de e-mail inválido!";
-          break;
-        default:
-          mensagem = "Houve um erro, tente mais tarde!";
-          break;
-      }
-      Alert.alert("Ops!", mensagem);
+      handleError(error);
     }
   };
 
@@ -230,6 +248,7 @@ const estilos = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
   logo: {
     marginBottom: 25,
 
