@@ -42,6 +42,9 @@ export default function Login({ navigation }) {
       case "auth/invalid-email":
         mensagem = "Endereço de e-mail inválido!";
         break;
+      case "auth/already-initialized":
+        mensagem = "Login ja inicializado!";
+        break;
       default:
         mensagem = "Houve um erro, tente mais tarde!";
         break;

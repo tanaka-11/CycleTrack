@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { StyleSheet } from "react-native";
 
-// Navigator
+// Navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 
-// Telas
+// Screens
 import Home from "./screens/Home";
 import Perfil from "./screens/Perfil";
 import Atividades from "./screens/Atividades";
@@ -16,21 +16,32 @@ import Cadastro from "./screens/Cadastro";
 import RecuperarSenha from "./screens/RecuperarSenha";
 import Detalhes from "./screens/Detalhes";
 
-// Acesso firebase auth
+// Firebase Auth
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 // useContext
 import { SpeedProvider } from "./components/SpeedContext";
 
-// Icones
+// Bibliotecas de icones
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 
-// constante iniciando a criação do navigator
+// Criação dos Navigator
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-// StackScreen de Login
+// Icones
+const homeIcon = () => <Ionicons name="home-outline" size={24} color="white" />;
+const atividadesIcon = () => (
+  <MaterialCommunityIcons name="clock-check-outline" size={24} color="white" />
+);
+const playIcon = () => (
+  <MaterialCommunityIcons name="bike" size={24} color="white" />
+);
+const perfilIcon = () => <AntDesign name="user" size={24} color="white" />;
+
+// StackScreen para Login
 const AuthStack = () => (
   <Stack.Navigator
     initialRouteName="Login"
@@ -44,6 +55,7 @@ const AuthStack = () => (
   </Stack.Navigator>
 );
 
+// StackScreen para Atividades
 const AtividadesStack = () => (
   <Stack.Navigator
     initialRouteName="Atividades"
@@ -57,10 +69,10 @@ const AtividadesStack = () => (
 );
 
 export default function App() {
-  // Estado para rastrear o status de login do usuário
+  // State para rastrear o status de login do usuário
   const [isUserLoggedIn, setUserLoggedIn] = useState(false);
 
-  // Efeito para verificar o status de login do usuário ao montar o componente
+  // useEffect para verificar o status de login do usuário ao montar o componente
   useEffect(() => {
     const auth = getAuth(); // Obtém a instância de autenticação
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -96,59 +108,28 @@ export default function App() {
                     name="Home"
                     component={Home}
                     options={{
-                      tabBarIcon: () => {
-                        return (
-                          <Ionicons
-                            name="home-outline"
-                            size={24}
-                            color="white"
-                          />
-                        );
-                      },
+                      tabBarIcon: homeIcon,
                     }}
                   />
-
                   <Tab.Screen
                     name="Atividades"
                     component={AtividadesStack}
                     options={{
-                      tabBarIcon: () => {
-                        return (
-                          <MaterialCommunityIcons
-                            name="clock-check-outline"
-                            size={24}
-                            color="white"
-                          />
-                        );
-                      },
+                      tabBarIcon: atividadesIcon,
                     }}
                   />
-
                   <Tab.Screen
-                    name="Play"
+                    name="Pedalar"
                     component={Play}
                     options={{
-                      tabBarIcon: () => {
-                        return (
-                          <MaterialCommunityIcons
-                            name="bike"
-                            size={24}
-                            color="white"
-                          />
-                        );
-                      },
+                      tabBarIcon: playIcon,
                     }}
                   />
-
                   <Tab.Screen
                     name="Perfil"
                     component={Perfil}
                     options={{
-                      tabBarIcon: () => {
-                        return (
-                          <AntDesign name="user" size={24} color="white" />
-                        );
-                      },
+                      tabBarIcon: perfilIcon,
                     }}
                   />
                 </Tab.Navigator>

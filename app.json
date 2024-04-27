@@ -3,17 +3,18 @@
     "name": "CycleTrack",
     "slug": "cycletrack",
     "version": "1.0.0",
+    "owner": "tanaka-11",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#000000"
-    },
+    "assetBundlePatterns": ["**/*"],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#000000"
+    },
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
@@ -21,18 +22,17 @@
       }
     },
     "android": {
+      "package": "com.tanaka11.cycletrack",
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_BACKGROUND_LOCATION"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#3A2293"
-      },
-      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_BACKGROUND_LOCATION"],
-      "package": "com.tanaka11.cycletrack"
+      }
     },
     "extra": {
       "eas": {
         "projectId": "10a6294f-c502-4c3c-a42d-39a77a76529e"
       }
-    },
-    "owner": "tanaka-11"
+    }
   }
 }
