@@ -20,7 +20,7 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function Atividades() {
   // State para loading
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Dados vindo do useContext
   const { mapViewRef, data } = useSpeedContext();
