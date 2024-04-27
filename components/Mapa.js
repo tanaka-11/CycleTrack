@@ -17,12 +17,12 @@ export default function Mapa() {
     distance,
 
     // Funções
-    getLocation,
+    permissionLocationAndAnimated,
   } = useSpeedContext();
 
   // useEffect do getLocation
   useEffect(() => {
-    getLocation();
+    permissionLocationAndAnimated();
   }, [running]);
 
   return (
@@ -34,7 +34,7 @@ export default function Mapa() {
 
         <Text style={styles.botaoPreenchido}>
           <Text style={styles.tituloBotao}>Distância:</Text>{" "}
-          {(distance / 1000).toFixed(2)} km
+          {distance.toFixed(2)} km
         </Text>
       </View>
 
