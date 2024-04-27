@@ -83,7 +83,7 @@ export default function ControlButtons({
               style={[styles.button, styles.resetButton]}
               onPress={() => {
                 resetStopwatch();
-                stopMonitoring();
+                resetMonitoring();
               }}
             >
               <Text style={styles.buttonTextReset}>Reset</Text>
