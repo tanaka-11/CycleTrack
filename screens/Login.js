@@ -9,11 +9,11 @@ import {
   ScrollView,
   ImageBackground,
 } from "react-native";
+import { useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import Fundo from "../assets/fundo.jpg";
-import { useState } from "react";
 
-// Importações de Storage e Autenticação
+// Importações de Autenticação
 import auth from "../firebase.config.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
@@ -23,29 +23,44 @@ export default function Login({ navigation }) {
   const [senhaVisivel, setSenhaVisivel] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const login = async () => {
+  // Função para validar o email e a senha
+  const validateInput = (email, senha) => {
     if (!email || !senha) {
       Alert.alert("Atenção", "Preecha email e senha");
+      return false;
+    }
+    return true;
+  };
+
+  // Função para lidar com erros
+  const handleError = (error) => {
+    let mensagem;
+    switch (error.code) {
+      case "auth/invalid-credential":
+        mensagem = "Dados inválidos!";
+        break;
+      case "auth/invalid-email":
+        mensagem = "Endereço de e-mail inválido!";
+        break;
+      default:
+        mensagem = "Houve um erro, tente mais tarde!";
+        break;
+    }
+    Alert.alert("Ops!", mensagem);
+  };
+
+  // Função para login
+  const login = async () => {
+    if (!validateInput(email, senha)) {
       return;
     }
+
     try {
       setLoading(true);
       await signInWithEmailAndPassword(auth, email, senha);
       navigation.navigate("Home");
     } catch (error) {
-      let mensagem;
-      switch (error.code) {
-        case "auth/invalid-credential":
-          mensagem = "Dados inválidos!";
-          break;
-        case "auth/invalid-email":
-          mensagem = "Endereço de e-mail inválido!";
-          break;
-        default:
-          mensagem = "Houve um erro, tente mais tarde!";
-          break;
-      }
-      Alert.alert("Ops!", mensagem);
+      handleError(error);
     } finally {
       setLoading(false); // Desativa o spinner
     }
