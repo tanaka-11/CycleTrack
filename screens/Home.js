@@ -18,8 +18,9 @@ import { getDatabase, ref, onValue } from "firebase/database";
 import auth from "../firebase.config.js";
 
 export default function Home({ navigation }) {
-  // dados vindo do hook useContext
+  // Dados vindo do hook useContext
   const { mapViewRef, data } = useSpeedContext();
+
   // State guardando objeto vindo useContext
   const [listaFavoritos, setListaFavoritos] = useState(data);
 
