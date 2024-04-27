@@ -147,9 +147,7 @@ export default function Home({ navigation }) {
           </View>
           <View style={styles.viewAtividade}>
             <Text style={styles.viewTitulo}>Distancia</Text>
-            <Text style={styles.textoDados}>
-              {(totalDistance / 1000).toFixed(2)} km
-            </Text>
+            <Text style={styles.textoDados}>{totalDistance.toFixed(2)} km</Text>
           </View>
         </View>
 
