@@ -74,10 +74,9 @@ export const SpeedProvider = ({ children }) => {
   const [speedSum, setSpeedSum] = useState(0);
   const [speedCount, setSpeedCount] = useState(0);
 
-  // Definir mapViewRef dentro da função SpeedProvider
+  // Referencia para o mapa
   const mapViewRef = useRef();
 
-  // Função para obter a localização do usuário
   // Função para solicitar permissão de localização
   const requestLocationPermission = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
@@ -131,37 +130,37 @@ export const SpeedProvider = ({ children }) => {
     permissionLocationAndAnimated();
   }, []);
 
-  // Função para começar o monitoramento
+  // Função para calcular a distância entre dois pontos geográficos
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    // Raio da Terra
+    const R = 6371;
+
+    // Distancia da Latitude
+    const dLat = (lat2 - lat1) * (Math.PI / 180);
+
+    // Distancia da Longitude
+    const dLon = (lon2 - lon1) * (Math.PI / 180);
+
+    // Constante guardando a primeira parte da formula de Haversine
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) *
+        Math.cos(lat2 * (Math.PI / 180)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+
+    // Constante guardando a distancia final
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    // Distancia recebendo o raio vezes a distancia final
+    const distance = R * c;
+
+    // Retornando a const Distancia
+    return distance;
+  };
+
+  // Função para iniciar o monitoramento
   const startMonitoring = async () => {
-    // Função para calcular a distância entre dois pontos geográficos
-    const calculateDistance = (lat1, lon1, lat2, lon2) => {
-      // Raio da Terra
-      const R = 6371;
-
-      // Distancia da Latitude
-      const dLat = (lat2 - lat1) * (Math.PI / 180);
-
-      // Distancia da Longitude
-      const dLon = (lon2 - lon1) * (Math.PI / 180);
-
-      // Constante guardando a primeira parte da formula de Haversine
-      const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * (Math.PI / 180)) *
-          Math.cos(lat2 * (Math.PI / 180)) *
-          Math.sin(dLon / 2) *
-          Math.sin(dLon / 2);
-
-      // Constante guardando a distancia final
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-      // Distancia recebendo o raio vezes a distancia final
-      const distance = R * c;
-
-      // Retornando a const Distancia
-      return distance;
-    };
-
     try {
       const newLocationSubscription = await Location.watchPositionAsync(
         {
@@ -170,34 +169,7 @@ export const SpeedProvider = ({ children }) => {
           distanceInterval: 0,
           activityType: Location.ActivityType.Fitness,
         },
-
-        (position) => {
-          const currentSpeed = position.coords.speed || 0;
-          setSpeed(currentSpeed);
-
-          // Atualize a velocidade máxima
-          setMaxSpeed((prevMaxSpeed) => Math.max(prevMaxSpeed, currentSpeed));
-
-          // Atualize a soma total das velocidades e a contagem
-          setSpeedSum((prevSpeedSum) => prevSpeedSum + currentSpeed);
-          setSpeedCount((prevSpeedCount) => prevSpeedCount + 1);
-
-          // Calcule a distância aqui e atualize o estado 'distance'
-          if (myLocation) {
-            const newDistance = calculateDistance(
-              myLocation.coords.latitude,
-              myLocation.coords.longitude,
-              position.coords.latitude,
-              position.coords.longitude
-            );
-            setDistance((prevDistance) => prevDistance + newDistance);
-          }
-          // Atualize a localização final
-          setFinalLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-        }
+        updatePosition
       );
 
       // Remove o monitoramento anterior de velocidade atraves do "subscription".
@@ -234,10 +206,33 @@ export const SpeedProvider = ({ children }) => {
     }
   };
 
-  // Função para parar o monitoramento
-  const stopMonitoring = async () => {
-    await Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
-    setSpeed(0);
+  // Função para atualizar a posição
+  const updatePosition = (position) => {
+    const currentSpeed = position.coords.speed || 0;
+    setSpeed(currentSpeed);
+
+    // Atualiza a velocidade máxima
+    setMaxSpeed((prevMaxSpeed) => Math.max(prevMaxSpeed, currentSpeed));
+
+    // Atualiza a soma total das velocidades e a contagem
+    setSpeedSum((prevSpeedSum) => prevSpeedSum + currentSpeed);
+    setSpeedCount((prevSpeedCount) => prevSpeedCount + 1);
+
+    // Calcula a distância e atualiza o state 'distance'
+    if (myLocation) {
+      const newDistance = calculateDistance(
+        myLocation.coords.latitude,
+        myLocation.coords.longitude,
+        position.coords.latitude,
+        position.coords.longitude
+      );
+      setDistance((prevDistance) => prevDistance + newDistance);
+    }
+    // Atualiza a localização final
+    setFinalLocation({
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude,
+    });
   };
 
   // Função para resetar o monitoramento
@@ -247,21 +242,29 @@ export const SpeedProvider = ({ children }) => {
     setDistance(0);
   };
 
-  // Função parar pausar o monitoramento
-  const pauseMonitoring = async () => {
-    setPause(true);
+  // Função para remover a inscrição de localização
+  const removeLocationSubscription = () => {
     if (locationSubscription) {
       locationSubscription.remove();
       setLocationSubscription(null);
     }
   };
 
-  // useEffect do pause
-  useEffect(() => {
+  // Função para pausar o monitoramento
+  const pauseMonitoring = () => {
+    setPause(true);
+    removeLocationSubscription();
+  };
+
+  // Função para resetar a velocidade quando pausado
+  const resetSpeedWhenPaused = () => {
     if (pause && !running) {
       setSpeed(0);
     }
-  }, [pause, running]);
+  };
+
+  // useEffect do pause
+  useEffect(resetSpeedWhenPaused, [pause, running]);
 
   // Função para retomar o monitoramento
   const resumeMonitoring = async () => {
@@ -274,60 +277,43 @@ export const SpeedProvider = ({ children }) => {
   // Função para pausar o monitoramento e armazenar os dados
   const stopMonitoringAndStoreData = () => {
     // Pausar o monitoramento
-    if (locationSubscription) {
-      locationSubscription.remove();
-      setLocationSubscription(null);
-    }
+    removeLocationSubscription();
 
     // Armazenar os dados atuais
     setStoredSpeed(speed);
     setStoredDistance(distance);
   };
 
-  // Função para salvarInfos
-  const savedInfos = async () => {
-    // Capturando Data atual e a formatando
+  // Função para formatar a data e a hora atual
+  const formatDateTime = () => {
     const date = new Date();
     const dateOptions = { year: "numeric", month: "2-digit", day: "2-digit" };
-    const timeOptions = {
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    const formattedDate = date.toLocaleString("pt-BR", dateOptions); // Formatação da data
-    const formattedTime = date.toLocaleString("pt-BR", timeOptions); // Formatação da hora
+    const timeOptions = { hour: "2-digit", minute: "2-digit" };
+    const formattedDate = date.toLocaleString("pt-BR", dateOptions);
+    const formattedTime = date.toLocaleString("pt-BR", timeOptions);
+    return { formattedDate, formattedTime };
+  };
 
-    const infos = {
-      localizacao: {
-        latitude: location.latitude,
-        longitude: location.longitude,
-      },
-      localizacaoFinal: finalLocation,
-      storedDistance: distance / 1000,
-      storedSpeed: speed,
-      averageSpeed: speedSum / speedCount,
-      maxSpeed: maxSpeed,
-      storedTime: time,
-      currentDate: formattedDate,
-      currentTime: formattedTime,
-    };
-
-    // Recupere a localização do AsyncStorage
+  // Função para recuperar a localização de segundo plano
+  const getBackgroundLocation = async () => {
     try {
       const value = await AsyncStorage.getItem("@localLocationData");
-      if (value !== null) {
-        infos.localizacaoEmSegundoPlano = JSON.parse(value);
-      }
+      return value ? JSON.parse(value) : null;
     } catch (error) {
       console.error(error);
     }
+  };
 
+  // Função para salvar as informações no banco de dados
+  const saveInfosToDatabase = async (infos) => {
     // Identificador de Usuario
     const userUID = auth.currentUser.uid;
 
     try {
-      // Obtenha uma referência para o banco de dados
+      // Obtendo referência para o banco de dados
       const db = getDatabase();
-      // Referência para o local no banco de dados onde você deseja salvar suas informações
+
+      // Referência para o local no banco de dados vai salvar as informações
       const dbRef = ref(db, "infosSalvas/" + userUID);
 
       // Adicionando as informações no Realtime Database
@@ -336,6 +322,31 @@ export const SpeedProvider = ({ children }) => {
       console.log("Erro ao salvar as informações", error.message);
       Alert.alert("Erro ao salvar as informações", "Tente novamente");
     }
+  };
+
+  // Função para salvarInfos
+  const savedInfos = async () => {
+    const { formattedDate, formattedTime } = formatDateTime();
+
+    // Salvando os dados
+    const infos = {
+      localizacao: {
+        latitude: location.latitude,
+        longitude: location.longitude,
+      },
+      localizacaoFinal: finalLocation,
+      storedDistance: distance,
+      storedSpeed: speed,
+      averageSpeed: speedSum / speedCount,
+      maxSpeed: maxSpeed,
+      storedTime: time,
+      currentDate: formattedDate,
+      currentTime: formattedTime,
+    };
+
+    infos.localizacaoEmSegundoPlano = await getBackgroundLocation();
+
+    await saveInfosToDatabase(infos);
   };
 
   // Valor do contexto
@@ -347,7 +358,6 @@ export const SpeedProvider = ({ children }) => {
     finalLocation,
     myLocation,
     speed,
-
     distance,
     stop,
     pause,
@@ -382,7 +392,6 @@ export const SpeedProvider = ({ children }) => {
 
     // Funções
     startMonitoring,
-    stopMonitoring,
     pauseMonitoring,
     resumeMonitoring,
     resetMonitoring,
