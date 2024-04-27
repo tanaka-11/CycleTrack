@@ -78,48 +78,58 @@ export const SpeedProvider = ({ children }) => {
   const mapViewRef = useRef();
 
   // Função para obter a localização do usuário
-  const getLocation = async () => {
+  // Função para solicitar permissão de localização
+  const requestLocationPermission = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
       Alert.alert("Permissão negada");
-      return;
+      return false;
     }
+    return true;
+  };
 
+  // Função para obter a localização do usuário
+  const getUserLocation = async () => {
     try {
-      let currentLocation = await Location.getCurrentPositionAsync({});
-
-      setMyLocation(currentLocation);
-      setLocation({
-        latitude: currentLocation.coords.latitude,
-        longitude: currentLocation.coords.longitude,
-      });
-
-      if (mapViewRef.current) {
-        mapViewRef.current.animateToRegion({
-          latitude: currentLocation.coords.latitude,
-          longitude: currentLocation.coords.longitude,
-          latitudeDelta: 0.005,
-          longitudeDelta: 0.005,
-        });
-      }
+      return await Location.getCurrentPositionAsync({});
     } catch (error) {
       console.error("Erro ao obter a localização: ", error);
     }
+  };
+
+  // Função para atualizar a localização no estado e no mapa
+  const updateLocation = (location) => {
+    setMyLocation(location);
+    setLocation({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    });
+
+    if (mapViewRef.current) {
+      mapViewRef.current.animateToRegion({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.005,
+        longitudeDelta: 0.005,
+      });
+    }
+  };
+
+  // Função de permissão de localização e animação no mapa
+  const permissionLocationAndAnimated = async () => {
+    const permissionGranted = await requestLocationPermission();
+    if (!permissionGranted) return;
+
+    const location = await getUserLocation();
+    if (!location) return;
+
+    updateLocation(location);
   };
 
   // useEffect da permissão de localização e animação no mapa
   useEffect(() => {
     permissionLocationAndAnimated();
   }, []);
-
-  // Função de permissão de localização e animação no mapa
-  const permissionLocationAndAnimated = async () => {
-    try {
-      await getLocation();
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   // Função para começar o monitoramento
   const startMonitoring = async () => {
@@ -379,7 +389,6 @@ export const SpeedProvider = ({ children }) => {
     stopMonitoringAndStoreData,
     savedInfos,
     permissionLocationAndAnimated,
-    getLocation,
   };
 
   return (
