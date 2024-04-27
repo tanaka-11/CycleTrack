@@ -27,8 +27,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#3A2293"
-      },
-      "jsEngine": "hermes"
+      }
     },
     "extra": {
       "eas": {
