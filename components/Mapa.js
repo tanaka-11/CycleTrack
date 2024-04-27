@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { useEffect } from "react";
 
 // Dependecias
-import MapView, { Marker } from "react-native-maps";
+import MapView from "react-native-maps";
 
 // useContext
 import { useSpeedContext } from "./SpeedContext";
@@ -11,7 +11,6 @@ export default function Mapa() {
   const {
     // States
     myLocation,
-    initialLocation,
     mapViewRef,
     speed,
     running,
@@ -47,9 +46,7 @@ export default function Mapa() {
           region={myLocation}
           followsUserLocation={true}
           showsUserLocation={true}
-        >
-          {initialLocation && <Marker coordinate={initialLocation} />}
-        </MapView>
+        />
       </View>
     </>
   );
