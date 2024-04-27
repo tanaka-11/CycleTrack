@@ -37,7 +37,6 @@ export default function ControlButtons({
 
     // Funções
     startMonitoring,
-    stopMonitoring,
     pauseMonitoring,
     resumeMonitoring,
     resetMonitoring,
