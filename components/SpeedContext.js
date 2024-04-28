@@ -135,15 +135,6 @@ export const SpeedProvider = ({ children }) => {
     updateLocation(location);
   };
 
-  // useEffect da permissão de localização e animação no mapa
-  useEffect(() => {
-    try {
-      permissionLocationAndAnimated();
-    } catch (error) {
-      console.error("Erro: ", error);
-    }
-  }, []);
-
   // Função para calcular a distância entre dois pontos geográficos
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     // Raio da Terra

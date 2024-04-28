@@ -32,8 +32,6 @@ export default function ControlButtons({
     setPause,
     setRunning,
     setStop,
-    setDistance,
-    setSpeed,
 
     // Funções
     startMonitoring,
@@ -104,8 +102,6 @@ export default function ControlButtons({
           <Pressable
             style={[styles.button, styles.startButton]}
             onPress={() => {
-              // State para funcionar apos Salvar
-              setRunning(true);
               startStopwatch();
               startMonitoring();
             }}
@@ -126,10 +122,6 @@ export default function ControlButtons({
                 setRunning(false);
                 setTime({ hours: 0, minutes: 0, seconds: 0 });
 
-                // State da Localização
-                setSpeed(0);
-                setDistance(0);
-
                 // Função
                 resetMonitoring();
               }}
@@ -146,10 +138,6 @@ export default function ControlButtons({
                 setPause(false);
                 setRunning(false);
                 setTime({ hours: 0, minutes: 0, seconds: 0 });
-
-                // State da Localização
-                setSpeed(0);
-                setDistance(0);
 
                 // Alerta de operação bem sucedida
                 Vibration.vibrate();

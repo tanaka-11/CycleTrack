@@ -25,6 +25,13 @@ export default function Stopwatch() {
   const intervalRef = useRef(null); // Referência para o intervalo do cronômetro
   const startTimeRef = useRef(0); // Referência para o tempo de início do cronômetro
 
+  // Função para formatar o cronometro
+  function formatTime(time) {
+    return `${time.hours.toString().padStart(2, "0")}:${time.minutes
+      .toString()
+      .padStart(2, "0")}:${time.seconds.toString().padStart(2, "0")}`;
+  }
+
   // Função para iniciar o cronômetro
   const startStopwatch = () => {
     // Calcular o tempo de início
@@ -113,27 +120,18 @@ export default function Stopwatch() {
 
   return (
     <>
-      <View style={styles.container}>
+      <View style={styles.mainContainer}>
         <Text style={styles.subHeader}>Passe seu tempo pedalando</Text>
 
-        {/* Cronometro */}
-        <View style={styles.sessaoCentralizar}>
-          <View style={styles.bordaContador}>
-            <View style={styles.timeText}>
-              <Text style={styles.timeText2}>
-                {`${time.hours.toString().padStart(2, "0")}:${time.minutes
-                  .toString()
-                  .padStart(2, "0")}:${time.seconds
-                  .toString()
-                  .padStart(2, "0")}`}
-              </Text>
+        <View style={styles.centerSection}>
+          <View style={styles.timerBorder}>
+            <View style={styles.timerContainer}>
+              <Text style={styles.timerText}>{formatTime(time)}</Text>
             </View>
           </View>
 
-          {/* Componente do mapa para exibir a localização */}
           <Mapa mapViewRef={mapViewRef} />
 
-          {/* Componente para os botões de controle */}
           <ControlButtons
             pauseStopwatch={pauseStopwatch}
             startStopwatch={startStopwatch}
@@ -149,11 +147,11 @@ export default function Stopwatch() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     flex: 1,
   },
 
-  header: {
+  mainHeader: {
     fontSize: 30,
     color: "#412CAB",
   },
@@ -167,7 +165,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-  timeText: {
+  timerContainer: {
     backgroundColor: "#CFC3EE",
     width: 170,
     height: 170,
@@ -178,12 +176,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  timeText2: {
+  timerText: {
     fontSize: 38,
     color: "#3A2293",
   },
 
-  textoComum: {
+  regularText: {
     fontWeight: "bold",
     fontSize: 22,
     marginVertical: 20,
@@ -191,7 +189,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
 
-  bordaContador: {
+  timerBorder: {
     borderColor: "#5442D2",
     borderWidth: 2,
     borderRadius: 100,
@@ -199,7 +197,7 @@ const styles = StyleSheet.create({
     height: 175,
   },
 
-  sessaoTituloIcon: {
+  titleIconSection: {
     marginHorizontal: 20,
     marginVertical: 10,
     flexDirection: "row",
@@ -207,7 +205,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  sessaoCentralizar: {
+  centerSection: {
     alignItems: "center",
   },
 });
