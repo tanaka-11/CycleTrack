@@ -103,7 +103,18 @@ export const SpeedProvider = ({ children }) => {
   };
 
   // Função para atualizar a localização no estado e no mapa
-  const updateLocation = (location) => {
+  const updateAndAnimateLocation = async () => {
+    const permissionGranted = await requestLocationPermission();
+    if (!permissionGranted) {
+      Alert.alert(
+        "Erro",
+        "Permissão de localização não concedida. A permissão de localização é necessária para o funcionamento do aplicativo."
+      );
+      throw new Error("Permissão de localização não concedida");
+    }
+
+    const location = await getUserLocation();
+
     setMyLocation(location);
     setLocation({
       latitude: location.coords.latitude,
@@ -118,21 +129,6 @@ export const SpeedProvider = ({ children }) => {
         longitudeDelta: 0.005,
       });
     }
-  };
-
-  // Função de permissão de localização e animação no mapa
-  const permissionLocationAndAnimated = async () => {
-    const permissionGranted = await requestLocationPermission();
-    if (!permissionGranted) {
-      Alert.alert(
-        "Erro",
-        "Permissão de localização não concedida. A permissão de localização é necessária para o funcionamento do aplicativo."
-      );
-      throw new Error("Permissão de localização não concedida");
-    }
-
-    const location = await getUserLocation();
-    updateLocation(location);
   };
 
   // Função para calcular a distância entre dois pontos geográficos
@@ -402,7 +398,7 @@ export const SpeedProvider = ({ children }) => {
     resetMonitoring,
     stopMonitoringAndStoreData,
     savedInfos,
-    permissionLocationAndAnimated,
+    updateAndAnimateLocation,
   };
 
   return (

@@ -16,12 +16,12 @@ export default function Mapa() {
     distance,
 
     // Funções
-    permissionLocationAndAnimated,
+    updateAndAnimateLocation,
   } = useSpeedContext();
 
   // useEffect do getLocation
   useEffect(() => {
-    permissionLocationAndAnimated();
+    updateAndAnimateLocation();
   }, []);
 
   return (
