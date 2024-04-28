@@ -37,4 +37,5 @@ yarn-error.*
 # firebase
 firebaseConfig.js
 
-
+# app.config.js
+app.config.js
