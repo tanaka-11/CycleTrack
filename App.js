@@ -27,9 +27,17 @@ import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 
+// Safe Area, Gesture Handler and Screens
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { useGestureHandlerRef } from "react-native-gesture-handler";
+import { enableScreens } from "react-native-screens";
+
 // Criação dos Navigator
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
+// Enable Screens
+enableScreens();
 
 // Icones
 const homeIcon = () => <Ionicons name="home-outline" size={24} color="white" />;
@@ -83,64 +91,66 @@ export default function App() {
   }, []);
 
   return (
-    <SpeedProvider>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          {isUserLoggedIn ? (
-            <Stack.Screen name="MainApp">
-              {() => (
-                <Tab.Navigator
-                  screenOptions={{
-                    tabBarLabelStyle: { fontSize: 16, padding: 5 },
-                    tabBarInactiveTintColor: "#ffffff",
-                    tabBarActiveTintColor: "#dddddd",
-                    tabBarActiveBackgroundColor: "#271177",
-                    tabBarStyle: styles.tabBar,
-                    headerShown: false,
-                  }}
-                  initialRouteName="Home"
-                >
-                  <Tab.Screen
-                    name="Home"
-                    component={Home}
-                    options={{
-                      tabBarIcon: homeIcon,
+    <SafeAreaProvider>
+      <SpeedProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            {isUserLoggedIn ? (
+              <Stack.Screen name="MainApp">
+                {() => (
+                  <Tab.Navigator
+                    screenOptions={{
+                      tabBarLabelStyle: { fontSize: 16, padding: 5 },
+                      tabBarInactiveTintColor: "#ffffff",
+                      tabBarActiveTintColor: "#dddddd",
+                      tabBarActiveBackgroundColor: "#271177",
+                      tabBarStyle: styles.tabBar,
+                      headerShown: false,
                     }}
-                  />
-                  <Tab.Screen
-                    name="Atividades"
-                    component={AtividadesStack}
-                    options={{
-                      tabBarIcon: atividadesIcon,
-                    }}
-                  />
-                  <Tab.Screen
-                    name="Pedalar"
-                    component={Play}
-                    options={{
-                      tabBarIcon: playIcon,
-                    }}
-                  />
-                  <Tab.Screen
-                    name="Perfil"
-                    component={Perfil}
-                    options={{
-                      tabBarIcon: perfilIcon,
-                    }}
-                  />
-                </Tab.Navigator>
-              )}
-            </Stack.Screen>
-          ) : (
-            <Stack.Screen name="Auth" component={AuthStack} />
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SpeedProvider>
+                    initialRouteName="Home"
+                  >
+                    <Tab.Screen
+                      name="Home"
+                      component={Home}
+                      options={{
+                        tabBarIcon: homeIcon,
+                      }}
+                    />
+                    <Tab.Screen
+                      name="Atividades"
+                      component={AtividadesStack}
+                      options={{
+                        tabBarIcon: atividadesIcon,
+                      }}
+                    />
+                    <Tab.Screen
+                      name="Pedalar"
+                      component={Play}
+                      options={{
+                        tabBarIcon: playIcon,
+                      }}
+                    />
+                    <Tab.Screen
+                      name="Perfil"
+                      component={Perfil}
+                      options={{
+                        tabBarIcon: perfilIcon,
+                      }}
+                    />
+                  </Tab.Navigator>
+                )}
+              </Stack.Screen>
+            ) : (
+              <Stack.Screen name="Auth" component={AuthStack} />
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SpeedProvider>
+    </SafeAreaProvider>
   );
 }
 
