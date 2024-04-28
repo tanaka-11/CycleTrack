@@ -90,9 +90,15 @@ export const SpeedProvider = ({ children }) => {
   // Função para obter a localização do usuário
   const getUserLocation = async () => {
     try {
-      return await Location.getCurrentPositionAsync({});
+      const location = await Location.getCurrentPositionAsync({});
+      if (!location) {
+        throw new Error("Não foi possível obter a localização");
+      }
+      return location;
     } catch (error) {
       console.error("Erro ao obter a localização: ", error);
+      Alert.alert("Erro", "Não foi possível obter a localização.");
+      throw error;
     }
   };
 
@@ -117,17 +123,25 @@ export const SpeedProvider = ({ children }) => {
   // Função de permissão de localização e animação no mapa
   const permissionLocationAndAnimated = async () => {
     const permissionGranted = await requestLocationPermission();
-    if (!permissionGranted) return;
+    if (!permissionGranted) {
+      Alert.alert(
+        "Erro",
+        "Permissão de localização não concedida. A permissão de localização é necessária para o funcionamento do aplicativo."
+      );
+      throw new Error("Permissão de localização não concedida");
+    }
 
     const location = await getUserLocation();
-    if (!location) return;
-
     updateLocation(location);
   };
 
   // useEffect da permissão de localização e animação no mapa
   useEffect(() => {
-    permissionLocationAndAnimated();
+    try {
+      permissionLocationAndAnimated();
+    } catch (error) {
+      console.error("Erro: ", error);
+    }
   }, []);
 
   // Função para calcular a distância entre dois pontos geográficos
