@@ -13,7 +13,6 @@ export default function Mapa() {
     myLocation,
     mapViewRef,
     speed,
-    running,
     distance,
 
     // Funções
@@ -23,7 +22,7 @@ export default function Mapa() {
   // useEffect do getLocation
   useEffect(() => {
     permissionLocationAndAnimated();
-  }, [running]);
+  }, []);
 
   return (
     <>

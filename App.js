@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { StyleSheet } from "react-native";
+import * as SplashScreen from "expo-splash-screen";
 
 // Navigation
 import { NavigationContainer } from "@react-navigation/native";
@@ -27,9 +28,8 @@ import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 
-// Safe Area, Gesture Handler and Screens
+// Safe Area e Screens
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { useGestureHandlerRef } from "react-native-gesture-handler";
 import { enableScreens } from "react-native-screens";
 
 // Criação dos Navigator
@@ -88,6 +88,11 @@ export default function App() {
     });
 
     return unsubscribe; // Limpa a inscrição quando o componente for desmontado
+  }, []);
+
+  // useEffect para a splashscreen
+  useEffect(() => {
+    SplashScreen.hideAsync();
   }, []);
 
   return (
