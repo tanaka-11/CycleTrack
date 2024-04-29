@@ -88,8 +88,8 @@ export const SpeedProvider = ({ children }) => {
     }
   };
 
-  // Função para atualizar a localização no state e no mapa
-  const updateAndAnimateLocation = async () => {
+  // Função para atualizar a localização no state
+  const updateLocation = async () => {
     try {
       const permissionGranted = await requestLocationPermission();
       if (!permissionGranted) {
@@ -107,15 +107,6 @@ export const SpeedProvider = ({ children }) => {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       });
-
-      if (mapViewRef.current) {
-        mapViewRef.current.animateToRegion({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-          latitudeDelta: 0.003,
-          longitudeDelta: 0.003,
-        });
-      }
     } catch (error) {
       Alert.alert("Erro", "Tente Novamente");
       console.error("Erro ao atualizar localização:", error);
@@ -380,7 +371,7 @@ export const SpeedProvider = ({ children }) => {
     resetMonitoring,
     stopMonitoringAndStoreData,
     savedInfos,
-    updateAndAnimateLocation,
+    updateLocation,
   };
 
   return (

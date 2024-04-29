@@ -17,13 +17,21 @@ export default function Mapa() {
     running,
 
     // Função
-    updateAndAnimateLocation,
+    updateLocation,
   } = useSpeedContext();
 
   // useEffect da animação e localização do usuario
   useEffect(() => {
     (async () => {
-      await updateAndAnimateLocation();
+      await updateLocation();
+      if (mapViewRef.current && myLocation) {
+        mapViewRef.current.animateToRegion({
+          latitude: myLocation.coords.latitude,
+          longitude: myLocation.coords.longitude,
+          latitudeDelta: 0.003,
+          longitudeDelta: 0.003,
+        });
+      }
     })();
   }, [running]);
 
@@ -48,7 +56,6 @@ export default function Mapa() {
           region={myLocation}
           followsUserLocation={true}
           showsUserLocation={true}
-          onMapReady={async () => await updateAndAnimateLocation()}
         />
       </View>
     </>
