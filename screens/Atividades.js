@@ -6,9 +6,11 @@ import {
   View,
   ActivityIndicator,
   Pressable,
+  Image,
 } from "react-native";
 import { useState, useEffect } from "react";
 import { useSpeedContext } from "../components/SpeedContext";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Dependecias
 import MapView, { Marker, Polyline } from "react-native-maps";
@@ -80,6 +82,21 @@ export default function Atividades() {
                   }
                 >
                   <View key={index} style={styles.viewDados}>
+                    <View style={styles.topo}>
+                      <View style={styles.dadosUsuario}>
+                        <View style={styles.infos}>
+                          <Text style={styles.data}>
+                            <MaterialCommunityIcons
+                              name="bike"
+                              size={14}
+                              color="#3A2293"
+                            />{" "}
+                            {favorito.currentDate} às {favorito.currentTime}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+
                     <View style={styles.viewTexto}>
                       <Text style={styles.textoTitulo}>
                         Distancia:{" "}
@@ -162,17 +179,6 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
 
-  mapa: {
-    marginVertical: 15,
-    height: 300,
-    width: 300,
-  },
-
-  viewMapa: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
   textoSemAtividade: {
     fontSize: 24,
     textAlign: "center",
@@ -189,8 +195,9 @@ const styles = StyleSheet.create({
   },
 
   viewTexto: {
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
+    flexDirection: "row",
+    gap: 8,
+    marginTop: 8,
   },
 
   textoTitulo: {
@@ -203,5 +210,31 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#000",
     fontWeight: "400",
+  },
+
+  // Perfil
+  topo: {
+    marginTop: 4,
+  },
+
+  dadosUsuario: {
+    gap: 8,
+  },
+
+  data: {
+    fontSize: 16,
+    fontWeight: "400",
+  },
+
+  // Mapa
+  mapa: {
+    marginVertical: 15,
+    height: 300,
+    width: 300,
+  },
+
+  viewMapa: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

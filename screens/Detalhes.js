@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  //Perfil
+  // Perfil
   topo: {
     padding: 8,
     marginTop: 16,
