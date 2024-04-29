@@ -122,12 +122,16 @@ export const SpeedProvider = ({ children }) => {
     });
 
     if (mapViewRef.current) {
-      mapViewRef.current.animateToRegion({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
-      });
+      try {
+        mapViewRef.current.animateToRegion({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0.005,
+          longitudeDelta: 0.005,
+        });
+      } catch (error) {
+        console.error("Failed to animate map region:", error);
+      }
     }
   };
 
