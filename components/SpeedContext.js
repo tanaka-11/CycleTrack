@@ -118,8 +118,8 @@ export const SpeedProvider = ({ children }) => {
         mapViewRef.current.animateToRegion({
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
-          latitudeDelta: 0.005,
-          longitudeDelta: 0.005,
+          latitudeDelta: 0.003,
+          longitudeDelta: 0.003,
         });
       }
     } catch (error) {
@@ -251,18 +251,9 @@ export const SpeedProvider = ({ children }) => {
   // Função para pausar o monitoramento
   const pauseMonitoring = () => {
     setPause(true);
+    setSpeed(0);
     removeLocationSubscription();
   };
-
-  // Função para resetar a velocidade quando pausado
-  const resetSpeedWhenPaused = () => {
-    if (pause && !running) {
-      setSpeed(0);
-    }
-  };
-
-  // useEffect do pause
-  useEffect(resetSpeedWhenPaused, [pause, running]);
 
   // Função para retomar o monitoramento
   const resumeMonitoring = async () => {
