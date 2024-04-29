@@ -15,7 +15,7 @@ export default function Mapa() {
     speed,
     distance,
 
-    // Funções
+    //
     updateAndAnimateLocation,
   } = useSpeedContext();
 
@@ -45,6 +45,7 @@ export default function Mapa() {
           region={myLocation}
           followsUserLocation={true}
           showsUserLocation={true}
+          onMapReady={() => updateAndAnimateLocation()}
         />
       </View>
     </>
