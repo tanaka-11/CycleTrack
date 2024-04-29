@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 // Dependecias
 import MapView from "react-native-maps";
