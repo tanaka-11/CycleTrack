@@ -80,54 +80,51 @@ export const SpeedProvider = ({ children }) => {
   // Função para solicitar permissão de localização
   const requestLocationPermission = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      Alert.alert("Permissão negada");
-      return false;
-    }
-    return true;
+    return status === "granted";
   };
 
   // Função para obter a localização do usuário
   const getUserLocation = async () => {
     try {
-      const location = await Location.getCurrentPositionAsync({});
-      return location;
+      return await Location.getCurrentPositionAsync({});
     } catch (error) {
       console.error("Erro ao obter a localização: ", error);
       Alert.alert("Erro", "Não foi possível obter a localização.");
-      throw error;
+      return null;
     }
   };
 
-  // Função para atualizar a localização no estado e no mapa
+  // Função para atualizar a localização no state e no mapa
   const updateAndAnimateLocation = async () => {
-    const permissionGranted = await requestLocationPermission();
-    if (!permissionGranted) {
-      Alert.alert(
-        "Erro",
-        "Permissão de localização não concedida. A permissão de localização é necessária para o funcionamento do aplicativo."
-      );
-    }
+    try {
+      const permissionGranted = await requestLocationPermission();
+      if (!permissionGranted) {
+        Alert.alert(
+          "Erro",
+          "Permissão de localização não concedida. A permissão de localização é necessária para o funcionamento do aplicativo."
+        );
+        return;
+      }
 
-    const location = await getUserLocation();
+      const location = await getUserLocation();
 
-    setMyLocation(location);
-    setLocation({
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-    });
+      setMyLocation(location);
+      setLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
 
-    if (mapViewRef.current) {
-      try {
+      if (mapViewRef.current) {
         mapViewRef.current.animateToRegion({
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
           latitudeDelta: 0.005,
           longitudeDelta: 0.005,
         });
-      } catch (error) {
-        console.error("Falha para animar o mapa:", error);
       }
+    } catch (error) {
+      Alert.alert("Erro", "Tente Novamente");
+      console.error("Erro ao atualizar localização:", error);
     }
   };
 
