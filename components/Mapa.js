@@ -14,6 +14,7 @@ export default function Mapa() {
     mapViewRef,
     speed,
     distance,
+    running,
 
     //
     updateAndAnimateLocation,
@@ -22,7 +23,7 @@ export default function Mapa() {
   // useEffect da animação e localização do usuario
   useEffect(() => {
     updateAndAnimateLocation();
-  }, []);
+  }, [running]);
 
   return (
     <>
