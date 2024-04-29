@@ -91,9 +91,6 @@ export const SpeedProvider = ({ children }) => {
   const getUserLocation = async () => {
     try {
       const location = await Location.getCurrentPositionAsync({});
-      if (!location) {
-        throw new Error("Não foi possível obter a localização");
-      }
       return location;
     } catch (error) {
       console.error("Erro ao obter a localização: ", error);
@@ -110,7 +107,6 @@ export const SpeedProvider = ({ children }) => {
         "Erro",
         "Permissão de localização não concedida. A permissão de localização é necessária para o funcionamento do aplicativo."
       );
-      throw new Error("Permissão de localização não concedida");
     }
 
     const location = await getUserLocation();
@@ -130,7 +126,7 @@ export const SpeedProvider = ({ children }) => {
           longitudeDelta: 0.005,
         });
       } catch (error) {
-        console.error("Failed to animate map region:", error);
+        console.error("Falha para animar o mapa:", error);
       }
     }
   };

@@ -19,7 +19,7 @@ export default function Mapa() {
     updateAndAnimateLocation,
   } = useSpeedContext();
 
-  // useEffect do getLocation
+  // useEffect da animação e localização do usuario
   useEffect(() => {
     updateAndAnimateLocation();
   }, []);
