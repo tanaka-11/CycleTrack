@@ -16,13 +16,15 @@ export default function Mapa() {
     distance,
     running,
 
-    //
+    // Função
     updateAndAnimateLocation,
   } = useSpeedContext();
 
   // useEffect da animação e localização do usuario
   useEffect(() => {
-    updateAndAnimateLocation();
+    (async () => {
+      await updateAndAnimateLocation();
+    })();
   }, [running]);
 
   return (
