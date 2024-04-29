@@ -48,7 +48,7 @@ export default function Mapa() {
           region={myLocation}
           followsUserLocation={true}
           showsUserLocation={true}
-          onMapReady={() => updateAndAnimateLocation()}
+          onMapReady={async () => await updateAndAnimateLocation()}
         />
       </View>
     </>
