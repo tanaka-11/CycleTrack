@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useRef,
-} from "react";
+import React, { createContext, useContext, useState, useRef } from "react";
 import { Alert } from "react-native";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
