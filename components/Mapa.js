@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 // Dependecias
 import MapView from "react-native-maps";
@@ -14,16 +14,30 @@ export default function Mapa() {
     speed,
     distance,
     running,
-    mapViewRef,
 
     // Função
-    updateLocationAndAnimatedMap,
+    updateLocation,
   } = useSpeedContext();
+
+  const mapViewRef = useRef(null);
 
   // useEffect da animação e localização do usuario
   useEffect(() => {
-    updateLocationAndAnimatedMap();
+    (async () => {
+      await updateLocation();
+    })();
   }, [running]);
+
+  useEffect(() => {
+    if (mapViewRef.current && myLocation) {
+      mapViewRef.current.animateToRegion({
+        latitude: myLocation.coords.latitude,
+        longitude: myLocation.coords.longitude,
+        latitudeDelta: 0.003,
+        longitudeDelta: 0.003,
+      });
+    }
+  }, [myLocation]);
 
   return (
     <>
