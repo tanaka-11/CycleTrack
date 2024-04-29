@@ -30,12 +30,15 @@ export default function Mapa() {
 
   useEffect(() => {
     if (mapViewRef.current && myLocation) {
-      mapViewRef.current.animateToRegion({
-        latitude: myLocation.coords.latitude,
-        longitude: myLocation.coords.longitude,
-        latitudeDelta: 0.003,
-        longitudeDelta: 0.003,
-      });
+      mapViewRef.current.animateToRegion(
+        {
+          latitude: myLocation.coords.latitude,
+          longitude: myLocation.coords.longitude,
+          latitudeDelta: 0.003,
+          longitudeDelta: 0.003,
+        },
+        300
+      );
     }
   }, [myLocation]);
 
