@@ -42,7 +42,6 @@ export default function Mapa() {
     }
   }, [myLocation]);
 
-  console.log(distance);
   return (
     <>
       <View style={styles.viewDados}>
