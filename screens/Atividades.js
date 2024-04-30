@@ -125,8 +125,8 @@ export default function Atividades() {
                         initialRegion={{
                           latitude: favorito.localizacao.latitude,
                           longitude: favorito.localizacao.longitude,
-                          latitudeDelta: 0.005,
-                          longitudeDelta: 0.005,
+                          latitudeDelta: 0.01,
+                          longitudeDelta: 0.01,
                         }}
                       >
                         <Marker
@@ -142,10 +142,12 @@ export default function Atividades() {
                         />
 
                         <Polyline
-                          coordinates={[
-                            favorito.localizacao,
-                            favorito.localizacaoFinal,
-                          ]}
+                          coordinates={favorito.storedLocations.map(
+                            (location) => ({
+                              latitude: location.coords.latitude,
+                              longitude: location.coords.longitude,
+                            })
+                          )}
                           strokeWidth={5}
                           strokeColor="#3A2293"
                         />

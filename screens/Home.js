@@ -215,8 +215,8 @@ export default function Home({ navigation }) {
                       longitude:
                         listaFavoritos[listaFavoritos.length - 1].localizacao
                           .longitude,
-                      latitudeDelta: 0.005,
-                      longitudeDelta: 0.005,
+                      latitudeDelta: 0.01,
+                      longitudeDelta: 0.01,
                     }}
                   >
                     <Marker
@@ -237,11 +237,12 @@ export default function Home({ navigation }) {
                     />
 
                     <Polyline
-                      coordinates={[
-                        listaFavoritos[listaFavoritos.length - 1].localizacao,
-                        listaFavoritos[listaFavoritos.length - 1]
-                          .localizacaoFinal,
-                      ]}
+                      coordinates={listaFavoritos[
+                        listaFavoritos.length - 1
+                      ].storedLocations.map((location) => ({
+                        latitude: location.coords.latitude,
+                        longitude: location.coords.longitude,
+                      }))}
                       strokeWidth={5}
                       strokeColor="#3A2293"
                     />

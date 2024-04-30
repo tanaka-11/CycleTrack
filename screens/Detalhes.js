@@ -92,8 +92,8 @@ export default function Detalhes() {
               initialRegion={{
                 latitude: atividade.localizacao.latitude,
                 longitude: atividade.localizacao.longitude,
-                latitudeDelta: 0.005,
-                longitudeDelta: 0.005,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
               }}
             >
               <Marker
@@ -109,10 +109,10 @@ export default function Detalhes() {
               />
 
               <Polyline
-                coordinates={[
-                  atividade.localizacao,
-                  atividade.localizacaoFinal,
-                ]}
+                coordinates={atividade.storedLocations.map((location) => ({
+                  latitude: location.coords.latitude,
+                  longitude: location.coords.longitude,
+                }))}
                 strokeWidth={5}
                 strokeColor="#3A2293"
               />
