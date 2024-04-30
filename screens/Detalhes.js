@@ -114,6 +114,7 @@ export default function Detalhes() {
                   atividade.localizacaoFinal,
                 ]}
                 strokeWidth={5}
+                strokeColor="#3A2293"
               />
             </MapView>
           </View>

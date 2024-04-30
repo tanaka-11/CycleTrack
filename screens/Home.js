@@ -243,6 +243,7 @@ export default function Home({ navigation }) {
                           .localizacaoFinal,
                       ]}
                       strokeWidth={5}
+                      strokeColor="#3A2293"
                     />
                   </MapView>
                 </View>

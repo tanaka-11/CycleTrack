@@ -147,6 +147,7 @@ export default function Atividades() {
                             favorito.localizacaoFinal,
                           ]}
                           strokeWidth={5}
+                          strokeColor="#3A2293"
                         />
                       </MapView>
                     </View>
