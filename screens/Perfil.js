@@ -104,7 +104,7 @@ export default function Perfil() {
   };
 
   // Função atualizar foto perfil
-  const atualizarFotoPerfil = async (fotoPerfil) => {
+  const atualizarFotoPerfil = async (uid, fotoPerfil) => {
     try {
       const { uri } = await FileSystem.getInfoAsync(fotoPerfil); // Obtém o URI da imagem
 
