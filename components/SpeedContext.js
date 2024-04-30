@@ -202,10 +202,6 @@ export const SpeedProvider = ({ children }) => {
     }
   };
 
-  // Constantes limite de velocidade e distancia minima
-  const MIN_SPEED = 0.5;
-  const MIN_CHANGE_IN_POSITION = 0.01;
-
   const updatePosition = (position) => {
     const currentSpeed = position.coords.speed || 0;
     setSpeed(currentSpeed);
@@ -217,22 +213,21 @@ export const SpeedProvider = ({ children }) => {
     setSpeedSum((prevSpeedSum) => prevSpeedSum + currentSpeed);
     setSpeedCount((prevSpeedCount) => prevSpeedCount + 1);
 
-    // Calcula a distância apenas se a velocidade for maior que o limite
-    if (myLocation && currentSpeed > MIN_SPEED) {
+    // Calcula a distância e atualiza o state 'distance'
+    if (myLocation) {
       const newDistance = calculateDistance(
         myLocation.coords.latitude,
         myLocation.coords.longitude,
         position.coords.latitude,
         position.coords.longitude
       );
-
-      // Atualiza o state distancia apenas for maior que o limite
-      if (newDistance > MIN_CHANGE_IN_POSITION) {
-        setDistance((prevDistance) => prevDistance + newDistance);
-      }
+      setDistance((prevDistance) => prevDistance + newDistance);
     }
 
-    // Atualiza a localização atual
+    // Adicione a localização atual ao array de localizações
+    setLocations((prevLocations) => [...prevLocations, position]);
+
+    // Atualiza a localização anterior com a localização atual
     setMyLocation(position);
   };
 
