@@ -134,7 +134,16 @@ export default function Cadastro({ navigation }) {
 
     try {
       const user = await createUser(email, senha);
-      await updateUserProfile(user, nome, downloadURL);
+      if (imagem) {
+        const blob = await getImageBlob(imagem);
+        const imageName = imagem.substring(imagem.lastIndexOf("/") + 1);
+        const storageRef = ref(storage, imageName);
+        await uploadBytes(storageRef, blob);
+        const fotoURL = await getDownloadURL(storageRef);
+        await updateProfile(user, { displayName: nome, photoURL: fotoURL });
+      } else {
+        await updateProfile(user, { displayName: nome });
+      }
       navigation.navigate("Home", {
         displayName: user.displayName,
         photoURL: user.photoURL,

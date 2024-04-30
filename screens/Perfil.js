@@ -28,6 +28,7 @@ export default function Perfil() {
   const storage = getStorage();
   const [carregandoImagem, setCarregandoImagem] = useState(false);
   const [atualizarFoto, setAtualizarFoto] = useState(false);
+  const [salvandoPerfil, setSalvandoPerfil] = useState(false);
 
   // UseEffect para mostrar os dados do usuario ou vazio
   useEffect(() => {
@@ -45,6 +46,7 @@ export default function Perfil() {
 
   // Função salvar perfil
   const salvarPerfil = async () => {
+    setSalvandoPerfil(true);
     try {
       const usuarioAtual = auth.currentUser;
       const uid = auth.currentUser.uid;
@@ -53,7 +55,7 @@ export default function Perfil() {
         throw new Error("Usuário não autenticado.");
       }
 
-      // Chamando a função para tualizar a foto de perfil
+      // Chamando a função para atualizar a foto de perfil
       if (atualizarFoto) {
         await atualizarFotoPerfil(uid, fotoPerfil);
       }
@@ -63,6 +65,10 @@ export default function Perfil() {
 
       //  Chamando a função para Atualizar o nome do usuário
       await atualizarNome(nome);
+
+      Alert.alert("Perfil atualizado com sucesso!");
+      Vibration.vibrate();
+      setSalvandoPerfil(false);
     } catch (error) {
       console.error("Erro ao atualizar perfil:", error);
       Alert.alert(
@@ -123,6 +129,9 @@ export default function Perfil() {
 
       // Atualizar o nome do usuário com parametro que será state fotoUrl
       await updateProfile(auth.currentUser, { photoURL: fotoURL });
+
+      // Recarregar os dados do usuário
+      carregarUsuarioAtual();
     } catch (error) {
       console.error("Erro ao atualizar foto de perfil:", error);
       throw error;
@@ -180,15 +189,15 @@ export default function Perfil() {
           />
         </View>
 
-        <Pressable
-          style={styles.botao}
-          onPress={() => {
-            salvarPerfil();
-            Alert.alert("Perfil atualizado com sucesso!");
-            Vibration.vibrate();
-          }}
-        >
-          <Text style={styles.botaoText}>Salvar Alterações</Text>
+        <Pressable style={styles.botao} onPress={salvarPerfil}>
+          {salvandoPerfil ? (
+            <ActivityIndicator
+              color="#3D2498"
+              style={styles.loadingIndicator}
+            />
+          ) : (
+            <Text style={styles.botaoText}>Salvar Alterações</Text>
+          )}
         </Pressable>
 
         <Pressable
