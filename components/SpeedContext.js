@@ -332,7 +332,7 @@ export const SpeedProvider = ({ children }) => {
       },
       localizacaoFinal: finalLocation,
       storedLocations: locations,
-      storedDistance: distance / 1000,
+      storedDistance: distance,
       storedSpeed: speed,
       averageSpeed: speedSum / speedCount,
       maxSpeed: maxSpeed,

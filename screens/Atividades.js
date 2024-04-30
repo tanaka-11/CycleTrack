@@ -100,7 +100,7 @@ export default function Atividades() {
                       <Text style={styles.textoTitulo}>
                         Distancia:{" "}
                         <Text style={styles.textoCorpo}>
-                          {favorito.storedDistance.toFixed(2)} km
+                          {(favorito.storedDistance / 1000).toFixed(2)} km
                         </Text>
                       </Text>
 

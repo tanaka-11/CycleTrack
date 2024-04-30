@@ -123,7 +123,7 @@ export default function Detalhes() {
             <View style={styles.viewItem}>
               <Text style={styles.tituloTexto}>Distância</Text>
               <Text style={styles.corpoTexto}>
-                {atividade.storedDistance.toFixed(2)} km
+                {(atividade.storedDistance / 1000).toFixed(2)} km
               </Text>
             </View>
 
@@ -138,14 +138,14 @@ export default function Detalhes() {
             <View style={styles.viewItem}>
               <Text style={styles.tituloTexto}>Velocidade Média</Text>
               <Text style={styles.corpoTexto}>
-                {atividade.averageSpeed.toFixed(2)} km/s
+                {atividade.averageSpeed.toFixed(2)} km/h
               </Text>
             </View>
 
             <View style={styles.viewItem}>
               <Text style={styles.tituloTexto}>Velocidade Máxima:</Text>
               <Text style={styles.corpoTexto}>
-                {atividade.maxSpeed.toFixed(2)} km/s
+                {atividade.maxSpeed.toFixed(2)} km/h
               </Text>
             </View>
           </View>
