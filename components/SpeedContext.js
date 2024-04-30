@@ -57,7 +57,7 @@ export const SpeedProvider = ({ children }) => {
   const [myLocation, setMyLocation] = useState();
   const [currentLocation, setCurrentLocation] = useState(null);
   const [location, setLocation] = useState();
-  const [initialLocation, setInitialLocation] = useState();
+  const [initialLocation, setInitialLocation] = useState(null);
   const [finalLocation, setFinalLocation] = useState(null);
 
   // Monitoramento da distancia e velocidade
@@ -152,7 +152,18 @@ export const SpeedProvider = ({ children }) => {
           distanceInterval: 0,
           activityType: Location.ActivityType.Fitness,
         },
-        updatePosition
+        (position) => {
+          // Armazenar a posição inicial
+          if (!initialLocation) {
+            setInitialLocation({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+          }
+
+          // Atualizar a posição
+          updatePosition(position);
+        }
       );
 
       // Remove o monitoramento anterior de velocidade atraves do "subscription".
@@ -211,11 +222,6 @@ export const SpeedProvider = ({ children }) => {
       );
       setDistance((prevDistance) => prevDistance + newDistance);
     }
-    // Atualiza a localização final
-    setFinalLocation({
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude,
-    });
   };
 
   // Função para resetar o monitoramento
@@ -252,6 +258,12 @@ export const SpeedProvider = ({ children }) => {
   const stopMonitoringAndStoreData = () => {
     // Pausar o monitoramento
     removeLocationSubscription();
+
+    // Atualiza a localização final
+    setFinalLocation({
+      latitude: myLocation.coords.latitude,
+      longitude: myLocation.coords.longitude,
+    });
 
     // Armazenar os dados atuais
     setStoredSpeed(speed);
