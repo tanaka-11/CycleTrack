@@ -6,7 +6,6 @@ import {
   View,
   ActivityIndicator,
   Pressable,
-  Image,
 } from "react-native";
 import { useState, useEffect } from "react";
 import { useSpeedContext } from "../components/SpeedContext";
