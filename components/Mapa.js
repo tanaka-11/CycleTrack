@@ -10,19 +10,37 @@ import { useSpeedContext } from "./SpeedContext";
 export default function Mapa() {
   const {
     // States
+    myLocation,
     speed,
     distance,
     running,
-    mapViewRef,
 
     // Função
-    updateLocationAndAnimatedMap,
+    updateLocation,
   } = useSpeedContext();
+
+  const mapViewRef = useRef(null);
 
   // useEffect da animação e localização do usuario
   useEffect(() => {
-    updateLocationAndAnimatedMap();
+    (async () => {
+      await updateLocation();
+    })();
   }, [running]);
+
+  useEffect(() => {
+    if (mapViewRef.current && myLocation) {
+      mapViewRef.current.animateToRegion(
+        {
+          latitude: myLocation.coords.latitude,
+          longitude: myLocation.coords.longitude,
+          latitudeDelta: 0.003,
+          longitudeDelta: 0.003,
+        },
+        300
+      );
+    }
+  }, [myLocation]);
 
   return (
     <>
