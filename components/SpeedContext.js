@@ -109,15 +109,12 @@ export const SpeedProvider = ({ children }) => {
       });
 
       if (mapViewRef.current && location) {
-        mapViewRef.current.animateToRegion(
-          {
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: 0.003,
-            longitudeDelta: 0.003,
-          },
-          300
-        );
+        mapViewRef.current.animateToRegion({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0.003,
+          longitudeDelta: 0.003,
+        });
       }
     } catch (error) {
       Alert.alert("Erro", "Tente Novamente");
