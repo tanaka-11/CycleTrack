@@ -59,11 +59,13 @@ export const SpeedProvider = ({ children }) => {
   const [location, setLocation] = useState();
   const [initialLocation, setInitialLocation] = useState(null);
   const [finalLocation, setFinalLocation] = useState(null);
+  const [locations, setLocations] = useState([]);
 
   // Monitoramento da distancia e velocidade
   const [locationSubscription, setLocationSubscription] = useState();
   const [storedSpeed, setStoredSpeed] = useState(0);
   const [storedDistance, setStoredDistance] = useState(0);
+  const [storedLocations, setStoredLocations] = useState([]);
   const [maxSpeed, setMaxSpeed] = useState(0);
   const [speedSum, setSpeedSum] = useState(0);
   const [speedCount, setSpeedCount] = useState(0);
@@ -115,8 +117,8 @@ export const SpeedProvider = ({ children }) => {
 
   // Função para calcular a distância entre dois pontos geográficos
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    // Raio da Terra
-    const R = 6371;
+    // Raio da Terra em metros
+    const R = 6371000;
 
     // Distancia da Latitude
     const dLat = (lat2 - lat1) * (Math.PI / 180);
@@ -200,7 +202,6 @@ export const SpeedProvider = ({ children }) => {
     }
   };
 
-  // Função para atualizar a posição
   const updatePosition = (position) => {
     const currentSpeed = position.coords.speed || 0;
     setSpeed(currentSpeed);
@@ -222,6 +223,12 @@ export const SpeedProvider = ({ children }) => {
       );
       setDistance((prevDistance) => prevDistance + newDistance);
     }
+
+    // Adicione a localização atual ao array de localizações
+    setLocations((prevLocations) => [...prevLocations, position]);
+
+    // Atualiza a localização anterior com a localização atual
+    setMyLocation(position);
   };
 
   // Função para resetar o monitoramento
@@ -268,6 +275,9 @@ export const SpeedProvider = ({ children }) => {
     // Armazenar os dados atuais
     setStoredSpeed(speed);
     setStoredDistance(distance);
+
+    // Armazenar todas as localizações
+    setStoredLocations(locations);
   };
 
   // Função para formatar a data e a hora atual
@@ -321,6 +331,7 @@ export const SpeedProvider = ({ children }) => {
         longitude: location.longitude,
       },
       localizacaoFinal: finalLocation,
+      storedLocations: locations,
       storedDistance: distance / 1000,
       storedSpeed: speed,
       averageSpeed: speedSum / speedCount,
@@ -352,6 +363,7 @@ export const SpeedProvider = ({ children }) => {
     mapViewRef,
     storedSpeed,
     storedDistance,
+    storedLocations,
     data,
     time,
     currentDate,
@@ -371,6 +383,7 @@ export const SpeedProvider = ({ children }) => {
     setLocationSubscription,
     setStoredSpeed,
     setStoredDistance,
+    setStoredLocations,
     setData,
     setTime,
     setCurrentDate,
