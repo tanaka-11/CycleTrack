@@ -60,7 +60,6 @@ export default function Mapa() {
           style={styles.mapa}
           mapType="standard"
           ref={mapViewRef}
-          region={myLocation}
           followsUserLocation={true}
           showsUserLocation={true}
         />
