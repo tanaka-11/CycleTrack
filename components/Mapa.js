@@ -42,12 +42,6 @@ export default function Mapa() {
     }
   }, [myLocation]);
 
-  // console.log("distancia");
-  // console.log(distance);
-  // console.log("---------------------------");
-  console.log("velocidade");
-  console.log(speed);
-  console.log("---------------------------");
   return (
     <>
       <View style={styles.viewDados}>
