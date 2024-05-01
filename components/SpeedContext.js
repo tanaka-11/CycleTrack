@@ -202,41 +202,36 @@ export const SpeedProvider = ({ children }) => {
     }
   };
 
-  // Constantes limite de velocidade e distancia minima
-  const MIN_SPEED = 0.05;
-  const MIN_CHANGE_IN_POSITION = 0.5;
-
+  // Função para atualizar velocidade e distancia
   const updatePosition = (position) => {
-    const currentSpeed = position.coords.speed || 0;
+    const currentSpeedMPS = position.coords.speed || 0; // velocidade em m/s
+    const currentSpeed = currentSpeedMPS * 3.6; // velocidade em km/h
 
-    // Verifica se a velocidade atual é maior que a velocidade mínima
-    if (currentSpeed > MIN_SPEED) {
-      setSpeed(currentSpeed);
+    setSpeed(currentSpeed); // atualiza a velocidade em km/h
 
-      setSpeedSum((prevSpeedSum) => prevSpeedSum + currentSpeed);
-      setSpeedCount((prevSpeedCount) => prevSpeedCount + 1);
+    // Atualiza a velocidade máxima
+    setMaxSpeed((prevMaxSpeed) => Math.max(prevMaxSpeed, currentSpeed));
 
-      // Calcula a distância e atualiza o state 'distance'
-      if (myLocation) {
-        const newDistance = calculateDistance(
-          myLocation.coords.latitude,
-          myLocation.coords.longitude,
-          position.coords.latitude,
-          position.coords.longitude
-        );
+    // Atualiza a soma total das velocidades e a contagem
+    setSpeedSum((prevSpeedSum) => prevSpeedSum + currentSpeed);
+    setSpeedCount((prevSpeedCount) => prevSpeedCount + 1);
 
-        // Atualiza o state distancia apenas for maior que o limite
-        if (newDistance > MIN_CHANGE_IN_POSITION) {
-          setDistance((prevDistance) => prevDistance + newDistance);
-        }
-      }
-
-      // Adicione a localização atual ao array de localizações
-      setLocations((prevLocations) => [...prevLocations, position]);
-
-      // Atualiza a localização anterior com a localização atual
-      setMyLocation(position);
+    // Calcula a distância e atualiza o state 'distance'
+    if (myLocation && currentSpeed > 0.48) {
+      const newDistance = calculateDistance(
+        myLocation.coords.latitude,
+        myLocation.coords.longitude,
+        position.coords.latitude,
+        position.coords.longitude
+      );
+      setDistance((prevDistance) => prevDistance + newDistance);
     }
+
+    // Adicione a localização atual ao array de localizações
+    setLocations((prevLocations) => [...prevLocations, position]);
+
+    // Atualiza a localização anterior com a localização atual
+    setMyLocation(position);
   };
 
   // Função para resetar o monitoramento
