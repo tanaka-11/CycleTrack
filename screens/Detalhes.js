@@ -123,7 +123,7 @@ export default function Detalhes() {
             <View style={styles.viewItem}>
               <Text style={styles.tituloTexto}>Distância</Text>
               <Text style={styles.corpoTexto}>
-                {(atividade.storedDistance / 1000).toFixed(2)} km
+                {atividade.storedDistance.toFixed(2)} km
               </Text>
             </View>
 

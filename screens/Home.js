@@ -148,9 +148,7 @@ export default function Home({ navigation }) {
           </View>
           <View style={styles.viewAtividade}>
             <Text style={styles.viewTitulo}>Distancia</Text>
-            <Text style={styles.textoDados}>
-              {(totalDistance / 1000).toFixed(2)} km
-            </Text>
+            <Text style={styles.textoDados}>{totalDistance.toFixed(2)} km</Text>
           </View>
         </View>
 
@@ -173,10 +171,9 @@ export default function Home({ navigation }) {
                   <View style={styles.viewDistancia}>
                     <Text style={styles.viewTitulo}>Distancia</Text>
                     <Text style={styles.textoDados}>
-                      {(
-                        listaFavoritos[listaFavoritos.length - 1]
-                          .storedDistance / 1000
-                      ).toFixed(2)}{" "}
+                      {listaFavoritos[
+                        listaFavoritos.length - 1
+                      ].storedDistance.toFixed(2)}{" "}
                       km
                     </Text>
                   </View>

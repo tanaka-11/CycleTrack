@@ -141,7 +141,7 @@ export const SpeedProvider = ({ children }) => {
     const distance = R * c;
 
     // Retornando a const Distancia
-    return distance;
+    return distance / 10;
   };
 
   // Função para iniciar o monitoramento
