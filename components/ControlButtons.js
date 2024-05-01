@@ -65,7 +65,7 @@ export default function ControlButtons({
                 style={[styles.button, styles.stopButton]}
                 onPress={() => {
                   stopAll();
-                  setTimeout(stopMonitoringAndStoreData, 5000);
+                  stopMonitoringAndStoreData();
                 }}
               >
                 <Text style={styles.buttonTextStop}>Parar</Text>
