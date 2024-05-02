@@ -144,6 +144,42 @@ export const SpeedProvider = ({ children }) => {
     return distance / 10;
   };
 
+  // Função para atualizar velocidade e distancia
+  const updatePosition = (position) => {
+    // Pega a velocidade atual do objeto em metros por segundo (m/s)
+    const currentSpeedMPS = position.coords.speed || 0;
+
+    // Converte a velocidade de m/s para km/h multiplicando por 3.6
+    const currentSpeed = currentSpeedMPS * 3.6;
+
+    // Atualiza o estado 'speed' com a velocidade atual em km/h
+    setSpeed(currentSpeed);
+
+    // Atualiza o estado 'maxSpeed' com a maior velocidade registrada até agora
+    setMaxSpeed((prevMaxSpeed) => Math.max(prevMaxSpeed, currentSpeed));
+
+    // Atualiza a soma total das velocidades registradas e a contagem de velocidades
+    setSpeedSum((prevSpeedSum) => prevSpeedSum + currentSpeed);
+    setSpeedCount((prevSpeedCount) => prevSpeedCount + 1);
+
+    // Se a localização anterior existir e a velocidade atual for maior que 0.51 km/h, calcula a distância entre a localização anterior e a atual e adiciona ao estado 'distance'
+    if (myLocation && currentSpeed > 0.51) {
+      const newDistance = calculateDistance(
+        myLocation.coords.latitude,
+        myLocation.coords.longitude,
+        position.coords.latitude,
+        position.coords.longitude
+      );
+      setDistance((prevDistance) => prevDistance + newDistance);
+    }
+
+    // Adiciona a localização atual ao array de localizações
+    setLocations((prevLocations) => [...prevLocations, position]);
+
+    // Atualiza a localização anterior com a localização atual
+    setMyLocation(position);
+  };
+
   // Função para iniciar o monitoramento
   const startMonitoring = async () => {
     try {
@@ -200,42 +236,6 @@ export const SpeedProvider = ({ children }) => {
     } else {
       Alert.alert("Permissão negada");
     }
-  };
-
-  // Função para atualizar velocidade e distancia
-  const updatePosition = (position) => {
-    // Pega a velocidade atual do objeto em metros por segundo (m/s)
-    const currentSpeedMPS = position.coords.speed || 0;
-
-    // Converte a velocidade de m/s para km/h multiplicando por 3.6
-    const currentSpeed = currentSpeedMPS * 3.6;
-
-    // Atualiza o estado 'speed' com a velocidade atual em km/h
-    setSpeed(currentSpeed);
-
-    // Atualiza o estado 'maxSpeed' com a maior velocidade registrada até agora
-    setMaxSpeed((prevMaxSpeed) => Math.max(prevMaxSpeed, currentSpeed));
-
-    // Atualiza a soma total das velocidades registradas e a contagem de velocidades
-    setSpeedSum((prevSpeedSum) => prevSpeedSum + currentSpeed);
-    setSpeedCount((prevSpeedCount) => prevSpeedCount + 1);
-
-    // Se a localização anterior existir e a velocidade atual for maior que 0.51 km/h, calcula a distância entre a localização anterior e a atual e adiciona ao estado 'distance'
-    if (myLocation && currentSpeed > 0.51) {
-      const newDistance = calculateDistance(
-        myLocation.coords.latitude,
-        myLocation.coords.longitude,
-        position.coords.latitude,
-        position.coords.longitude
-      );
-      setDistance((prevDistance) => prevDistance + newDistance);
-    }
-
-    // Adiciona a localização atual ao array de localizações
-    setLocations((prevLocations) => [...prevLocations, position]);
-
-    // Atualiza a localização anterior com a localização atual
-    setMyLocation(position);
   };
 
   // Função para resetar o monitoramento
