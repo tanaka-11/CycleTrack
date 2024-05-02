@@ -48,7 +48,6 @@ export const SpeedProvider = ({ children }) => {
   const [running, setRunning] = useState();
   const [stop, setStop] = useState(false);
   const [data, setData] = useState([]);
-  const [isMonitoring, setIsMonitoring] = useState(false);
 
   // Data atual e hora
   const [currentDate, setCurrentDate] = useState();
@@ -147,10 +146,6 @@ export const SpeedProvider = ({ children }) => {
 
   // Função para atualizar velocidade e distancia
   const updatePosition = (position) => {
-    if (!isMonitoring) {
-      return;
-    }
-
     // Pega a velocidade atual do objeto em metros por segundo (m/s)
     const currentSpeedMPS = position.coords.speed || 0;
 
@@ -187,8 +182,6 @@ export const SpeedProvider = ({ children }) => {
 
   // Função para iniciar o monitoramento
   const startMonitoring = async () => {
-    setIsMonitoring(false);
-
     try {
       const newLocationSubscription = await Location.watchPositionAsync(
         {
@@ -245,29 +238,6 @@ export const SpeedProvider = ({ children }) => {
     }
   };
 
-  // Função para parar o monitoramento e armazenar os dados
-  const stopMonitoringAndStoreData = () => {
-    setIsMonitoring(false);
-
-    // Parar o monitoramento
-    removeLocationSubscription();
-
-    // Adiciona um atraso de 5 segundos antes de atualizar a localização final
-    setTimeout(() => {
-      setFinalLocation({
-        latitude: myLocation.coords.latitude,
-        longitude: myLocation.coords.longitude,
-      });
-    }, 5000);
-
-    // Armazenar os dados atuais
-    setStoredSpeed(speed);
-    setStoredDistance(distance);
-
-    // Armazenar todas as localizações
-    setStoredLocations(locations);
-  };
-
   // Função para resetar o monitoramento
   const resetMonitoring = async () => {
     await Location.stopLocationUpdatesAsync(BACKGROUND_LOCATION_TASK);
@@ -296,6 +266,25 @@ export const SpeedProvider = ({ children }) => {
       setPause(false);
       await startMonitoring();
     }
+  };
+
+  // Função para parar o monitoramento e armazenar os dados
+  const stopMonitoringAndStoreData = () => {
+    // Parar o monitoramento
+    removeLocationSubscription();
+
+    // Atualiza a localização final
+    setFinalLocation({
+      latitude: myLocation.coords.latitude,
+      longitude: myLocation.coords.longitude,
+    });
+
+    // Armazenar os dados atuais
+    setStoredSpeed(speed);
+    setStoredDistance(distance);
+
+    // Armazenar todas as localizações
+    setStoredLocations(locations);
   };
 
   // Função para formatar a data e a hora atual
