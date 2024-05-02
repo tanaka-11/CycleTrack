@@ -220,8 +220,8 @@ export const SpeedProvider = ({ children }) => {
       try {
         await Location.startLocationUpdatesAsync(BACKGROUND_LOCATION_TASK, {
           accuracy: Location.Accuracy.Highest,
-          timeInterval: 1000,
-          distanceInterval: 0,
+          timeInterval: 5000,
+          distanceInterval: 2,
           activityType: Location.ActivityType.Fitness,
           showsBackgroundLocationIndicator: true,
           foregroundService: {
