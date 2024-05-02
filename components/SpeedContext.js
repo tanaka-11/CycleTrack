@@ -184,8 +184,8 @@ export const SpeedProvider = ({ children }) => {
       try {
         await Location.startLocationUpdatesAsync(BACKGROUND_LOCATION_TASK, {
           accuracy: Location.Accuracy.Highest,
-          timeInterval: 5000,
-          distanceInterval: 5,
+          timeInterval: 1000,
+          distanceInterval: 0,
           activityType: Location.ActivityType.Fitness,
           showsBackgroundLocationIndicator: true,
           foregroundService: {
@@ -220,8 +220,7 @@ export const SpeedProvider = ({ children }) => {
     setSpeedSum((prevSpeedSum) => prevSpeedSum + currentSpeed);
     setSpeedCount((prevSpeedCount) => prevSpeedCount + 1);
 
-    // Se a localização anterior existir e a velocidade atual for maior que 0.51 km/h,
-    // calcula a distância entre a localização anterior e a atual e adiciona ao estado 'distance'
+    // Se a localização anterior existir e a velocidade atual for maior que 0.51 km/h, calcula a distância entre a localização anterior e a atual e adiciona ao estado 'distance'
     if (myLocation && currentSpeed > 0.51) {
       const newDistance = calculateDistance(
         myLocation.coords.latitude,
